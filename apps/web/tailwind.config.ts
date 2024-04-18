@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
 import sharedConfig from "@repo/tailwind-config";
 
 const config: Config = {
-  content: ["./src/app/**/*.tsx", "./src/components/**/*.tsx"],
+  content: ["./src/**/*.tsx"],
   theme: {
     container: {
       center: true,
