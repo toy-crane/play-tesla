@@ -1,6 +1,11 @@
 function Layout(props: { children: React.ReactNode }) {
   return (
-    <div className="bg-primary-foreground min-h-screen">{props.children}</div>
+    <div className="bg-primary-foreground min-h-screen">
+      <header className="content-grid bg-white sticky">
+        <nav className="py-4 flex items-center">Logo</nav>
+      </header>
+      {props.children}
+    </div>
   );
 }
 
