@@ -1,3 +1,10 @@
 export default function Page(): JSX.Element {
-  return <main className="text-3xl">Let`s go play-tesla</main>;
+  return (
+    <main>
+      <div className="font-medium">Hello</div>
+      <div className="font-semibold">Hello</div>
+      <div className="font-bold">Hello</div>
+      <div className="font-extrabold">Hello</div>
+    </main>
+  );
 }
