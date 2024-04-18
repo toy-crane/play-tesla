@@ -17,10 +17,9 @@ function ShareButton() {
           duration: 1000,
         });
       }}
-      size="default"
+      size="sm"
     >
-      <span className="hidden md:block md:mr-2">공유하기</span>
-      <Share2Icon className="h-4 w-4" />
+      <span className="md:block">공유하기</span>
     </Button>
   );
 }

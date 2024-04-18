@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import localFont from "next/font/local";
+import { Toaster } from "@/components/ui/toaster";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -15,7 +16,10 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="ko">
-      <body className={pretendard.className}>{children}</body>
+      <body className={pretendard.className}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
