@@ -14,25 +14,25 @@ export type Database = {
           code: string
           created_at: string
           id: string
-          model_id: string | null
+          model_id: string
           name: string
-          price: number | null
+          price: number
         }
         Insert: {
           code: string
           created_at?: string
           id?: string
-          model_id?: string | null
+          model_id: string
           name: string
-          price?: number | null
+          price: number
         }
         Update: {
           code?: string
           created_at?: string
           id?: string
-          model_id?: string | null
+          model_id?: string
           name?: string
-          price?: number | null
+          price?: number
         }
         Relationships: [
           {
@@ -173,21 +173,24 @@ export type Database = {
           created_at: string
           id: string
           model_id: string
-          name: string
+          name: string | null
+          slug: string | null
         }
         Insert: {
           code: string
           created_at?: string
           id?: string
           model_id: string
-          name: string
+          name?: string | null
+          slug?: string | null
         }
         Update: {
           code?: string
           created_at?: string
           id?: string
           model_id?: string
-          name?: string
+          name?: string | null
+          slug?: string | null
         }
         Relationships: [
           {
