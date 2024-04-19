@@ -13,7 +13,7 @@ async function Page({ searchParams }: Props) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
-    .select("*, models(name)")
+    .select("*, models(name), seatings(*)")
     .in("slug", [first, second]);
   if (error || data.length !== 2) {
     throw error;
@@ -34,9 +34,13 @@ async function Page({ searchParams }: Props) {
       <div>
         <div>
           {primary?.models?.name} {primary?.name}
+          {primary?.seatings?.map((seating) => <div>{seating.seat_count}</div>)}
         </div>
         <div>
           {secondary?.models?.name} {secondary?.name}
+          {secondary?.seatings?.map((seating) => (
+            <div>{seating.seat_count}</div>
+          ))}
         </div>
       </div>
     </div>
