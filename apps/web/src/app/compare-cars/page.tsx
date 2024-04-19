@@ -14,7 +14,7 @@ async function Page({ searchParams }: Props) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
-    .select("*, models(name),seatings(*),wheels(*)")
+    .select("*, models(name, colors(*)),seatings(*),wheels(*)")
     .in("slug", [first, second]);
   if (error || data.length !== 2) {
     throw error;
@@ -32,8 +32,8 @@ async function Page({ searchParams }: Props) {
         </h1>
         <ShareButton />
       </div>
-      <div className="flex justify-evenly">
-        <div>
+      <div className="flex">
+        <div className="flex flex-1 flex-col">
           {primary?.models?.name} {primary?.name}
           <div>
             <h1>좌석</h1>
@@ -49,8 +49,16 @@ async function Page({ searchParams }: Props) {
               {primary?.wheels?.map((wheel) => <Button>{wheel.name}</Button>)}
             </div>
           </div>
+          <div>
+            <h1>색상</h1>
+            <div className="flex gap-2 overflow-auto">
+              {primary?.models?.colors?.map((color) => (
+                <Button>{color.name}</Button>
+              ))}
+            </div>
+          </div>
         </div>
-        <div>
+        <div className="flex flex-1 flex-col">
           {secondary?.models?.name} {secondary?.name}
           <div>
             <h1>좌석</h1>
@@ -64,6 +72,14 @@ async function Page({ searchParams }: Props) {
             <h1>휠</h1>
             <div className="flex gap-2">
               {secondary?.wheels?.map((wheel) => <Button>{wheel.name}</Button>)}
+            </div>
+          </div>
+          <div>
+            <h1>색상</h1>
+            <div className="flex gap-2 overflow-auto">
+              {secondary?.models?.colors?.map((color) => (
+                <Button>{color.name}</Button>
+              ))}
             </div>
           </div>
         </div>
