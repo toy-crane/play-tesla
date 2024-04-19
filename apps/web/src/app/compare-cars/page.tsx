@@ -14,7 +14,9 @@ async function Page({ searchParams }: Props) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
-    .select("*, models(name, colors(*), interiors(*)),seatings(*),wheels(*)")
+    .select(
+      "*, models(name, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
+    )
     .in("slug", [first, second]);
   if (error || data.length !== 2) {
     throw error;
@@ -65,6 +67,14 @@ async function Page({ searchParams }: Props) {
               ))}
             </div>
           </div>
+          <div>
+            <h1>스티어링</h1>
+            <div className="flex gap-2 overflow-auto">
+              {primary?.models?.steerings?.map((steering) => (
+                <Button>{steering.name}</Button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="flex flex-1 flex-col">
           {secondary?.models?.name} {secondary?.name}
@@ -95,6 +105,14 @@ async function Page({ searchParams }: Props) {
             <div className="flex gap-2 overflow-auto">
               {secondary?.models?.interiors?.map((interior) => (
                 <Button>{interior.name}</Button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h1>스티어링</h1>
+            <div className="flex gap-2 overflow-auto">
+              {secondary?.models?.steerings?.map((steering) => (
+                <Button>{steering.name}</Button>
               ))}
             </div>
           </div>
