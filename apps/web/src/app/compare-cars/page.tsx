@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import ShareButton from "./_components/share-button";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   searchParams: { trimList: string };
@@ -13,7 +14,7 @@ async function Page({ searchParams }: Props) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
-    .select("*, models(name), seatings(*)")
+    .select("*, models(name),seatings(*)")
     .in("slug", [first, second]);
   if (error || data.length !== 2) {
     throw error;
@@ -31,16 +32,28 @@ async function Page({ searchParams }: Props) {
         </h1>
         <ShareButton />
       </div>
-      <div>
+      <div className="flex justify-evenly">
         <div>
           {primary?.models?.name} {primary?.name}
-          {primary?.seatings?.map((seating) => <div>{seating.seat_count}</div>)}
+          <div>
+            <h1>좌석</h1>
+            <div className="flex gap-2">
+              {primary?.seatings?.map((seating) => (
+                <Button>{seating.seat_count}</Button>
+              ))}
+            </div>
+          </div>
         </div>
         <div>
           {secondary?.models?.name} {secondary?.name}
-          {secondary?.seatings?.map((seating) => (
-            <div>{seating.seat_count}</div>
-          ))}
+          <div>
+            <h1>좌석</h1>
+            <div className="flex gap-2">
+              {secondary?.seatings?.map((seating) => (
+                <Button>{seating.seat_count}</Button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
