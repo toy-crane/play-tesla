@@ -14,7 +14,7 @@ async function Page({ searchParams }: Props) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
-    .select("*, models(name, colors(*)),seatings(*),wheels(*)")
+    .select("*, models(name, colors(*), interiors(*)),seatings(*),wheels(*)")
     .in("slug", [first, second]);
   if (error || data.length !== 2) {
     throw error;
@@ -57,6 +57,14 @@ async function Page({ searchParams }: Props) {
               ))}
             </div>
           </div>
+          <div>
+            <h1>인테리어</h1>
+            <div className="flex gap-2 overflow-auto">
+              {primary?.models?.interiors?.map((interior) => (
+                <Button>{interior.name}</Button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="flex flex-1 flex-col">
           {secondary?.models?.name} {secondary?.name}
@@ -79,6 +87,14 @@ async function Page({ searchParams }: Props) {
             <div className="flex gap-2 overflow-auto">
               {secondary?.models?.colors?.map((color) => (
                 <Button>{color.name}</Button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h1>인테리어</h1>
+            <div className="flex gap-2 overflow-auto">
+              {secondary?.models?.interiors?.map((interior) => (
+                <Button>{interior.name}</Button>
               ))}
             </div>
           </div>
