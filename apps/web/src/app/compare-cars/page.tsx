@@ -6,16 +6,19 @@ interface Props {
 }
 
 async function Page({ searchParams }: Props) {
-  const trimList = decodeURIComponent(searchParams.trimList);
+  const originTrimList =
+    searchParams.trimList || "model3-longrange,modely-longrange";
+  const trimList = decodeURIComponent(originTrimList);
   const [first, second] = trimList.split(",");
   const supabase = createClient();
-  const { data, error } = await supabase.from("trims").select("*");
-  // .in("slug", [first, second]);
-  if (error) {
+  const { data, error } = await supabase
+    .from("trims")
+    .select("*, models(name)")
+    .in("slug", [first, second]);
+  if (error || data.length !== 2) {
     throw error;
   }
 
-  console.log(data);
   const primary = data[0];
   const secondary = data[1];
 
@@ -28,7 +31,14 @@ async function Page({ searchParams }: Props) {
         </h1>
         <ShareButton />
       </div>
-      <div></div>
+      <div>
+        <div>
+          {primary?.models?.name} {primary?.name}
+        </div>
+        <div>
+          {secondary?.models?.name} {secondary?.name}
+        </div>
+      </div>
     </div>
   );
 }
