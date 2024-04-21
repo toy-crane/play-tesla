@@ -24,6 +24,10 @@ const Card = ({
 
   const currentSeatingOption =
     searchParams.get(`${order}Seating`) || String(trim.seatings[0]?.seat_count);
+  const currentWheelOption =
+    searchParams.get(`${order}Wheel`) || trim.wheels[0]?.code;
+  const currentColorOption =
+    searchParams.get(`${order}Color`) || trim?.models?.colors[0]?.code;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -52,17 +56,37 @@ const Card = ({
       </div>
       <div>
         <h1>휠</h1>
-        <div className="flex gap-2">
+        <RadioGroup defaultValue={currentWheelOption}>
           {trim?.wheels?.map((wheel) => (
-            <Button
-              onClick={() => {
-                handleParamsChange(`${order}Wheel`, wheel.code);
-              }}
-            >
-              {wheel.name}
-            </Button>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={wheel.code}
+                id={`w${wheel.code}`}
+                onClick={() => {
+                  handleParamsChange(`${order}Wheel`, wheel.code);
+                }}
+              />
+              <Label htmlFor={`w${wheel.code}`}>{wheel.name}</Label>
+            </div>
           ))}
-        </div>
+        </RadioGroup>
+      </div>
+      <div>
+        <h1>색상</h1>
+        <RadioGroup defaultValue={currentColorOption}>
+          {trim?.models?.colors?.map((color) => (
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={color.code}
+                id={`c${color.code}`}
+                onClick={() => {
+                  handleParamsChange(`${order}Color`, color.code);
+                }}
+              />
+              <Label htmlFor={`c${color.code}`}>{color.name}</Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
       <div>
         <h1>색상</h1>
