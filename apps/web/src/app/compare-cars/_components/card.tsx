@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Trim } from "@/types/data";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const Card = ({
   trim,
@@ -20,25 +22,33 @@ const Card = ({
     router.replace(`?${params.toString()}`);
   };
 
+  const currentSeatingOption =
+    searchParams.get(`${order}Seating`) || String(trim.seatings[0]?.seat_count);
+
   return (
     <div className="flex flex-1 flex-col">
       {trim?.models?.name} {trim?.name}
       <div>
-        <h1>좌석</h1>
-        <div className="flex gap-2">
+        <div>좌석</div>
+        <RadioGroup defaultValue={currentSeatingOption}>
           {trim?.seatings?.map((seating) => (
-            <Button
-              onClick={() => {
-                handleParamsChange(
-                  `${order}Seating`,
-                  seating.seat_count.toString()
-                );
-              }}
-            >
-              {seating.seat_count}
-            </Button>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={seating.seat_count.toString()}
+                id={`s${seating.seat_count}`}
+                onClick={() => {
+                  handleParamsChange(
+                    `${order}Seating`,
+                    String(seating.seat_count)
+                  );
+                }}
+              />
+              <Label htmlFor={`s${seating.seat_count}`}>
+                {seating.seat_count}
+              </Label>
+            </div>
           ))}
-        </div>
+        </RadioGroup>
       </div>
       <div>
         <h1>휠</h1>
