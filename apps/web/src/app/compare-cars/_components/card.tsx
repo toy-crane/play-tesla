@@ -22,8 +22,8 @@ const Card = ({
     router.replace(`?${params.toString()}`);
   };
 
-  const currentSeatingOption =
-    searchParams.get(`${order}Seating`) || String(trim.seatings[0]?.seat_count);
+  const currentSeatOption =
+    searchParams.get(`${order}Seat`) || String(trim.seatings[0]?.seat_count);
   const currentWheelOption =
     searchParams.get(`${order}Wheel`) || trim.wheels[0]?.code;
   const currentColorOption =
@@ -38,7 +38,7 @@ const Card = ({
       {trim?.models?.name} {trim?.name}
       <div>
         <div>좌석</div>
-        <RadioGroup defaultValue={currentSeatingOption}>
+        <RadioGroup defaultValue={currentSeatOption}>
           {trim?.seatings?.map((seating) => (
             <div className="flex items-center space-x-2">
               <RadioGroupItem
