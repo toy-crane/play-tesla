@@ -1,7 +1,25 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Trim } from "@/types/data";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-const Card = ({ trim }: { trim: Trim }) => {
+const Card = ({
+  trim,
+  order,
+}: {
+  trim: Trim;
+  order: "primary" | "secondary";
+}) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleParamsChange = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(key, value);
+    router.replace(`?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-1 flex-col">
       {trim?.models?.name} {trim?.name}
@@ -22,7 +40,13 @@ const Card = ({ trim }: { trim: Trim }) => {
       <div>
         <h1>색상</h1>
         <div className="flex gap-2 overflow-auto">
-          {trim?.models?.colors?.map((color) => <Button>{color.name}</Button>)}
+          {trim?.models?.colors?.map((color) => (
+            <Button
+              onClick={() => handleParamsChange(`${order}Color`, color.code)}
+            >
+              {color.name}
+            </Button>
+          ))}
         </div>
       </div>
       <div>

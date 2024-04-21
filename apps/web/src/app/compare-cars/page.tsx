@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import ShareButton from "./_components/share-button";
-import { Button } from "@/components/ui/button";
 import Card from "./_components/card";
 
 interface Props {
@@ -40,8 +39,8 @@ async function Page({ searchParams }: Props) {
         <ShareButton />
       </div>
       <div className="flex">
-        <Card trim={primary} />
-        <Card trim={secondary} />
+        <Card trim={primary} order="primary" />
+        <Card trim={secondary} order="secondary" />
       </div>
     </div>
   );
