@@ -30,6 +30,8 @@ const Card = ({
     searchParams.get(`${order}Color`) || trim?.models?.colors[0]?.code;
   const currentInteriorOption =
     searchParams.get(`${order}Interior`) || trim?.models?.interiors[0]?.code;
+  const currentSteeringOption =
+    searchParams.get(`${order}Steering`) || trim?.models?.steerings[0]?.code;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -109,17 +111,20 @@ const Card = ({
       </div>
       <div>
         <h1>스티어링</h1>
-        <div className="flex gap-2 overflow-auto">
+        <RadioGroup defaultValue={currentSteeringOption}>
           {trim?.models?.steerings?.map((steering) => (
-            <Button
-              onClick={() =>
-                handleParamsChange(`${order}Steering`, steering.code)
-              }
-            >
-              {steering.name}
-            </Button>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={steering.code}
+                id={`st${steering.code}`}
+                onClick={() => {
+                  handleParamsChange(`${order}Steering`, steering.code);
+                }}
+              />
+              <Label htmlFor={`st${steering.code}`}>{steering.name}</Label>
+            </div>
           ))}
-        </div>
+        </RadioGroup>
       </div>
     </div>
   );
