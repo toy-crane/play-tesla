@@ -28,6 +28,8 @@ const Card = ({
     searchParams.get(`${order}Wheel`) || trim.wheels[0]?.code;
   const currentColorOption =
     searchParams.get(`${order}Color`) || trim?.models?.colors[0]?.code;
+  const currentInteriorOption =
+    searchParams.get(`${order}Interior`) || trim?.models?.interiors[0]?.code;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -89,30 +91,21 @@ const Card = ({
         </RadioGroup>
       </div>
       <div>
-        <h1>색상</h1>
-        <div className="flex gap-2 overflow-auto">
-          {trim?.models?.colors?.map((color) => (
-            <Button
-              onClick={() => handleParamsChange(`${order}Color`, color.code)}
-            >
-              {color.name}
-            </Button>
-          ))}
-        </div>
-      </div>
-      <div>
         <h1>인테리어</h1>
-        <div className="flex gap-2 overflow-auto">
+        <RadioGroup defaultValue={currentInteriorOption}>
           {trim?.models?.interiors?.map((interior) => (
-            <Button
-              onClick={() =>
-                handleParamsChange(`${order}Interior`, interior.code)
-              }
-            >
-              {interior.name}
-            </Button>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={interior.code}
+                id={`i${interior.code}`}
+                onClick={() => {
+                  handleParamsChange(`${order}Interior`, interior.code);
+                }}
+              />
+              <Label htmlFor={`i${interior.code}`}>{interior.name}</Label>
+            </div>
           ))}
-        </div>
+        </RadioGroup>
       </div>
       <div>
         <h1>스티어링</h1>
