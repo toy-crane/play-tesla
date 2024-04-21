@@ -22,6 +22,7 @@ export type Trim = {
     steerings: {
       name: string;
       price: number;
+      code: string;
     }[];
   } | null;
   seatings: {

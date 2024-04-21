@@ -27,14 +27,31 @@ const Card = ({
         <h1>좌석</h1>
         <div className="flex gap-2">
           {trim?.seatings?.map((seating) => (
-            <Button>{seating.seat_count}</Button>
+            <Button
+              onClick={() => {
+                handleParamsChange(
+                  `${order}Seating`,
+                  seating.seat_count.toString()
+                );
+              }}
+            >
+              {seating.seat_count}
+            </Button>
           ))}
         </div>
       </div>
       <div>
         <h1>휠</h1>
         <div className="flex gap-2">
-          {trim?.wheels?.map((wheel) => <Button>{wheel.name}</Button>)}
+          {trim?.wheels?.map((wheel) => (
+            <Button
+              onClick={() => {
+                handleParamsChange(`${order}Wheel`, wheel.code);
+              }}
+            >
+              {wheel.name}
+            </Button>
+          ))}
         </div>
       </div>
       <div>
@@ -53,7 +70,13 @@ const Card = ({
         <h1>인테리어</h1>
         <div className="flex gap-2 overflow-auto">
           {trim?.models?.interiors?.map((interior) => (
-            <Button>{interior.name}</Button>
+            <Button
+              onClick={() =>
+                handleParamsChange(`${order}Interior`, interior.code)
+              }
+            >
+              {interior.name}
+            </Button>
           ))}
         </div>
       </div>
@@ -61,7 +84,13 @@ const Card = ({
         <h1>스티어링</h1>
         <div className="flex gap-2 overflow-auto">
           {trim?.models?.steerings?.map((steering) => (
-            <Button>{steering.name}</Button>
+            <Button
+              onClick={() =>
+                handleParamsChange(`${order}Steering`, steering.code)
+              }
+            >
+              {steering.name}
+            </Button>
           ))}
         </div>
       </div>
