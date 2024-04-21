@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Trim } from "@/types/data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
+import Link from "next/link";
 
 const Card = ({
   trim,
@@ -33,9 +34,13 @@ const Card = ({
   const currentSteeringOption =
     searchParams.get(`${order}Steering`) || trim?.models?.steerings[0]?.code;
 
+  const imageUrl = `https://static-assets.tesla.com/configurator/compositor?options=${trim.code},${currentColorOption},${currentWheelOption},${currentInteriorOption}&&view=FRONT34&model=${trim.models?.code}`;
+
   return (
     <div className="flex flex-1 flex-col">
-      {trim?.models?.name} {trim?.name}
+      <Link href={imageUrl}>
+        {trim?.models?.name} {trim?.name}
+      </Link>
       <div>
         <div>좌석</div>
         <RadioGroup defaultValue={currentSeatOption}>
@@ -52,7 +57,7 @@ const Card = ({
                 }}
               />
               <Label htmlFor={`s${seating.seat_count}`}>
-                {seating.seat_count}
+                {seating.seat_count}인승
               </Label>
             </div>
           ))}

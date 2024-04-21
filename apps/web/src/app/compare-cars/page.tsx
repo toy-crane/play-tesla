@@ -15,7 +15,7 @@ async function Page({ searchParams }: Props) {
   const { data, error } = await supabase
     .from("trims")
     .select(
-      "*, models(name, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
+      "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
     )
     .in("slug", [first, second]);
   if (error) {

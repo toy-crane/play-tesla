@@ -6,6 +6,7 @@ export type Trim = {
   name: string | null;
   models: {
     name: string;
+    code: string;
     colors: {
       code: string;
       created_at: string;
