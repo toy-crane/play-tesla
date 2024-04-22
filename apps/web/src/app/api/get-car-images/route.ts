@@ -46,14 +46,20 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
   return configs;
 }
 
-export async function GET(request: NextRequest) {
+type request = {
+  trim: string;
+};
+
+export async function POST(request: NextRequest) {
+  const { trim } = (await request.json()) as request;
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("trims")
     .select(
       "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
-    );
+    )
+    .eq("code", trim);
   if (error) {
     throw error;
   }
@@ -61,7 +67,7 @@ export async function GET(request: NextRequest) {
   const imageUrls = generateImageURLs(data[0] as Trim);
 
   imageUrls.forEach(async (config) => {
-    await sleep(1000);
+    await sleep(100);
     const response = await fetch(config.url);
     if (response.ok) {
       const blob = await response.arrayBuffer();
