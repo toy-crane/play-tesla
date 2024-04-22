@@ -4,21 +4,24 @@ import Card from "./_components/card";
 import { SelectCar } from "./_components/select-car";
 
 interface Props {
-  searchParams: { trimList: string };
+  searchParams: { primaryTrim: string; secondaryTrim: string };
 }
 
 async function Page({ searchParams }: Props) {
-  const originTrimList =
-    searchParams.trimList || "model3-longrange,modely-longrange";
-  const trimList = decodeURIComponent(originTrimList);
-  const [first, second] = trimList.split(",");
+  const primaryTrim = searchParams.primaryTrim
+    ? decodeURIComponent(searchParams.primaryTrim)
+    : "model3-longrange";
+  const secondaryTrim = searchParams.secondaryTrim
+    ? decodeURIComponent(searchParams.secondaryTrim)
+    : "modely-longrange";
+
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
     .select(
       "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
     )
-    .in("slug", [first, second])
+    .in("slug", [primaryTrim, secondaryTrim])
     .order("slug");
   if (error) {
     throw error;
@@ -32,8 +35,8 @@ async function Page({ searchParams }: Props) {
     throw trimsError;
   }
 
-  const primary = data[0];
-  const secondary = data[1];
+  const primary = data.find((trim) => trim.slug === primaryTrim);
+  const secondary = data.find((trim) => trim.slug === secondaryTrim);
 
   if (!primary || !secondary) {
     throw new Error("Trim not found");

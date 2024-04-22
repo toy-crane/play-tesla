@@ -45,13 +45,7 @@ export function SelectCar({
 
   const handleSelectedCar = (value: string) => {
     const params = new URLSearchParams(searchParams);
-    const trimList =
-      params.get("trimList") || "model3-longrange,modely-longrange";
-    if (order === "primary") {
-      params.set("trimList", `${value},${trimList.split(",")[1]}`);
-    } else {
-      params.set("trimList", `${trimList.split(",")[0]},${value}`);
-    }
+    params.set(`${order}Trim`, value);
     router.replace(`?${params.toString()}`);
   };
 
