@@ -29,7 +29,7 @@ async function fetchWithDelay(imageUrls: ImageConfig[]) {
 
     // eslint-disable-next-line no-await-in-loop -- This is a server-side script
     await new Promise((resolve) => {
-      setTimeout(resolve, 100);
+      setTimeout(resolve, 10);
     }); // 1초 대기
   }
 }
