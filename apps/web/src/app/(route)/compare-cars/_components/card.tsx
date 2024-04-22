@@ -5,16 +5,17 @@ import Image from "next/image";
 import type { Trim } from "@/types/data";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { CarView } from "@/constants/image";
 
 // 모든 트림에 대한 인테리어 코드를 가져오지 않음
 const defaultInterior = {
   mx: "$IBC00",
 } as const;
 
-const getImageUrl = (trim: Trim, option: Option) => {
+const getImageUrl = (trim: Trim, option: Option, view: CarView) => {
   const interiorCode =
     defaultInterior[trim.models?.code as keyof typeof defaultInterior];
-  return `https://dgfgljvxbegytbhujxbk.supabase.co/storage/v1/object/public/cars/${trim.models?.code}/${trim.code}/${option.color}-${option.wheel}-${interiorCode}-SIDE`;
+  return `https://dgfgljvxbegytbhujxbk.supabase.co/storage/v1/object/public/cars/${trim.models?.code}/${trim.code}/${option.color}-${option.wheel}-${interiorCode}-${view}`;
 };
 
 interface Option {
@@ -43,7 +44,7 @@ function Card({
     router.replace(`?${params.toString()}`);
   };
 
-  const imageUrl = getImageUrl(trim, option);
+  const imageUrl = getImageUrl(trim, option, CarView.FRONT);
 
   return (
     <div className="flex flex-1 flex-col">

@@ -1,19 +1,13 @@
 import type { NextRequest } from "next/server";
 import type { Trim } from "@/types/data";
 import { createClient } from "@/utils/supabase/server";
+import { CarView } from "@/constants/image";
 
 export const dynamic = "force-dynamic";
 
 interface ImageConfig {
   url: string;
   fileName: string;
-}
-
-enum View {
-  FRONT34 = "FRONT34",
-  REAR34 = "REAR34",
-  SIDE = "SIDE",
-  RIMCLOSEUP = "RIMCLOSEUP",
 }
 
 function sleep(ms: number): Promise<void> {
@@ -33,7 +27,7 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
 
   trim.models.colors.forEach((color) => {
     trim.wheels.forEach((wheel) => {
-      Object.values(View).forEach((viewType) => {
+      Object.values(CarView).forEach((viewType) => {
         const interiorCode = trim.models?.interiors[0]?.code; // Assuming using the first interior for simplicity
         const url = `${baseUrl}?options=${trim.code},${color.code},${wheel.code},${interiorCode}&view=${viewType}&model=${modelCode}`;
         const fileName = `${modelCode}/${trim.code}/${color.code}-${wheel.code}-${interiorCode}-${viewType}`;
