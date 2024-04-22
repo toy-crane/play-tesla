@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import ShareButton from "./_components/share-button";
 import Card from "./_components/card";
+import { SelectCar } from "./_components/select-car";
 
 interface Props {
   searchParams: { trimList: string };
@@ -17,9 +18,18 @@ async function Page({ searchParams }: Props) {
     .select(
       "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
     )
-    .in("slug", [first, second]);
+    .in("slug", [first, second])
+    .order("slug");
   if (error) {
     throw error;
+  }
+
+  const { data: allTrims, error: trimsError } = await supabase
+    .from("trims")
+    .select("*, models(*)");
+
+  if (trimsError) {
+    throw trimsError;
   }
 
   const primary = data[0];
@@ -38,6 +48,7 @@ async function Page({ searchParams }: Props) {
         </h1>
         <ShareButton />
       </div>
+      <SelectCar trims={allTrims} order="primary" />
       <div className="flex">
         <Card trim={primary} order="primary" />
         <Card trim={secondary} order="secondary" />
