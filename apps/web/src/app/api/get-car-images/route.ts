@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
   const imageUrls = generateImageURLs(data[0] as Trim);
 
   imageUrls.forEach(async (config) => {
-    await sleep(100);
+    await sleep(1000);
     const response = await fetch(config.url);
     if (response.ok) {
       const blob = await response.arrayBuffer();
