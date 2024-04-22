@@ -4,7 +4,20 @@ import Card from "./_components/card";
 import { SelectCar } from "./_components/select-car";
 
 interface Props {
-  searchParams: { primaryTrim: string; secondaryTrim: string };
+  searchParams: {
+    primaryTrim: string;
+    secondaryTrim: string;
+    primarySeating: string;
+    secondarySeating: string;
+    primaryWheel: string;
+    secondaryWheel: string;
+    primaryColor: string;
+    secondaryColor: string;
+    primaryInterior: string;
+    secondaryInterior: string;
+    primarySteering: string;
+    secondarySteering: string;
+  };
 }
 
 async function Page({ searchParams }: Props) {
@@ -42,6 +55,35 @@ async function Page({ searchParams }: Props) {
     throw new Error("Trim not found");
   }
 
+  const primaryOption = {
+    seat:
+      searchParams.primarySeating || String(primary.seatings[0]?.seat_count),
+    wheel: searchParams.primaryWheel || String(primary.wheels[0]?.code),
+    color:
+      searchParams.primaryColor || String(primary?.models?.colors[0]?.code),
+    interior:
+      searchParams.primaryInterior ||
+      String(primary?.models?.interiors[0]?.code),
+    steering:
+      searchParams.primarySteering ||
+      String(primary?.models?.steerings[0]?.code),
+  };
+
+  const secondaryOption = {
+    seat:
+      searchParams.secondarySeating ||
+      String(secondary.seatings[0]?.seat_count),
+    wheel: searchParams.secondaryWheel || String(secondary.wheels[0]?.code),
+    color:
+      searchParams.secondaryColor || String(secondary?.models?.colors[0]?.code),
+    interior:
+      searchParams.secondaryInterior ||
+      String(secondary?.models?.interiors[0]?.code),
+    steering:
+      searchParams.secondarySteering ||
+      String(secondary?.models?.steerings[0]?.code),
+  };
+
   return (
     <div className="content-grid">
       <div className="flex justify-between items-center mt-4">
@@ -54,11 +96,21 @@ async function Page({ searchParams }: Props) {
       <div className="flex gap-2">
         <div className="flex-1">
           <SelectCar trims={allTrims} order="primary" slug={primaryTrim} />
-          <Card trim={primary} order="primary" />
+          <Card
+            trim={primary}
+            order="primary"
+            option={primaryOption}
+            key="primary"
+          />
         </div>
         <div className="flex-1">
           <SelectCar trims={allTrims} order="secondary" slug={secondaryTrim} />
-          <Card trim={secondary} order="secondary" />
+          <Card
+            trim={secondary}
+            order="secondary"
+            option={secondaryOption}
+            key="secondary"
+          />
         </div>
       </div>
     </div>

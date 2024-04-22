@@ -4,15 +4,22 @@ import { Trim } from "@/types/data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 import Link from "next/link";
 
 const Card = ({
   trim,
   order,
+  option,
 }: {
   trim: Trim;
   order: "primary" | "secondary";
+  option: {
+    seat: string;
+    wheel: string;
+    color: string;
+    interior: string;
+    steering: string;
+  };
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -23,18 +30,7 @@ const Card = ({
     router.replace(`?${params.toString()}`);
   };
 
-  const currentSeatOption =
-    searchParams.get(`${order}Seat`) || String(trim.seatings[0]?.seat_count);
-  const currentWheelOption =
-    searchParams.get(`${order}Wheel`) || trim.wheels[0]?.code;
-  const currentColorOption =
-    searchParams.get(`${order}Color`) || trim?.models?.colors[0]?.code;
-  const currentInteriorOption =
-    searchParams.get(`${order}Interior`) || trim?.models?.interiors[0]?.code;
-  const currentSteeringOption =
-    searchParams.get(`${order}Steering`) || trim?.models?.steerings[0]?.code;
-
-  const imageUrl = `https://static-assets.tesla.com/configurator/compositor?options=${trim.code},${currentColorOption},${currentWheelOption},${currentInteriorOption}&&view=FRONT34&model=${trim.models?.code}`;
+  const imageUrl = `https://static-assets.tesla.com/configurator/compositor?options=${trim.code},${option.color},${option.wheel},${option.interior}&&view=FRONT34&model=${trim.models?.code}`;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -43,9 +39,12 @@ const Card = ({
       </Link>
       <div>
         <div>좌석</div>
-        <RadioGroup defaultValue={currentSeatOption}>
+        <RadioGroup value={option.seat}>
           {trim?.seatings?.map((seating) => (
-            <div className="flex items-center space-x-2">
+            <div
+              className="flex items-center space-x-2"
+              key={seating.seat_count}
+            >
               <RadioGroupItem
                 value={seating.seat_count.toString()}
                 id={`s${seating.seat_count}`}
@@ -65,9 +64,9 @@ const Card = ({
       </div>
       <div>
         <h1>휠</h1>
-        <RadioGroup defaultValue={currentWheelOption}>
+        <RadioGroup value={option.wheel}>
           {trim?.wheels?.map((wheel) => (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" key={wheel.code}>
               <RadioGroupItem
                 value={wheel.code}
                 id={`w${wheel.code}`}
@@ -82,9 +81,9 @@ const Card = ({
       </div>
       <div>
         <h1>색상</h1>
-        <RadioGroup defaultValue={currentColorOption}>
+        <RadioGroup value={option.color}>
           {trim?.models?.colors?.map((color) => (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" key={color.code}>
               <RadioGroupItem
                 value={color.code}
                 id={`c${color.code}`}
@@ -99,9 +98,9 @@ const Card = ({
       </div>
       <div>
         <h1>인테리어</h1>
-        <RadioGroup defaultValue={currentInteriorOption}>
+        <RadioGroup value={option.interior}>
           {trim?.models?.interiors?.map((interior) => (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" key={interior.code}>
               <RadioGroupItem
                 value={interior.code}
                 id={`i${interior.code}`}
@@ -116,9 +115,9 @@ const Card = ({
       </div>
       <div>
         <h1>스티어링</h1>
-        <RadioGroup defaultValue={currentSteeringOption}>
+        <RadioGroup value={option.steering}>
           {trim?.models?.steerings?.map((steering) => (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2" key={steering.code}>
               <RadioGroupItem
                 value={steering.code}
                 id={`st${steering.code}`}

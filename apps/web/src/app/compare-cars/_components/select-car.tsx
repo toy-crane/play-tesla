@@ -48,6 +48,11 @@ export function SelectCar({
   const handleSelectedCar = (value: string) => {
     const params = new URLSearchParams(searchParams);
     params.set(`${order}Trim`, value);
+    params.delete(`${order}Seat`);
+    params.delete(`${order}Wheel`);
+    params.delete(`${order}Color`);
+    params.delete(`${order}Interior`);
+    params.delete(`${order}Steering`);
     router.replace(`?${params.toString()}`);
   };
 
