@@ -1,4 +1,4 @@
-export type Trim = {
+export interface Trim {
   code: string;
   created_at: string;
   id: string;
@@ -35,4 +35,4 @@ export type Trim = {
     code: string;
     price: number;
   }[];
-};
+}

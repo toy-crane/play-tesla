@@ -1,6 +1,6 @@
-import { Database } from "@/types/generated";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { Database } from "@/types/generated";
 
 export const createClient = () => {
   const cookieStore = cookies();
@@ -15,6 +15,7 @@ export const createClient = () => {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             cookieStore.set({ name, value, ...options });
           } catch (error) {
             // The `set` method was called from a Server Component.
@@ -24,6 +25,7 @@ export const createClient = () => {
         },
         remove(name: string, options: CookieOptions) {
           try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             cookieStore.set({ name, value: "", ...options });
           } catch (error) {
             // The `delete` method was called from a Server Component.

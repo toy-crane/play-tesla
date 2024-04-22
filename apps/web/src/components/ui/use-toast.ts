@@ -48,6 +48,7 @@ type Action =
       toastId?: ToasterToast["id"];
     };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention -- This is a custom hook
 interface State {
   toasts: ToasterToast[];
 }
@@ -94,8 +95,8 @@ export const reducer = (state: State, action: Action): State => {
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id);
+        state.toasts.forEach((t) => {
+          addToRemoveQueue(t.id);
         });
       }
 
@@ -141,6 +142,7 @@ type Toast = Omit<ToasterToast, "id">;
 function toast({ ...props }: Toast) {
   const id = genId();
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow -- This is a custom hook
   const update = (props: ToasterToast) => {
     dispatch({
       type: "UPDATE_TOAST",

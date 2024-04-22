@@ -3,7 +3,7 @@ import ShareButton from "./_components/share-button";
 import Card from "./_components/card";
 import { SelectCar } from "./_components/select-car";
 
-interface Props {
+interface PageProps {
   searchParams: {
     primaryTrim: string;
     secondaryTrim: string;
@@ -20,7 +20,7 @@ interface Props {
   };
 }
 
-async function Page({ searchParams }: Props) {
+async function Page({ searchParams }: PageProps) {
   const primaryTrim = searchParams.primaryTrim
     ? decodeURIComponent(searchParams.primaryTrim)
     : "model3-longrange";
@@ -37,7 +37,7 @@ async function Page({ searchParams }: Props) {
     .in("slug", [primaryTrim, secondaryTrim])
     .order("slug");
   if (error) {
-    throw error;
+    throw new Error(error.message);
   }
 
   const { data: allTrims, error: trimsError } = await supabase
@@ -45,7 +45,7 @@ async function Page({ searchParams }: Props) {
     .select("*, models(*)");
 
   if (trimsError) {
-    throw trimsError;
+    throw new Error(trimsError.message);
   }
 
   const primary = data.find((trim) => trim.slug === primaryTrim);
@@ -59,14 +59,13 @@ async function Page({ searchParams }: Props) {
     seat:
       searchParams.primarySeating || String(primary.seatings[0]?.seat_count),
     wheel: searchParams.primaryWheel || String(primary.wheels[0]?.code),
-    color:
-      searchParams.primaryColor || String(primary?.models?.colors[0]?.code),
+    color: searchParams.primaryColor || String(primary.models?.colors[0]?.code),
     interior:
       searchParams.primaryInterior ||
-      String(primary?.models?.interiors[0]?.code),
+      String(primary.models?.interiors[0]?.code),
     steering:
       searchParams.primarySteering ||
-      String(primary?.models?.steerings[0]?.code),
+      String(primary.models?.steerings[0]?.code),
   };
 
   const secondaryOption = {
@@ -75,13 +74,13 @@ async function Page({ searchParams }: Props) {
       String(secondary.seatings[0]?.seat_count),
     wheel: searchParams.secondaryWheel || String(secondary.wheels[0]?.code),
     color:
-      searchParams.secondaryColor || String(secondary?.models?.colors[0]?.code),
+      searchParams.secondaryColor || String(secondary.models?.colors[0]?.code),
     interior:
       searchParams.secondaryInterior ||
-      String(secondary?.models?.interiors[0]?.code),
+      String(secondary.models?.interiors[0]?.code),
     steering:
       searchParams.secondarySteering ||
-      String(secondary?.models?.steerings[0]?.code),
+      String(secondary.models?.steerings[0]?.code),
   };
 
   return (
@@ -95,21 +94,21 @@ async function Page({ searchParams }: Props) {
       </div>
       <div className="flex gap-2">
         <div className="flex-1">
-          <SelectCar trims={allTrims} order="primary" slug={primaryTrim} />
+          <SelectCar order="primary" slug={primaryTrim} trims={allTrims} />
           <Card
-            trim={primary}
-            order="primary"
-            option={primaryOption}
             key="primary"
+            option={primaryOption}
+            order="primary"
+            trim={primary}
           />
         </div>
         <div className="flex-1">
-          <SelectCar trims={allTrims} order="secondary" slug={secondaryTrim} />
+          <SelectCar order="secondary" slug={secondaryTrim} trims={allTrims} />
           <Card
-            trim={secondary}
-            order="secondary"
-            option={secondaryOption}
             key="secondary"
+            option={secondaryOption}
+            order="secondary"
+            trim={secondary}
           />
         </div>
       </div>

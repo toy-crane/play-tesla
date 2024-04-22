@@ -1,6 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-import { Database } from "@/types/generated";
+import type { Database } from "@/types/generated";
 
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
@@ -23,6 +23,7 @@ export const updateSession = async (request: NextRequest) => {
           },
           set(name: string, value: string, options: CookieOptions) {
             // If the cookie is updated, update the cookies for the request and response
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             request.cookies.set({
               name,
               value,
@@ -33,6 +34,7 @@ export const updateSession = async (request: NextRequest) => {
                 headers: request.headers,
               },
             });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             response.cookies.set({
               name,
               value,
@@ -41,6 +43,7 @@ export const updateSession = async (request: NextRequest) => {
           },
           remove(name: string, options: CookieOptions) {
             // If the cookie is removed, update the cookies for the request and response
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             request.cookies.set({
               name,
               value: "",
@@ -51,6 +54,7 @@ export const updateSession = async (request: NextRequest) => {
                 headers: request.headers,
               },
             });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- cookie setting
             response.cookies.set({
               name,
               value: "",

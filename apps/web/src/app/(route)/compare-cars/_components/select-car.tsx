@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { ChevronsUpDownIcon } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useMediaQuery } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ChevronsUpDownIcon } from "lucide-react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Tables } from "@/types/generated";
+import type { Tables } from "@/types/generated";
 
 type Trim = Tables<"trims"> & {
   models: Tables<"models"> | null;
@@ -60,13 +60,13 @@ export function SelectCar({
 
   if (isDesktop) {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger asChild>
           <Button
-            variant="ghost"
-            role="combobox"
             aria-expanded={open}
             className="w-full justify-between overflow-hidden bg-white"
+            role="combobox"
+            variant="ghost"
           >
             <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
               {selectedCarLabel ? (
@@ -78,11 +78,11 @@ export function SelectCar({
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[360px] p-0" align="start">
+        <PopoverContent align="start" className="w-[360px] p-0">
           <CarsSelection
-            setOpen={setOpen}
-            onSelectedCar={handleSelectedCar}
             carLabels={carLabels}
+            onSelectedCar={handleSelectedCar}
+            setOpen={setOpen}
           />
         </PopoverContent>
       </Popover>
@@ -90,13 +90,13 @@ export function SelectCar({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer onOpenChange={setOpen} open={open}>
       <DrawerTrigger asChild>
         <Button
-          variant="ghost"
-          role="combobox"
           aria-expanded={open}
           className="w-full justify-between bg-white overflow-hidden"
+          role="combobox"
+          variant="ghost"
         >
           <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
             {selectedCarLabel ? (
@@ -111,9 +111,9 @@ export function SelectCar({
       <DrawerContent>
         <div className="mt-4 border-t">
           <CarsSelection
-            setOpen={setOpen}
-            onSelectedCar={handleSelectedCar}
             carLabels={carLabels}
+            onSelectedCar={handleSelectedCar}
+            setOpen={setOpen}
           />
         </div>
       </DrawerContent>
@@ -139,14 +139,13 @@ export function CarsSelection({
           {carLabels.map((label) => (
             <CommandItem
               key={label.value}
-              value={label.value}
               onSelect={(value) => {
-                console.log(value);
                 if (value) {
                   onSelectedCar(value);
                 }
                 setOpen(false);
               }}
+              value={label.value}
             >
               {label.label}
             </CommandItem>

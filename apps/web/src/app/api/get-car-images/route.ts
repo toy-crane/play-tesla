@@ -1,6 +1,6 @@
-import { Trim } from "@/types/data";
+import type { NextRequest } from "next/server";
+import type { Trim } from "@/types/data";
 import { createClient } from "@/utils/supabase/server";
-import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -17,15 +17,17 @@ enum View {
 }
 
 function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function generateImageURLs(trim: Trim): ImageConfig[] {
-  if (!trim.models || !trim.models.interiors.length) {
+  if (!trim.models?.interiors.length) {
     return [];
   }
 
-  let configs: ImageConfig[] = [];
+  const configs: ImageConfig[] = [];
   const modelCode = trim.models.code;
   const baseUrl = "https://static-assets.tesla.com/configurator/compositor";
 
@@ -46,12 +48,12 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
   return configs;
 }
 
-type request = {
+interface Request {
   trim: string;
-};
+}
 
 export async function POST(request: NextRequest) {
-  const { trim } = (await request.json()) as request;
+  const { trim } = (await request.json()) as Request;
   const supabase = createClient();
 
   const { data, error } = await supabase
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
     )
     .eq("code", trim);
   if (error) {
-    throw error;
+    throw new Error(error.message);
   }
 
   const imageUrls = generateImageURLs(data[0] as Trim);
@@ -71,14 +73,9 @@ export async function POST(request: NextRequest) {
     const response = await fetch(config.url);
     if (response.ok) {
       const blob = await response.arrayBuffer();
-      const { data, error } = await supabase.storage
-        .from("cars")
-        .upload(config.fileName, blob, {
-          contentType: "image/jpeg",
-        });
-      if (error) {
-        console.log(error);
-      }
+      await supabase.storage.from("cars").upload(config.fileName, blob, {
+        contentType: "image/jpeg",
+      });
     }
   });
 
