@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/server";
 import { CarView } from "@/constants/image";
 
 export const dynamic = "force-dynamic";
-const supabase = createClient();
 
 interface ImageConfig {
   url: string;
@@ -12,6 +11,7 @@ interface ImageConfig {
 }
 
 async function fetchWithDelay(imageUrls: ImageConfig[]) {
+  const supabase = createClient();
   for (const config of imageUrls) {
     // eslint-disable-next-line no-await-in-loop -- This is a server-side script
     const response = await fetch(config.url);
@@ -65,6 +65,7 @@ interface Request {
 }
 
 export async function POST(request: NextRequest) {
+  const supabase = createClient();
   const { trim } = (await request.json()) as Request;
 
   const { data, error } = await supabase
