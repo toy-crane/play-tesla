@@ -10,10 +10,15 @@ interface ImageConfig {
   fileName: string;
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+async function fetchWithDelay(imageUrls: ImageConfig[]) {
+  for (const config of imageUrls) {
+    // eslint-disable-next-line no-await-in-loop -- This is a server-side script
+    await fetch(config.url);
+    // eslint-disable-next-line no-await-in-loop -- This is a server-side script
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    }); // 1초 대기
+  }
 }
 
 function generateImageURLs(trim: Trim): ImageConfig[] {
@@ -61,20 +66,7 @@ export async function POST(request: NextRequest) {
   }
 
   const imageUrls = generateImageURLs(data[0] as Trim);
-
-  imageUrls.forEach(async (config) => {
-    await sleep(1000);
-    const response = await fetch(config.url);
-    if (response.ok) {
-      const blob = await response.arrayBuffer();
-      await supabase.storage.from("cars").upload(config.fileName, blob, {
-        contentType: "image/jpeg",
-      });
-    } else {
-      // eslint-disable-next-line no-console -- This is a server-side script
-      console.error(`Failed to fetch image from ${config.url}`);
-    }
-  });
+  await fetchWithDelay(imageUrls);
 
   return Response.json({ result: "success", imageUrls });
 }
