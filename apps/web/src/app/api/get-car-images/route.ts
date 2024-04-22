@@ -70,6 +70,9 @@ export async function POST(request: NextRequest) {
       await supabase.storage.from("cars").upload(config.fileName, blob, {
         contentType: "image/jpeg",
       });
+    } else {
+      // eslint-disable-next-line no-console -- This is a server-side script
+      console.error(`Failed to fetch image from ${config.url}`);
     }
   });
 
