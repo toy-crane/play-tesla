@@ -3,6 +3,13 @@ module.exports = {
   reactStrictMode: true,
   transpilePackages: ["@repo/ui"],
   images: {
-    domains: ["static-assets.tesla.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "dgfgljvxbegytbhujxbk.supabase.co",
+        port: "",
+        pathname: "/storage/**",
+      },
+    ],
   },
 };

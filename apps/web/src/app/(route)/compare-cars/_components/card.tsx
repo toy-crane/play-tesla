@@ -1,10 +1,28 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import Image from "next/image";
 import type { Trim } from "@/types/data";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+
+const defaultInterior = {
+  mx: "$IBC00",
+} as const;
+
+const getImageUrl = (trim: Trim, option: Option) => {
+  const interiorCode =
+    defaultInterior[trim.models?.code as keyof typeof defaultInterior];
+  return `https://dgfgljvxbegytbhujxbk.supabase.co/storage/v1/object/public/cars/${trim.models?.code}/${trim.code}/${option.color}-${option.wheel}-${interiorCode}-SIDE`;
+};
+
+interface Option {
+  seat: string;
+  wheel: string;
+  color: string;
+  interior: string;
+  steering: string;
+}
 
 function Card({
   trim,
@@ -13,13 +31,7 @@ function Card({
 }: {
   trim: Trim;
   order: "primary" | "secondary";
-  option: {
-    seat: string;
-    wheel: string;
-    color: string;
-    interior: string;
-    steering: string;
-  };
+  option: Option;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -30,13 +42,17 @@ function Card({
     router.replace(`?${params.toString()}`);
   };
 
-  const imageUrl = `https://static-assets.tesla.com/configurator/compositor?options=${trim.code},${option.color},${option.wheel},${option.interior}&&view=FRONT34&model=${trim.models?.code}`;
+  const imageUrl = getImageUrl(trim, option);
 
   return (
     <div className="flex flex-1 flex-col">
-      <Link href={imageUrl}>
-        {trim.models?.name} {trim.name}
-      </Link>
+      {trim.models?.name} {trim.name}
+      <Image
+        alt={`${trim.models?.name} ${trim.name}`}
+        height={400}
+        src={imageUrl}
+        width={400}
+      />
       <div>
         <div>좌석</div>
         <RadioGroup value={option.seat}>
