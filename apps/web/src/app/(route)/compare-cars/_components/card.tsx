@@ -6,6 +6,7 @@ import type { Trim } from "@/types/data";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
+// 모든 트림에 대한 인테리어 코드를 가져오지 않음
 const defaultInterior = {
   mx: "$IBC00",
 } as const;
@@ -46,7 +47,6 @@ function Card({
 
   return (
     <div className="flex flex-1 flex-col">
-      {trim.models?.name} {trim.name}
       <Image
         alt={`${trim.models?.name} ${trim.name}`}
         height={400}
