@@ -26,11 +26,6 @@ async function fetchWithDelay(imageUrls: ImageConfig[]) {
       // eslint-disable-next-line no-console -- This is a server-side script
       console.error(`Failed to fetch image from ${config.url}`);
     }
-
-    // eslint-disable-next-line no-await-in-loop -- This is a server-side script
-    await new Promise((resolve) => {
-      setTimeout(resolve, 10);
-    }); // 1초 대기
   }
 }
 
