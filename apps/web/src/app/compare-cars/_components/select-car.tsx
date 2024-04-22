@@ -28,8 +28,10 @@ type Trim = Tables<"trims"> & {
 export function SelectCar({
   trims,
   order,
+  slug,
 }: {
   trims: Trim[];
+  slug: string;
   order: "primary" | "secondary";
 }) {
   const [open, setOpen] = React.useState(false);
@@ -49,6 +51,8 @@ export function SelectCar({
     router.replace(`?${params.toString()}`);
   };
 
+  const selectedCarLabel = carLabels.find((car) => car.value === slug);
+
   if (isDesktop) {
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -60,7 +64,11 @@ export function SelectCar({
             className="w-full justify-between overflow-hidden bg-white"
           >
             <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
-              차종을 선택해 주세요.
+              {selectedCarLabel ? (
+                <>{selectedCarLabel.label}</>
+              ) : (
+                <>차종을 선택해 주세요.</>
+              )}
             </h2>
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
           </Button>
@@ -86,7 +94,11 @@ export function SelectCar({
           className="w-full justify-between bg-white overflow-hidden"
         >
           <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
-            차종을 선택해 주세요.
+            {selectedCarLabel ? (
+              <>{selectedCarLabel.label}</>
+            ) : (
+              <>차종을 선택해 주세요.</>
+            )}
           </h2>
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>

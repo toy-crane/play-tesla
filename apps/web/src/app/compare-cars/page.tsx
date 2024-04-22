@@ -51,10 +51,15 @@ async function Page({ searchParams }: Props) {
         </h1>
         <ShareButton />
       </div>
-      <SelectCar trims={allTrims} order="primary" />
-      <div className="flex">
-        <Card trim={primary} order="primary" />
-        <Card trim={secondary} order="secondary" />
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <SelectCar trims={allTrims} order="primary" slug={primaryTrim} />
+          <Card trim={primary} order="primary" />
+        </div>
+        <div className="flex-1">
+          <SelectCar trims={allTrims} order="secondary" slug={secondaryTrim} />
+          <Card trim={secondary} order="secondary" />
+        </div>
       </div>
     </div>
   );
