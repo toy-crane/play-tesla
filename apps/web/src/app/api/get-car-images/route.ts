@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { CarView } from "@/constants/image";
 
 export const dynamic = "force-dynamic";
+const supabase = createClient();
 
 interface ImageConfig {
   url: string;
@@ -13,10 +14,22 @@ interface ImageConfig {
 async function fetchWithDelay(imageUrls: ImageConfig[]) {
   for (const config of imageUrls) {
     // eslint-disable-next-line no-await-in-loop -- This is a server-side script
-    await fetch(config.url);
+    const response = await fetch(config.url);
+    if (response.ok) {
+      // eslint-disable-next-line no-await-in-loop -- This is a server-side script
+      const blob = await response.arrayBuffer();
+      // eslint-disable-next-line no-await-in-loop -- This is a server-side script
+      await supabase.storage.from("cars").upload(config.fileName, blob, {
+        contentType: "image/jpeg",
+      });
+    } else {
+      // eslint-disable-next-line no-console -- This is a server-side script
+      console.error(`Failed to fetch image from ${config.url}`);
+    }
+
     // eslint-disable-next-line no-await-in-loop -- This is a server-side script
     await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
+      setTimeout(resolve, 100);
     }); // 1초 대기
   }
 }
@@ -53,7 +66,6 @@ interface Request {
 
 export async function POST(request: NextRequest) {
   const { trim } = (await request.json()) as Request;
-  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("trims")

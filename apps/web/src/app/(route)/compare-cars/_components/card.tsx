@@ -10,6 +10,7 @@ import { CarView } from "@/constants/image";
 // 모든 트림에 대한 인테리어 코드를 가져오지 않음
 const defaultInterior = {
   mx: "$IBC00",
+  m3: "$IPB3",
 } as const;
 
 const getImageUrl = (trim: Trim, option: Option, view: CarView) => {
