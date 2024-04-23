@@ -68,7 +68,7 @@ async function Page({
           <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
         </div>
       </div>
-      <PriceDetail className="mb-8" trim={trimDetail} />
+      <PriceDetail className="mb-8" selectedOption={option} trim={trimDetail} />
       <OptionForm defaultOption={option} trim={trimDetail} />
     </div>
   );
