@@ -2,13 +2,17 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { Trim } from "@/types/data";
 
-function PriceDetail({ className }: { className: string; trim: Trim }) {
+function PriceDetail({ className, trim }: { className: string; trim: Trim }) {
+  const releasePrice = trim.trim_prices?.[0]?.price;
+
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">차량 출고가</span>
-          <span>56,000,000원</span>
+          <span>
+            {releasePrice ? `${releasePrice.toLocaleString()}원` : "가격 미정"}
+          </span>
         </li>
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">차량 옵션 가격</span>
