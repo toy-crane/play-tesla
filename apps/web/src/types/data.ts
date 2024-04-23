@@ -21,6 +21,8 @@ export interface Trim {
       name: string;
       code: string;
       price: number;
+      korean_name: string;
+      color_code: string;
     }[];
     steerings: {
       name: string;

@@ -53,24 +53,30 @@ export type Database = {
       interiors: {
         Row: {
           code: string
+          color_code: string
           created_at: string
           id: string
+          korean_name: string
           model_id: string
           name: string
           price: number
         }
         Insert: {
           code: string
+          color_code: string
           created_at?: string
           id?: string
+          korean_name: string
           model_id?: string
           name: string
           price: number
         }
         Update: {
           code?: string
+          color_code?: string
           created_at?: string
           id?: string
+          korean_name?: string
           model_id?: string
           name?: string
           price?: number

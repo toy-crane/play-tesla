@@ -23,7 +23,7 @@ function OptionForm({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">색상</h2>
         <RadioGroup
@@ -100,7 +100,11 @@ function OptionForm({
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
                 htmlFor={`i${interior.code}`}
               >
-                {interior.name}
+                <div
+                  className={cn(`w-5 h-5 rounded-full`)}
+                  style={{ backgroundColor: interior.color_code }}
+                />
+                {interior.korean_name}
               </Label>
             </div>
           ))}
