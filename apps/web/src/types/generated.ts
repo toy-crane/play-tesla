@@ -174,7 +174,7 @@ export type Database = {
           id: string
           model_id: string
           name: string | null
-          slug: string | null
+          slug: string
         }
         Insert: {
           code: string
@@ -182,7 +182,7 @@ export type Database = {
           id?: string
           model_id: string
           name?: string | null
-          slug?: string | null
+          slug: string
         }
         Update: {
           code?: string
@@ -190,7 +190,7 @@ export type Database = {
           id?: string
           model_id?: string
           name?: string | null
-          slug?: string | null
+          slug?: string
         }
         Relationships: [
           {
