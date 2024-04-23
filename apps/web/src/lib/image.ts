@@ -6,6 +6,7 @@ const defaultInterior = {
   mx: "$IBC00",
   m3: "$IPB3",
   my: "$INPB0",
+  ms: "$IBE00",
 } as const;
 
 const getCarImageUrl = (trim: Trim, option: Option, view: CarView) => {
