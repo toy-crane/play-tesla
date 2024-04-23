@@ -1,44 +1,15 @@
-export interface Trim {
-  code: string;
-  created_at: string;
-  id: string;
-  model_id: string;
-  name: string | null;
-  models: {
-    name: string;
-    code: string;
-    colors: {
-      code: string;
-      created_at: string;
-      id: string;
-      model_id: string;
-      name: string;
-      price: number;
-      color_code: string;
-      korean_name: string;
-    }[];
-    interiors: {
-      name: string;
-      code: string;
-      price: number;
-      korean_name: string;
-      color_code: string;
-    }[];
-    steerings: {
-      name: string;
-      price: number;
-      code: string;
-    }[];
-  } | null;
-  seatings: {
-    seat_count: number;
-    price: number;
-  }[];
-  wheels: {
-    name: string;
-    code: string;
-    price: number;
-  }[];
+import type { Tables } from "./generated";
+
+export interface Trim extends Omit<Tables<"trims">, "created_at" | "id"> {
+  models:
+    | (Omit<Tables<"models">, "created_at" | "id"> & {
+        colors: Tables<"colors">[];
+        interiors: Tables<"interiors">[];
+        steerings: Tables<"steerings">[];
+      })
+    | null;
+  seatings: Tables<"seatings">[];
+  wheels: Tables<"wheels">[];
 }
 
 export interface Option {
