@@ -14,6 +14,8 @@ export interface Trim {
       model_id: string;
       name: string;
       price: number;
+      color_code: string;
+      korean_name: string;
     }[];
     interiors: {
       name: string;

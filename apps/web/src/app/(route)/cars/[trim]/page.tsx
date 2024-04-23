@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { getCarImageUrl } from "@/lib/image";
 import { CarView } from "@/constants/image";
 import { SelectCar } from "./_components/select-car";
+import OptionForm from "./_components/options";
 
 interface PageProps {
   params: { trim: string };
@@ -64,7 +65,7 @@ async function Page({
           <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
         </div>
       </div>
-      {trimDetail.code}
+      <OptionForm defaultOption={option} trim={trimDetail} />
     </div>
   );
 }
