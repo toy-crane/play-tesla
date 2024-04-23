@@ -179,6 +179,38 @@ export type Database = {
           },
         ]
       }
+      trim_prices: {
+        Row: {
+          created_at: string
+          id: string
+          price: number
+          price_set_at: string
+          trim_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          price: number
+          price_set_at: string
+          trim_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          price?: number
+          price_set_at?: string
+          trim_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_trim_prices_trim_id_fkey"
+            columns: ["trim_id"]
+            isOneToOne: false
+            referencedRelation: "trims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trims: {
         Row: {
           code: string

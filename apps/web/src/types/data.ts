@@ -10,6 +10,7 @@ export interface Trim extends Omit<Tables<"trims">, "created_at" | "id"> {
     | null;
   seatings: Tables<"seatings">[];
   wheels: Tables<"wheels">[];
+  trim_prices?: Tables<"trim_prices">[] | null;
 }
 
 export interface Option {
