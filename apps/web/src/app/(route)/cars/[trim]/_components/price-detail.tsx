@@ -1,7 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import type { Trim } from "@/types/data";
 
-function PriceDetail({ className }: { className: string }) {
+function PriceDetail({ className }: { className: string; trim: Trim }) {
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
