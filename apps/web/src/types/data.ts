@@ -36,3 +36,11 @@ export interface Trim {
     price: number;
   }[];
 }
+
+export interface Option {
+  seat: string;
+  wheel: string;
+  color: string;
+  interior: string;
+  steering: string;
+}

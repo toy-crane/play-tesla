@@ -1,8 +1,18 @@
+import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
+import { getCarImageUrl } from "@/lib/image";
+import { CarView } from "@/constants/image";
 import { SelectCar } from "./_components/select-car";
 
 interface PageProps {
   params: { trim: string };
+  searchParams: {
+    seat?: string;
+    wheel?: string;
+    color?: string;
+    interior?: string;
+    steering?: string;
+  };
 }
 
 const CarSelection = async ({ trim }: { trim: string }) => {
@@ -16,11 +26,14 @@ const CarSelection = async ({ trim }: { trim: string }) => {
   return <SelectCar slug={trim} trims={data} />;
 };
 
-async function Page({ params }: PageProps) {
+async function Page({
+  params,
+  searchParams: { seat, interior, wheel, color, steering },
+}: PageProps) {
   const trim = decodeURIComponent(params.trim);
 
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { data: trimDetail, error } = await supabase
     .from("trims")
     .select(
       "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
@@ -32,12 +45,27 @@ async function Page({ params }: PageProps) {
     throw new Error(error.message);
   }
 
+  const option = {
+    seat: seat || String(trimDetail.seatings[0]?.seat_count),
+    wheel: wheel || String(trimDetail.wheels[0]?.code),
+    color: color || String(trimDetail.models?.colors[0]?.code),
+    interior: interior || String(trimDetail.models?.interiors[0]?.code),
+    steering: steering || String(trimDetail.models?.steerings[0]?.code),
+  };
+  const image = getCarImageUrl(trimDetail, option, CarView.FRONT);
+
   return (
     <div>
       <div>
         <CarSelection trim={trim} />
       </div>
-      {data.code}
+      <div className="flex items-center justify-center">
+        <div className="relative aspect-video w-[512px]">
+          <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
+        </div>
+      </div>
+
+      {trimDetail.code}
     </div>
   );
 }
