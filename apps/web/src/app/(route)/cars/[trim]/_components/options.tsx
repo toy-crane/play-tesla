@@ -50,7 +50,7 @@ function OptionForm({
                 />
                 <div className="flex flex-col gap-1">
                   <span>{color.korean_name} </span>
-                  <span className="text-muted-foreground text-xs">
+                  <span className="text-muted-foreground text-xs font-light">
                     {color.price > 0
                       ? `+${color.price.toLocaleString()}원`
                       : `추가 금액 없음`}
@@ -81,7 +81,14 @@ function OptionForm({
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
                 htmlFor={`w${wheel.code}`}
               >
-                {wheel.name}
+                <div className="flex flex-col gap-1">
+                  <span>{wheel.name} </span>
+                  <span className="text-muted-foreground text-xs font-light">
+                    {wheel.price > 0
+                      ? `+${wheel.price.toLocaleString()}원`
+                      : `추가 금액 없음`}
+                  </span>
+                </div>
               </Label>
             </div>
           ))}
@@ -111,7 +118,14 @@ function OptionForm({
                   className={cn(`w-5 h-5 rounded-full`)}
                   style={{ backgroundColor: interior.color_code }}
                 />
-                {interior.korean_name}
+                <div className="flex flex-col gap-1">
+                  <span>{interior.korean_name} </span>
+                  <span className="text-muted-foreground text-xs font-light">
+                    {interior.price > 0
+                      ? `+${interior.price.toLocaleString()}원`
+                      : `추가 금액 없음`}
+                  </span>
+                </div>
               </Label>
             </div>
           ))}
@@ -137,7 +151,18 @@ function OptionForm({
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
                 htmlFor={`s${seating.seat_count}`}
               >
-                {seating.seat_count} 인승
+                {trim.seatings.length === 1 ? (
+                  `${seating.seat_count} 인승`
+                ) : (
+                  <div className="flex flex-col gap-1">
+                    <span>{seating.seat_count} 인승 </span>
+                    <span className="text-muted-foreground text-xs font-light">
+                      {seating.price > 0
+                        ? `+${seating.price.toLocaleString()}원`
+                        : `추가 금액 없음`}
+                    </span>
+                  </div>
+                )}
               </Label>
             </div>
           ))}
@@ -163,7 +188,18 @@ function OptionForm({
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
                 htmlFor={`st${steering.code}`}
               >
-                {steering.name}
+                {trim.models?.steerings.length === 1 ? (
+                  steering.name
+                ) : (
+                  <div className="flex flex-col gap-1">
+                    <span>{steering.name} </span>
+                    <span className="text-muted-foreground text-xs font-light">
+                      {steering.price > 0
+                        ? `+${steering.price.toLocaleString()}원`
+                        : `추가 금액 없음`}
+                    </span>
+                  </div>
+                )}
               </Label>
             </div>
           ))}
