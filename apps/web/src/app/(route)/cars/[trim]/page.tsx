@@ -4,6 +4,7 @@ import { getCarImageUrl } from "@/lib/image";
 import { CarView } from "@/constants/image";
 import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
+import PriceDetail from "./_components/price-detail";
 
 interface PageProps {
   params: { trim: string };
@@ -65,6 +66,7 @@ async function Page({
           <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
         </div>
       </div>
+      <PriceDetail className="mb-8" />
       <OptionForm defaultOption={option} trim={trimDetail} />
     </div>
   );
