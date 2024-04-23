@@ -64,7 +64,6 @@ async function Page({
           <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
         </div>
       </div>
-
       {trimDetail.code}
     </div>
   );
