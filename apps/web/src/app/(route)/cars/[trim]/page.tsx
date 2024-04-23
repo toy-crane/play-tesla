@@ -56,7 +56,7 @@ async function Page({
   const image = getCarImageUrl(trimDetail, option, CarView.FRONT);
 
   return (
-    <div>
+    <div className="pb-28">
       <div>
         <CarSelection trim={trim} />
       </div>
