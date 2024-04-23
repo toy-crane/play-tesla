@@ -48,7 +48,14 @@ function OptionForm({
                   className={cn(`w-5 h-5 rounded-full`)}
                   style={{ backgroundColor: color.color_code }}
                 />
-                {color.korean_name}
+                <div className="flex flex-col gap-1">
+                  <span>{color.korean_name} </span>
+                  <span className="text-muted-foreground text-xs">
+                    {color.price > 0
+                      ? `+${color.price.toLocaleString()}원`
+                      : `추가 금액 없음`}
+                  </span>
+                </div>
               </Label>
             </div>
           ))}
@@ -130,7 +137,7 @@ function OptionForm({
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
                 htmlFor={`s${seating.seat_count}`}
               >
-                {seating.seat_count}인승
+                {seating.seat_count} 인승
               </Label>
             </div>
           ))}
