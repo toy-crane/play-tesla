@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronsUpDownIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMediaQuery } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +29,7 @@ interface Trim {
 export function SelectCar({ trims, slug }: { trims: Trim[]; slug: string }) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -38,7 +39,8 @@ export function SelectCar({ trims, slug }: { trims: Trim[]; slug: string }) {
   }));
 
   const handleSelectedCar = (value: string) => {
-    router.replace(`/cars/${value}`);
+    const region = searchParams.get("region") ?? "1100";
+    router.replace(`/cars/${value}?region=${region}`);
   };
 
   const selectedCarLabel = carLabels.find((car) => car.value === slug);
