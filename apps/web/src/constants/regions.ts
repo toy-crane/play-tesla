@@ -159,5 +159,4 @@ export default [
   { code: "4888", name: "거창군" },
   { code: "4889", name: "합천군" },
   { code: "5000", name: "제주특별자치도" },
-  { code: "9999", name: "한국환경공단" },
 ];
