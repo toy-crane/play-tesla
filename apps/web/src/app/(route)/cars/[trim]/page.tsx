@@ -5,6 +5,7 @@ import { CarView } from "@/constants/image";
 import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
+import { SelectRegion } from "./_components/select-region";
 
 interface PageProps {
   params: { trim: string };
@@ -14,6 +15,7 @@ interface PageProps {
     color?: string;
     interior?: string;
     steering?: string;
+    region?: string;
   };
 }
 
@@ -30,7 +32,7 @@ const CarSelection = async ({ trim }: { trim: string }) => {
 
 async function Page({
   params,
-  searchParams: { seat, interior, wheel, color, steering },
+  searchParams: { seat, interior, wheel, color, steering, region },
 }: PageProps) {
   const trim = decodeURIComponent(params.trim);
 
@@ -60,8 +62,9 @@ async function Page({
 
   return (
     <div className="pb-28">
-      <div>
+      <div className="flex">
         <CarSelection trim={trim} />
+        <SelectRegion code={region ?? "1100"} />
       </div>
       <div className="flex items-center justify-center">
         <div className="relative aspect-video w-[512px]">
