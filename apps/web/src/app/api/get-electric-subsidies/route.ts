@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import { createClient } from "@/utils/supabase/server";
+import regions from "@/constants/regions";
 
 export const dynamic = "force-dynamic";
 
@@ -75,7 +76,14 @@ export async function POST() {
   if (error) {
     throw new Error(error.message);
   }
-  const teslaSubsidies = await fetchTeslaSubsidies("1100");
+  const regionCodes = regions.map((r) => r.code);
+
+  const teslaSubsidiesPromises = regionCodes.map((code) =>
+    fetchTeslaSubsidies(code)
+  );
+  const allResponses = await Promise.all(teslaSubsidiesPromises);
+  const teslaSubsidies = allResponses.flat();
+
   const subsidies = teslaSubsidies.map((subsidy) => ({
     trim_id: trims.find((trim) => trim.slug === subsidy.trim)?.id,
     local_subsidy: subsidy.localSubsidy,
@@ -83,12 +91,12 @@ export async function POST() {
     region_code: subsidy.regionCode,
     year: new Date().getFullYear(),
   }));
-  const { data, error: insertError } = await supabase
+  const { error: insertError } = await supabase
     .from("subsidies")
-    .insert(subsidies);
+    .upsert(subsidies, { onConflict: "year,trim_id,region_code" });
 
   if (insertError) {
     throw new Error(insertError.message);
   }
-  return Response.json({ result: "success", subsidies: data });
+  return Response.json({ result: "success", subsidies });
 }
