@@ -179,6 +179,44 @@ export type Database = {
           },
         ]
       }
+      subsidies: {
+        Row: {
+          created_at: string
+          id: string
+          local_subsidy: number
+          national_subsidy: number
+          region_code: string
+          trim_id: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          local_subsidy: number
+          national_subsidy: number
+          region_code: string
+          trim_id?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          local_subsidy?: number
+          national_subsidy?: number
+          region_code?: string
+          trim_id?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_subsidies_trim_id_fkey"
+            columns: ["trim_id"]
+            isOneToOne: false
+            referencedRelation: "trims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trim_prices: {
         Row: {
           created_at: string

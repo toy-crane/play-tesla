@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import { createClient } from "@/utils/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ interface TeslaSubsidy {
   nationalSubsidy: number;
   localSubsidy: number;
   totalSubsidy: number;
+  regionCode: string;
 }
 
 function getTrim(model: string) {
@@ -53,6 +55,7 @@ async function fetchTeslaSubsidies(regionCode: string) {
         nationalSubsidy: parseInt(nationalSubsidyString.replace(/,/g, ""), 10),
         localSubsidy: parseInt(localSubsidyString.replace(/,/g, ""), 10),
         totalSubsidy: parseInt(totalSubsidyString.replace(/,/g, ""), 10),
+        regionCode,
       });
     }
   });
@@ -61,6 +64,27 @@ async function fetchTeslaSubsidies(regionCode: string) {
 }
 
 export async function POST() {
+  const supabase = createClient({ type: "admin" });
+  const { data: trims, error } = await supabase
+    .from("trims")
+    .select("id, slug")
+    .in("slug", Object.values(modelNames));
+  if (error) {
+    throw new Error(error.message);
+  }
   const teslaSubsidies = await fetchTeslaSubsidies("1100");
-  return Response.json({ result: "success", subsidies: teslaSubsidies });
+  const subsidies = teslaSubsidies.map((subsidy) => ({
+    trim_id: trims.find((trim) => trim.slug === subsidy.trim)?.id,
+    local_subsidy: subsidy.localSubsidy,
+    national_subsidy: subsidy.nationalSubsidy,
+    region_code: subsidy.regionCode,
+    year: new Date().getFullYear(),
+  }));
+  const { data, error: insertError } = await supabase
+    .from("subsidies")
+    .insert(subsidies);
+  if (insertError) {
+    throw new Error(insertError.message);
+  }
+  return Response.json({ result: "success", subsidies: data });
 }
