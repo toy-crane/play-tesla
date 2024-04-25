@@ -34,6 +34,16 @@ function PriceDetail({
     (color?.price || 0) +
     (seat?.price || 0);
 
+  const hasSubsidy = releasePrice && releasePrice < 85000000;
+  const subsidy = hasSubsidy ? trim.subsidies?.[0] : null;
+  const totalSubsidy = subsidy
+    ? subsidy.local_subsidy + subsidy.national_subsidy
+    : 0;
+
+  const purchasePrice = releasePrice
+    ? releasePrice + totalOptionPrice - totalSubsidy
+    : 0;
+
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
@@ -55,15 +65,23 @@ function PriceDetail({
       <ul className="grid gap-3">
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">국고 보조금</span>
-          <span>-3,200,000원</span>
+          <span>
+            {hasSubsidy
+              ? `-${subsidy?.national_subsidy.toLocaleString() ?? 0}원`
+              : "보조금 없음"}
+          </span>
         </li>
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">지자체 보조금</span>
-          <span>-2,400,000원</span>
+          <span>
+            {hasSubsidy
+              ? `-${subsidy?.local_subsidy.toLocaleString() ?? 0}원`
+              : "보조금 없음"}
+          </span>
         </li>
         <li className="flex items-center justify-between font-semibold">
-          <span className="text-muted-foreground">보조금 적용</span>
-          <span>50,000,000원</span>
+          <span className="text-muted-foreground">최종 구매 가격</span>
+          <span>{purchasePrice.toLocaleString()}원</span>
         </li>
       </ul>
     </div>

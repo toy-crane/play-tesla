@@ -40,12 +40,13 @@ async function Page({
   const { data: trimDetail, error } = await supabase
     .from("trims")
     .select(
-      "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*),trim_prices(*)"
+      "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*),trim_prices(*),subsidies(*)"
     )
     .eq("slug", trim)
     .order("slug")
     .order("price_set_at", { referencedTable: "trim_prices", ascending: false })
     .limit(1, { referencedTable: "trim_prices" })
+    .limit(1, { referencedTable: "subsidies" })
     .single();
   if (error) {
     throw new Error(error.message);

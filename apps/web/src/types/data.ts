@@ -11,6 +11,7 @@ export interface Trim extends Omit<Tables<"trims">, "created_at" | "id"> {
   seatings: Tables<"seatings">[];
   wheels: Tables<"wheels">[];
   trim_prices?: Tables<"trim_prices">[] | null;
+  subsidies?: Tables<"subsidies">[] | null;
 }
 
 export interface Option {

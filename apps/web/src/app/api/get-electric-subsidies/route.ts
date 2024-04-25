@@ -52,9 +52,12 @@ async function fetchTeslaSubsidies(regionCode: string) {
       const totalSubsidyString = $(element).find("td").eq(5).text().trim(); // 보조금 (만원)
       teslaSubsidies.push({
         trim,
-        nationalSubsidy: parseInt(nationalSubsidyString.replace(/,/g, ""), 10),
-        localSubsidy: parseInt(localSubsidyString.replace(/,/g, ""), 10),
-        totalSubsidy: parseInt(totalSubsidyString.replace(/,/g, ""), 10),
+        nationalSubsidy:
+          parseInt(nationalSubsidyString.replace(/,/g, ""), 10) * 10000,
+        localSubsidy:
+          parseInt(localSubsidyString.replace(/,/g, ""), 10) * 10000,
+        totalSubsidy:
+          parseInt(totalSubsidyString.replace(/,/g, ""), 10) * 10000,
         regionCode,
       });
     }
