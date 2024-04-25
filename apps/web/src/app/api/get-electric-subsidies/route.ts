@@ -83,6 +83,7 @@ export async function POST() {
   const { data, error: insertError } = await supabase
     .from("subsidies")
     .insert(subsidies);
+
   if (insertError) {
     throw new Error(insertError.message);
   }
