@@ -89,7 +89,12 @@ async function Page({
       </div>
       <div className="flex items-center justify-center">
         <div className="relative aspect-video w-[512px]">
-          <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
+          <Image
+            alt={trimDetail.code}
+            className="object-contain"
+            fill
+            src={image}
+          />
         </div>
       </div>
       <PriceDetail
