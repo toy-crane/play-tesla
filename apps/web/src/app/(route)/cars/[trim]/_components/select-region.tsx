@@ -29,17 +29,20 @@ export function SelectRegion({ code }: { code: string }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const regionLabels = regions.map((region) => ({
-    value: region.code,
+    value: region.name,
     label: region.name,
+    regionCode: region.code,
   }));
 
-  const handleSelectedRegion = (value: string) => {
+  const handleSelectedRegion = (regionCode: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set("region", value);
+    params.set("region", regionCode);
     router.replace(`?${params.toString()}`);
   };
 
-  const selectedRegionLabel = regionLabels.find((car) => car.value === code);
+  const selectedRegionLabel = regionLabels.find(
+    (car) => car.regionCode === code
+  );
 
   if (isDesktop) {
     return (
@@ -110,7 +113,7 @@ export function RegionsSelection({
   onSelectedRegion: onSelectedCar,
 }: {
   setOpen: (open: boolean) => void;
-  regionLabels: { value: string; label: string }[];
+  regionLabels: { value: string; label: string; regionCode: string }[];
   onSelectedRegion: (value: string) => void;
 }) {
   return (
@@ -124,7 +127,7 @@ export function RegionsSelection({
               key={label.value}
               onSelect={(value) => {
                 if (value) {
-                  onSelectedCar(value);
+                  onSelectedCar(label.regionCode);
                 }
                 setOpen(false);
               }}
