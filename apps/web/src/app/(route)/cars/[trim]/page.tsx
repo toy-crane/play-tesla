@@ -6,6 +6,7 @@ import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
+import ShareButton from "./_components/share-button";
 
 interface PageProps {
   params: { trim: string };
@@ -83,9 +84,12 @@ async function Page({
 
   return (
     <div className="pb-28">
-      <div className="flex">
+      <section className="flex gap-2 py-1 mb-2 sticky top-0 z-10 bg-white">
         <CarSelection trim={trim} />
         <SelectRegion code={regionCode} />
+      </section>
+      <div className="flex justify-end">
+        <ShareButton />
       </div>
       <div className="flex items-center justify-center">
         <div className="relative aspect-video w-[512px]">
