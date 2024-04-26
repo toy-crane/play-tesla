@@ -1,14 +1,16 @@
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import type { Trim, Option } from "@/types/data";
+import type { Trim, Option, Subsidy } from "@/types/data";
 
 function PriceDetail({
   className,
   trim,
   selectedOption,
+  subsidy,
 }: {
   className: string;
   trim: Trim;
+  subsidy: Subsidy;
   selectedOption: Option;
 }) {
   const releasePrice = trim.trim_prices?.[0]?.price;
@@ -34,11 +36,15 @@ function PriceDetail({
     (color?.price || 0) +
     (seat?.price || 0);
 
-  const hasSubsidy = releasePrice && releasePrice < 85000000;
-  const subsidy = hasSubsidy ? trim.subsidies?.[0] : null;
-  const totalSubsidy = subsidy
-    ? subsidy.local_subsidy + subsidy.national_subsidy
-    : 0;
+  const subsidyAvailble = releasePrice && releasePrice < 85000000;
+  const subsidyConfirmed = Boolean(subsidy);
+  // 보조금이 확정되지 않았을 수도 있으므로, 분리
+  const applicableSubsidy =
+    subsidyAvailble && subsidyConfirmed ? subsidy : null;
+  const totalSubsidy =
+    subsidyAvailble && applicableSubsidy
+      ? applicableSubsidy.local_subsidy + applicableSubsidy.national_subsidy
+      : 0;
 
   const purchasePrice = releasePrice
     ? releasePrice + totalOptionPrice - totalSubsidy
@@ -66,17 +72,21 @@ function PriceDetail({
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">국고 보조금</span>
           <span>
-            {hasSubsidy
-              ? `-${subsidy?.national_subsidy.toLocaleString() ?? 0}원`
-              : "보조금 없음"}
+            {!subsidyAvailble && "보조금 없음"}
+            {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
+            {applicableSubsidy
+              ? `-${applicableSubsidy.national_subsidy.toLocaleString()}원`
+              : null}
           </span>
         </li>
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">지자체 보조금</span>
           <span>
-            {hasSubsidy
-              ? `-${subsidy?.local_subsidy.toLocaleString() ?? 0}원`
-              : "보조금 없음"}
+            {!subsidyAvailble && "보조금 없음"}
+            {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
+            {applicableSubsidy
+              ? `-${applicableSubsidy.local_subsidy.toLocaleString()}원`
+              : null}
           </span>
         </li>
         <li className="flex items-center justify-between font-semibold">

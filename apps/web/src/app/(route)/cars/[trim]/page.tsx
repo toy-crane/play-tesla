@@ -35,22 +35,42 @@ async function Page({
   searchParams: { seat, interior, wheel, color, steering, region },
 }: PageProps) {
   const trim = decodeURIComponent(params.trim);
+  const regionCode = region ?? "1100";
 
   const supabase = createClient();
-  const { data: trimDetail, error } = await supabase
-    .from("trims")
-    .select(
-      "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*),trim_prices(*),subsidies(*)"
-    )
-    .eq("slug", trim)
-    .order("slug")
-    .order("price_set_at", { referencedTable: "trim_prices", ascending: false })
-    .limit(1, { referencedTable: "trim_prices" })
-    .limit(1, { referencedTable: "subsidies" })
-    .single();
-  if (error) {
-    throw new Error(error.message);
+  const [trimDetailResponse, subsidyResponse] = await Promise.all([
+    supabase
+      .from("trims")
+      .select(
+        "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*),trim_prices(*)"
+      )
+      .eq("slug", trim)
+      .order("slug")
+      .order("price_set_at", {
+        referencedTable: "trim_prices",
+        ascending: false,
+      })
+      .limit(1, { referencedTable: "trim_prices" })
+      .single(),
+    supabase
+      .from("subsidies")
+      .select("*,trims!inner(slug)")
+      .eq("trims.slug", trim)
+      .eq("region_code", regionCode)
+      .eq("year", new Date().getFullYear())
+      .maybeSingle(),
+  ]);
+
+  if (trimDetailResponse.error) {
+    throw new Error(trimDetailResponse.error.message);
   }
+
+  if (subsidyResponse.error) {
+    throw new Error(subsidyResponse.error.message);
+  }
+
+  const trimDetail = trimDetailResponse.data;
+  const subsidy = subsidyResponse.data;
 
   const option = {
     seat: seat || String(trimDetail.seatings[0]?.seat_count),
@@ -65,14 +85,19 @@ async function Page({
     <div className="pb-28">
       <div className="flex">
         <CarSelection trim={trim} />
-        <SelectRegion code={region ?? "1100"} />
+        <SelectRegion code={regionCode} />
       </div>
       <div className="flex items-center justify-center">
         <div className="relative aspect-video w-[512px]">
           <Image alt={trimDetail.code} fill objectFit="contains" src={image} />
         </div>
       </div>
-      <PriceDetail className="mb-8" selectedOption={option} trim={trimDetail} />
+      <PriceDetail
+        className="mb-8"
+        selectedOption={option}
+        subsidy={subsidy}
+        trim={trimDetail}
+      />
       <OptionForm defaultOption={option} trim={trimDetail} />
     </div>
   );
