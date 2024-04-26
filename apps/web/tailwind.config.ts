@@ -13,6 +13,9 @@ const config: Config = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        "price-detail": "1fr 128px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

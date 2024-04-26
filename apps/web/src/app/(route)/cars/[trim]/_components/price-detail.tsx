@@ -53,25 +53,27 @@ function PriceDetail({
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
-        <li className="flex items-center justify-between">
+        <li className="grid items-center grid-cols-price-detail">
           <span className="text-muted-foreground">차량 출고가</span>
-          <span>
+          <span className="text-end">
             {releasePrice ? `${releasePrice.toLocaleString()}원` : "가격 미정"}
           </span>
         </li>
-        <li className="flex items-center justify-between">
+        <li className="grid items-center grid-cols-price-detail">
           <div className="flex flex-col gap-0.5">
             <span className="text-muted-foreground">차량 옵션 가격</span>
             <span className="text-muted-foreground text-xs">{optionNames}</span>
           </div>
-          <span>{totalOptionPrice.toLocaleString()}원</span>
+          <span className="text-end">
+            {totalOptionPrice.toLocaleString()}원
+          </span>
         </li>
       </ul>
       <Separator className="my-2" />
       <ul className="grid gap-3">
-        <li className="flex items-center justify-between">
+        <li className="grid items-center grid-cols-price-detail">
           <span className="text-muted-foreground">국고 보조금</span>
-          <span>
+          <span className="text-end">
             {!subsidyAvailble && "보조금 없음"}
             {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
             {applicableSubsidy
@@ -79,9 +81,9 @@ function PriceDetail({
               : null}
           </span>
         </li>
-        <li className="flex items-center justify-between">
+        <li className="grid items-center grid-cols-price-detail">
           <span className="text-muted-foreground">지자체 보조금</span>
-          <span>
+          <span className="text-end">
             {!subsidyAvailble && "보조금 없음"}
             {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
             {applicableSubsidy
@@ -89,9 +91,9 @@ function PriceDetail({
               : null}
           </span>
         </li>
-        <li className="flex items-center justify-between font-semibold">
+        <li className="grid items-center grid-cols-price-detail font-semibold">
           <span className="text-muted-foreground">최종 구매 가격</span>
-          <span>{purchasePrice.toLocaleString()}원</span>
+          <span className="text-end">{purchasePrice.toLocaleString()}원</span>
         </li>
       </ul>
     </div>
