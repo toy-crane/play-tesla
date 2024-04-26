@@ -10,7 +10,7 @@ const getOption = (trim: Trim, selectedOption: Option) => {
     (s) => s.code === selectedOption.steering
   );
   const wheel = trim.wheels.find((w) => w.code === selectedOption.wheel);
-  const interior = trim.models?.interiors.find(
+  const interior = trim.interiors.find(
     (i) => i.code === selectedOption.interior
   );
   const color = trim.models?.colors.find(

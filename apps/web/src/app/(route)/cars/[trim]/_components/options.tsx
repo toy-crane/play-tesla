@@ -100,7 +100,7 @@ function OptionForm({
           className="flex gap-x-4 flex-wrap gap-y-2"
           value={defaultOption.interior}
         >
-          {trim.models?.interiors.map((interior) => (
+          {trim.interiors.map((interior) => (
             <div key={interior.code}>
               <RadioGroupItem
                 className="peer sr-only"

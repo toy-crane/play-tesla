@@ -43,7 +43,7 @@ async function Page({
     supabase
       .from("trims")
       .select(
-        "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*),trim_prices(*)"
+        "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
       )
       .eq("slug", trim)
       .order("slug")
@@ -77,7 +77,7 @@ async function Page({
     seat: seat || String(trimDetail.seatings[0]?.seat_count),
     wheel: wheel || String(trimDetail.wheels[0]?.code),
     color: color || String(trimDetail.models?.colors[0]?.code),
-    interior: interior || String(trimDetail.models?.interiors[0]?.code),
+    interior: interior || String(trimDetail.interiors[0]?.code),
     steering: steering || String(trimDetail.models?.steerings[0]?.code),
   };
   const image = getCarImageUrl(trimDetail, option, CarView.FRONT);
