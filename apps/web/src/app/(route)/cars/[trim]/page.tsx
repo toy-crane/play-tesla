@@ -88,7 +88,6 @@ async function Page({
     interior: interior || String(trimDetail.interiors[0]?.code),
     steering: steering || String(trimDetail.models?.steerings[0]?.code),
   };
-  const image = getCarImageUrl(trimDetail, option, CarView.FRONT);
 
   return (
     <div className="pb-28">
