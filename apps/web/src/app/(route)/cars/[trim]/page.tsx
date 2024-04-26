@@ -1,7 +1,15 @@
 import Image from "next/image";
+import { Car } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { getCarImageUrl } from "@/lib/image";
 import { CarView } from "@/constants/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
@@ -91,16 +99,31 @@ async function Page({
       <div className="flex justify-end">
         <ShareButton />
       </div>
-      <div className="flex items-center justify-center">
-        <div className="relative aspect-video w-[512px]">
-          <Image
-            alt={trimDetail.code}
-            className="object-contain"
-            fill
-            src={image}
-          />
-        </div>
-      </div>
+      <Carousel
+        className="py-2"
+        opts={{
+          loop: true,
+        }}
+      >
+        <CarouselContent>
+          {Object.values(CarView).map((view) => (
+            <CarouselItem key={view}>
+              <div className="flex items-center justify-center">
+                <div className="relative aspect-video w-[512px]">
+                  <Image
+                    alt={trimDetail.code}
+                    className="object-contain"
+                    fill
+                    src={getCarImageUrl(trimDetail, option, view)}
+                  />
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-1" />
+        <CarouselNext className="right-1" />
+      </Carousel>
       <PriceDetail
         className="mb-8"
         selectedOption={option}
