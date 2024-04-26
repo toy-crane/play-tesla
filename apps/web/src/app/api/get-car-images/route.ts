@@ -30,7 +30,7 @@ async function fetchWithDelay(imageUrls: ImageConfig[]) {
 }
 
 function generateImageURLs(trim: Trim): ImageConfig[] {
-  if (!trim.models?.interiors.length) {
+  if (!trim.interiors.length || trim.models === null) {
     return [];
   }
 
@@ -41,7 +41,7 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
   trim.models.colors.forEach((color) => {
     trim.wheels.forEach((wheel) => {
       Object.values(CarView).forEach((viewType) => {
-        const interiorCode = trim.models?.interiors[0]?.code; // Assuming using the first interior for simplicity
+        const interiorCode = trim.interiors[0]?.code; // Assuming using the first interior for simplicity
         const url = `${baseUrl}?options=${trim.code},${color.code},${wheel.code},${interiorCode}&view=${viewType}&model=${modelCode}`;
         const fileName = `${modelCode}/${trim.code}/${color.code}-${wheel.code}-${interiorCode}-${viewType}`;
         configs.push({
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
   const { data, error } = await supabase
     .from("trims")
     .select(
-      "*, models(name, code, colors(*), interiors(*), steerings(*)),seatings(*),wheels(*)"
+      "*, models(name, code, colors(*), steerings(*)),seatings(*),wheels(*),interiors(*)"
     )
     .eq("code", trim);
   if (error) {
