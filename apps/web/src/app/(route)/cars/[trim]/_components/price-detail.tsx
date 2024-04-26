@@ -2,18 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { Trim, Option, Subsidy } from "@/types/data";
 
-function PriceDetail({
-  className,
-  trim,
-  selectedOption,
-  subsidy,
-}: {
-  className: string;
-  trim: Trim;
-  subsidy: Subsidy | null;
-  selectedOption: Option;
-}) {
-  const releasePrice = trim.trim_prices?.[0]?.price;
+const getOption = (trim: Trim, selectedOption: Option) => {
   const steering = trim.models?.steerings.find(
     (s) => s.code === selectedOption.steering
   );
@@ -35,6 +24,22 @@ function PriceDetail({
     (interior?.price || 0) +
     (color?.price || 0) +
     (seat?.price || 0);
+  return { optionNames, totalOptionPrice };
+};
+
+function PriceDetail({
+  className,
+  trim,
+  selectedOption,
+  subsidy,
+}: {
+  className: string;
+  trim: Trim;
+  subsidy: Subsidy | null;
+  selectedOption: Option;
+}) {
+  const releasePrice = trim.trim_prices?.[0]?.price;
+  const { optionNames, totalOptionPrice } = getOption(trim, selectedOption);
 
   const subsidyAvailble = releasePrice && releasePrice < 85000000;
   const subsidyConfirmed = Boolean(subsidy);
