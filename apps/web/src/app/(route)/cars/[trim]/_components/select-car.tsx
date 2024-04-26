@@ -34,16 +34,18 @@ export function SelectCar({ trims, slug }: { trims: Trim[]; slug: string }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const carLabels = trims.map((trim) => ({
-    value: `${trim.slug}`,
+    value: `${trim.models?.name} ${trim.name}`,
     label: `${trim.models?.name} ${trim.name}`,
+    trim: trim.slug,
   }));
 
-  const handleSelectedCar = (value: string) => {
-    const region = searchParams.get("region") ?? "1100";
-    router.replace(`/cars/${value}?region=${region}`);
+  const handleSelectedCar = (trim: string) => {
+    const region = searchParams.get("region");
+    const url = `/cars/${trim}${region ? `?region=${region}` : ""}`;
+    router.replace(url);
   };
 
-  const selectedCarLabel = carLabels.find((car) => car.value === slug);
+  const selectedCarLabel = carLabels.find((car) => car.trim === slug);
 
   if (isDesktop) {
     return (
@@ -114,7 +116,7 @@ export function CarsSelection({
   onSelectedCar,
 }: {
   setOpen: (open: boolean) => void;
-  carLabels: { value: string; label: string }[];
+  carLabels: { value: string; label: string; trim: string }[];
   onSelectedCar: (value: string) => void;
 }) {
   return (
@@ -128,7 +130,7 @@ export function CarsSelection({
               key={label.value}
               onSelect={(value) => {
                 if (value) {
-                  onSelectedCar(value);
+                  onSelectedCar(label.trim);
                 }
                 setOpen(false);
               }}
