@@ -131,6 +131,7 @@ async function PriceDetail({
             ) : null}
           </span>
         </li>
+        <Separator className="my-2" />
         <li className="grid grid-cols-price-detail font-semibold">
           <span className="text-muted-foreground">최종 구매 가격</span>
           <span className="text-end">{purchasePrice.toLocaleString()}원</span>
