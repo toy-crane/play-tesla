@@ -10,7 +10,7 @@ function PriceDetail({
 }: {
   className: string;
   trim: Trim;
-  subsidy: Subsidy;
+  subsidy: Subsidy | null;
   selectedOption: Option;
 }) {
   const releasePrice = trim.trim_prices?.[0]?.price;
