@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Car } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { getCarImageUrl } from "@/lib/image";
 import { CarView } from "@/constants/image";
