@@ -29,8 +29,8 @@ export function SelectRegion({ code }: { code: string }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const regionLabels = regions.map((region) => ({
-    value: region.name,
-    label: region.name,
+    value: region.province ? `${region.province} ${region.name}` : region.name,
+    label: region.province ? `${region.province} ${region.name}` : region.name,
     regionCode: region.code,
   }));
 
