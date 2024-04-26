@@ -125,7 +125,6 @@ export function CarsSelection({
   const models = carLabels.filter((label) => label.trim.startsWith("models"));
 
   const handleSelectCar = (value: string) => {
-    console.log(value);
     onSelectedCar(value);
     setOpen(false);
   };
