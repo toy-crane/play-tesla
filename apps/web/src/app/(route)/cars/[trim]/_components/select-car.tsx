@@ -119,20 +119,67 @@ export function CarsSelection({
   carLabels: { value: string; label: string; trim: string }[];
   onSelectedCar: (value: string) => void;
 }) {
+  const model3 = carLabels.filter((label) => label.trim.startsWith("model3"));
+  const modely = carLabels.filter((label) => label.trim.startsWith("modely"));
+  const modelx = carLabels.filter((label) => label.trim.startsWith("modelx"));
+  const models = carLabels.filter((label) => label.trim.startsWith("models"));
+
+  const handleSelectCar = (value: string) => {
+    console.log(value);
+    onSelectedCar(value);
+    setOpen(false);
+  };
+
   return (
     <Command>
       <CommandInput placeholder="모델을 선택해 주세요." />
       <CommandList>
         <CommandEmpty>결과가 없습니다.</CommandEmpty>
-        <CommandGroup>
-          {carLabels.map((label) => (
+        <CommandGroup heading="Model S">
+          {models.map((label) => (
             <CommandItem
               key={label.value}
-              onSelect={(value) => {
-                if (value) {
-                  onSelectedCar(label.trim);
-                }
-                setOpen(false);
+              onSelect={() => {
+                handleSelectCar(label.trim);
+              }}
+              value={label.value}
+            >
+              {label.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+        <CommandGroup heading="Model X">
+          {modelx.map((label) => (
+            <CommandItem
+              key={label.value}
+              onSelect={() => {
+                handleSelectCar(label.trim);
+              }}
+              value={label.value}
+            >
+              {label.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+        <CommandGroup heading="Model Y">
+          {modely.map((label) => (
+            <CommandItem
+              key={label.value}
+              onSelect={() => {
+                handleSelectCar(label.trim);
+              }}
+              value={label.value}
+            >
+              {label.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+        <CommandGroup heading="Model 3">
+          {model3.map((label) => (
+            <CommandItem
+              key={label.value}
+              onSelect={() => {
+                handleSelectCar(label.trim);
               }}
               value={label.value}
             >
