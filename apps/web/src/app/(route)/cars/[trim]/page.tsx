@@ -109,10 +109,11 @@ async function Page({
               <div className="flex items-center justify-center">
                 <div className="relative aspect-video w-[512px]">
                   <Image
-                    alt={trimDetail.code}
+                    alt={`${trimDetail.slug} ${view}`}
                     className="object-contain"
                     fill
                     src={getCarImageUrl(trimDetail, option, view)}
+                    title={`${trimDetail.slug} ${view}`}
                   />
                 </div>
               </div>
