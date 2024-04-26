@@ -1,4 +1,4 @@
-export default [
+const regions = [
   { code: "1100", name: "서울특별시" },
   { code: "2600", name: "부산광역시" },
   { code: "2700", name: "대구광역시" },
@@ -160,3 +160,16 @@ export default [
   { code: "4889", name: "합천군", province: "경남" },
   { code: "5000", name: "제주특별자치도" },
 ];
+
+const getRegionCode = (provinceName: string, cityName: string) => {
+  const region = regions.find(
+    (r) => r.name === cityName && (!r.province || r.province === provinceName)
+  );
+  if (!region) {
+    throw new Error(`Region not found: ${cityName}`);
+  }
+  return region.code;
+};
+
+export default regions;
+export { getRegionCode };

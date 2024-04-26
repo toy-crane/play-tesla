@@ -112,6 +112,39 @@ export type Database = {
         }
         Relationships: []
       }
+      region_subsidies: {
+        Row: {
+          created_at: string
+          id: string
+          initial_quota: number
+          intaked_quota: number
+          region_code: string
+          remaining_quota: number
+          shipped_quota: number
+          snapshot_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          initial_quota: number
+          intaked_quota: number
+          region_code: string
+          remaining_quota: number
+          shipped_quota: number
+          snapshot_date: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          initial_quota?: number
+          intaked_quota?: number
+          region_code?: string
+          remaining_quota?: number
+          shipped_quota?: number
+          snapshot_date?: string
+        }
+        Relationships: []
+      }
       seatings: {
         Row: {
           created_at: string
