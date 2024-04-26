@@ -1,3 +1,5 @@
+const DEFAULT_REGION_CODE = "1100";
+
 const regions = [
   { code: "1100", name: "서울특별시" },
   { code: "2600", name: "부산광역시" },
@@ -172,4 +174,4 @@ const getRegionCode = (provinceName: string, cityName: string) => {
 };
 
 export default regions;
-export { getRegionCode };
+export { getRegionCode, DEFAULT_REGION_CODE };
