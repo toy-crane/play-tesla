@@ -19,7 +19,7 @@ function OptionForm({
   const handleParamsChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
     params.set(key, value);
-    router.replace(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   return (
