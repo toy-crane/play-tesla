@@ -51,13 +51,11 @@ async function PriceDetail({
     .select("*")
     .eq("region_code", regionCode)
     .order("snapshot_date", { ascending: false })
-    .maybeSingle();
+    .limit(1)
+    .single();
 
   if (error) {
     throw new Error(error.message);
-  }
-  if (regionSubsidy === null) {
-    throw new Error("Region subsidy not found");
   }
 
   const releasePrice = trim.trim_prices?.[0]?.price;
