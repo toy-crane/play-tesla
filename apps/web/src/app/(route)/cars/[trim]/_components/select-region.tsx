@@ -50,8 +50,9 @@ export function SelectRegion({ code }: { code: string }) {
         <PopoverTrigger asChild>
           <Button
             aria-expanded={open}
-            className="w-full justify-between overflow-hidden bg-white"
+            className="w-full justify-between overflow-hidden bg-white px-2 text-lg"
             role="combobox"
+            size="lg"
             variant="ghost"
           >
             <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
@@ -80,8 +81,9 @@ export function SelectRegion({ code }: { code: string }) {
       <DrawerTrigger asChild>
         <Button
           aria-expanded={open}
-          className="w-full justify-between bg-white overflow-hidden"
+          className="w-full justify-between bg-white overflow-hidden px-2 text-lg"
           role="combobox"
+          size="lg"
           variant="ghost"
         >
           <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
