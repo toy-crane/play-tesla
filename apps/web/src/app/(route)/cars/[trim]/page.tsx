@@ -112,6 +112,7 @@ async function Page({
                     alt={`${trimDetail.slug} ${view}`}
                     className="object-contain"
                     fill
+                    priority
                     src={getCarImageUrl(trimDetail, option, view)}
                     title={`${trimDetail.slug} ${view}`}
                   />
