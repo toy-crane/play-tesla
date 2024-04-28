@@ -4,6 +4,12 @@
 
 @layer base {
   :root {
+    /* component height */
+    --bottom-nav-height: 64px;
+
+    /* z-index */
+    --bottom-nav-z-index: 10;
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
@@ -110,5 +116,17 @@
     grid-column: full;
     display: grid;
     grid-template-columns: inherit;
+  }
+
+  .bottom-cta {
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 0.5rem;
+    left: 0;
+    right: 0;
+    z-index: var(--bottom-nav-z-index);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -14,6 +14,7 @@ import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
 import ShareButton from "./_components/share-button";
+import OrderCTA from "./_components/order-cta";
 
 interface PageProps {
   params: { trim: string };
@@ -89,49 +90,52 @@ async function Page({
   };
 
   return (
-    <div className="pb-28">
-      <section className="flex gap-2 mb-2 sticky top-0 z-10 bg-white">
-        <CarSelection trim={trim} />
-        <SelectRegion code={regionCode} />
-      </section>
-      <div className="flex justify-end">
-        <ShareButton />
-      </div>
-      <Carousel
-        className="py-2"
-        opts={{
-          loop: true,
-        }}
-      >
-        <CarouselContent>
-          {Object.values(CarView).map((view) => (
-            <CarouselItem key={view}>
-              <div className="flex items-center justify-center">
-                <div className="relative aspect-video w-[512px]">
-                  <Image
-                    alt={`${trimDetail.slug} ${view}`}
-                    className="object-contain"
-                    fill
-                    priority
-                    src={getCarImageUrl(trimDetail, option, view)}
-                    title={`${trimDetail.slug} ${view}`}
-                  />
+    <>
+      <div className="pb-28">
+        <section className="flex gap-2 mb-2 sticky top-0 z-10 bg-white">
+          <CarSelection trim={trim} />
+          <SelectRegion code={regionCode} />
+        </section>
+        <div className="flex justify-end">
+          <ShareButton />
+        </div>
+        <Carousel
+          className="py-2"
+          opts={{
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {Object.values(CarView).map((view) => (
+              <CarouselItem key={view}>
+                <div className="flex items-center justify-center">
+                  <div className="relative aspect-video w-[512px]">
+                    <Image
+                      alt={`${trimDetail.slug} ${view}`}
+                      className="object-contain"
+                      fill
+                      priority
+                      src={getCarImageUrl(trimDetail, option, view)}
+                      title={`${trimDetail.slug} ${view}`}
+                    />
+                  </div>
                 </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="left-1" />
-        <CarouselNext className="right-1" />
-      </Carousel>
-      <PriceDetail
-        className="mb-8"
-        selectedOption={option}
-        subsidy={subsidy}
-        trim={trimDetail}
-      />
-      <OptionForm defaultOption={option} trim={trimDetail} />
-    </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-1" />
+          <CarouselNext className="right-1" />
+        </Carousel>
+        <PriceDetail
+          className="mb-8"
+          selectedOption={option}
+          subsidy={subsidy}
+          trim={trimDetail}
+        />
+        <OptionForm defaultOption={option} trim={trimDetail} />
+      </div>
+      <OrderCTA code={trimDetail.models?.code} />
+    </>
   );
 }
 
