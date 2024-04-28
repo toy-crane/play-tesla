@@ -117,7 +117,7 @@ function Card({
       <div>
         <h1>인테리어</h1>
         <RadioGroup value={option.interior}>
-          {trim.models?.interiors.map((interior) => (
+          {trim.interiors.map((interior) => (
             <div className="flex items-center space-x-2" key={interior.code}>
               <RadioGroupItem
                 id={`i${interior.code}`}
