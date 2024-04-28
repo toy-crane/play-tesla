@@ -22,6 +22,10 @@ function OptionForm({
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
+  const orderedColors = trim.models?.colors.sort((a, b) => {
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -30,7 +34,7 @@ function OptionForm({
           className="flex gap-x-4 flex-wrap gap-y-2"
           value={defaultOption.color}
         >
-          {trim.models?.colors.map((color) => (
+          {orderedColors?.map((color) => (
             <div key={color.code}>
               <RadioGroupItem
                 className="peer sr-only"
