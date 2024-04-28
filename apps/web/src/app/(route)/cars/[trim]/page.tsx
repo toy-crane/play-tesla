@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { getCarImageUrl } from "@/lib/image";
 import { CarView } from "@/constants/image";
 import {
@@ -38,6 +39,13 @@ const CarSelection = async ({ trim }: { trim: string }) => {
   }
   return <SelectCar slug={trim} trims={data} />;
 };
+
+export async function generateStaticParams() {
+  const supabase = createBrowserClient();
+  const { error, data: trims } = await supabase.from("trims").select(`slug`);
+  if (error) throw new Error(error.message);
+  return trims.map((trim) => ({ trim: trim.slug }));
+}
 
 async function Page({
   params,
