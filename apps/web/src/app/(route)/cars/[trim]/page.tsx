@@ -91,7 +91,7 @@ async function Page({
 
   return (
     <>
-      <div className="pb-28">
+      <div className="pb-40">
         <section className="flex gap-2 mb-2 sticky top-0 z-10 bg-white">
           <CarSelection trim={trim} />
           <SelectRegion code={regionCode} />
