@@ -4,11 +4,9 @@ import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SelectCar } from "./_components/select-car";
-import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
 import ShareButton from "./_components/share-button";
-import OrderCTA from "./_components/order-cta";
 import CarCarousel from "./_components/car-carousel";
 
 interface PageProps {
@@ -41,34 +39,9 @@ export async function generateStaticParams() {
   return trims.map((trim) => ({ trim: trim.slug }));
 }
 
-async function Page({
-  params,
-  searchParams: { seat, interior, wheel, color, steering, region },
-}: PageProps) {
+function Page({ params, searchParams: { region } }: PageProps) {
   const trimSlug = decodeURIComponent(params.trim);
   const regionCode = region ?? "1100";
-
-  const supabase = createClient();
-  const trimDetailResponse = await supabase
-    .from("trims")
-    .select(
-      "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
-    )
-    .eq("slug", trimSlug)
-    .order("slug")
-    .order("price_set_at", {
-      referencedTable: "trim_prices",
-      ascending: false,
-    })
-    .limit(1, { referencedTable: "trim_prices" })
-    .single();
-
-  if (trimDetailResponse.error) {
-    throw new Error(trimDetailResponse.error.message);
-  }
-
-  const trimDetail = trimDetailResponse.data;
-
 
   return (
     <>
@@ -107,7 +80,7 @@ async function Page({
         </Suspense>
         {/* <OptionForm defaultOption={option} trim={trimDetail} /> */}
       </div>
-      <OrderCTA code={trimDetail.models?.code} />
+      {/* <OrderCTA code={trimDetail.models?.code} /> */}
     </>
   );
 }
