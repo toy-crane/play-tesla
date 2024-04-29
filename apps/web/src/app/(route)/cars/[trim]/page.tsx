@@ -62,9 +62,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
             <SelectRegion code={regionCode} />
           </Suspense>
         </section>
-        <div className="flex justify-end">
-          <ShareButton />
-        </div>
+      
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-2">
