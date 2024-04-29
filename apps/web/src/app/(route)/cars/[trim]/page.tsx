@@ -10,6 +10,7 @@ import { SelectRegion } from "./_components/select-region";
 import ShareButton from "./_components/share-button";
 import CarCarousel from "./_components/car-carousel";
 import OrderCTA from "./_components/order-cta";
+import Options, { OptionSkeleton } from "./_components/options";
 
 interface PageProps {
   params: { trim: string };
@@ -79,32 +80,36 @@ function Page({ params, searchParams: { region } }: PageProps) {
         >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
-        <Suspense
-          fallback={
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between">
-                <Skeleton className="w-1/4 h-6" />
-                <Skeleton className="w-2/4 h-6" />
+        <section className="mb-8">
+          <Suspense
+            fallback={
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between">
+                  <Skeleton className="w-1/4 h-6" />
+                  <Skeleton className="w-2/4 h-6" />
+                </div>
+                <div className="flex justify-between">
+                  <Skeleton className="w-1/4 h-6" />
+                  <Skeleton className="w-2/4 h-6" />
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between">
+                  <Skeleton className="w-1/4 h-6" />
+                  <Skeleton className="w-2/4 h-6" />
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between">
+                  <Skeleton className="w-2/4 h-6" />
+                </div>
               </div>
-              <div className="flex justify-between">
-                <Skeleton className="w-1/4 h-6" />
-                <Skeleton className="w-2/4 h-6" />
-              </div>
-              <Separator className="my-2" />
-              <div className="flex justify-between">
-                <Skeleton className="w-1/4 h-6" />
-                <Skeleton className="w-2/4 h-6" />
-              </div>
-              <Separator className="my-2" />
-              <div className="flex justify-between">
-                <Skeleton className="w-2/4 h-6" />
-              </div>
-            </div>
-          }
-        >
-          <PriceDetail className="mb-8" trimSlug={trimSlug} />
+            }
+          >
+            <PriceDetail trimSlug={trimSlug} />
+          </Suspense>
+        </section>
+        <Suspense fallback={<OptionSkeleton />}>
+          <Options trimSlug={trimSlug} />
         </Suspense>
-        {/* <OptionForm defaultOption={option} trim={trimDetail} /> */}
       </div>
       <OrderCTA code={trimSlug.split("-")[0]} />
     </>

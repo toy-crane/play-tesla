@@ -34,7 +34,7 @@ async function PriceDetail({
   className,
   trimSlug,
 }: {
-  className: string;
+  className?: string;
   trimSlug: string;
 }) {
   const headersList = headers();
