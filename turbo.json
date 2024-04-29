@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
-  "globalEnv": ["NEXT_PUBLIC_*", "SUPABASE_SERVICE_ROLE_KEY"],
+  "globalEnv": ["NEXT_PUBLIC_*", "SUPABASE_SERVICE_ROLE_KEY", "CRON_SECRET"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],

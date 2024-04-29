@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/get-region-subsidies",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

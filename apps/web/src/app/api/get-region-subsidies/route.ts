@@ -7,7 +7,15 @@ export const dynamic = "force-dynamic";
 const SUBSIDY_API_URL =
   "https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do";
 
-export async function POST() {
+export async function GET(request: Request) {
+  if (
+    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return new Response("Hello, Next.js!", {
+      status: 401,
+    });
+  }
+
   const supabase = createClient({ type: "admin" });
   const response = await fetch(SUBSIDY_API_URL, {
     method: "GET",
