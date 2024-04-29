@@ -1,9 +1,12 @@
 import { headers } from "next/headers";
+import { TrendingDown, TrendingUp } from "lucide-react";
+import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { Trim, Option } from "@/types/data";
 import { createClient } from "@/utils/supabase/server";
 import { DEFAULT_REGION_CODE } from "@/constants/regions";
+import { Button } from "@/components/ui/button";
 
 const getOption = (trim: Trim, selectedOption: Option) => {
   const steering = trim.models?.steerings.find(
@@ -69,7 +72,7 @@ async function PriceDetail({
           referencedTable: "trim_prices",
           ascending: false,
         })
-        .limit(1, { referencedTable: "trim_prices" })
+        .limit(2, { referencedTable: "trim_prices" })
         .single(),
     ]);
 
@@ -99,6 +102,7 @@ async function PriceDetail({
   };
 
   const releasePrice = trimDetail.trim_prices[0]?.price;
+  const lastReleasePrice = trimDetail.trim_prices[1]?.price;
   const { optionNames, totalOptionPrice } = getOption(trimDetail, option);
 
   const subsidyAvailble = releasePrice && releasePrice < 85000000;
@@ -115,13 +119,41 @@ async function PriceDetail({
     ? releasePrice + totalOptionPrice - totalSubsidy
     : 0;
 
+  const difference =
+    lastReleasePrice && releasePrice ? releasePrice - lastReleasePrice : 0;
+
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
         <li className="grid grid-cols-price-detail">
           <span className="text-muted-foreground">차량 출고가</span>
           <span className="text-end">
-            {releasePrice ? `${releasePrice.toLocaleString()}원` : "가격 미정"}
+            {releasePrice ? (
+              <div className="flex flex-col">
+                <span>{releasePrice.toLocaleString()}원</span>
+                <span className="text-xs text-muted-foreground">
+                  지난 가격 대비
+                </span>
+                <span className="text-xs text-muted-foreground flex items-center justify-end">
+                  {Math.abs(difference).toLocaleString()}원{" "}
+                  <TrendingDown
+                    className={cn(difference > 0 && "hidden", "w-5 h-5 ml-1")}
+                    color="#007C32"
+                  />
+                  <TrendingUp
+                    className={cn(difference < 0 && "hidden", "w-5 h-5 ml-1")}
+                    color="#D91400"
+                  />
+                </span>
+                <Button asChild className="justify-self-end h-6 mt-1" size="sm">
+                  <Link href={`/prices/${trimDetail.slug}`}>
+                    가격 변동 확인하기
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              "가격 미정"
+            )}
           </span>
         </li>
         <li className="grid grid-cols-price-detail">
