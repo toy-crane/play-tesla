@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { SelectCar } from "./_components/select-car";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
-import ShareButton from "./_components/share-button";
 import CarCarousel from "./_components/car-carousel";
 import OrderCTA from "./_components/order-cta";
 import Options, { OptionSkeleton } from "./_components/options";
@@ -62,7 +61,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
             <SelectRegion code={regionCode} />
           </Suspense>
         </section>
-      
+
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-2">
