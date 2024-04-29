@@ -9,6 +9,7 @@ import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
 import ShareButton from "./_components/share-button";
 import CarCarousel from "./_components/car-carousel";
+import OrderCTA from "./_components/order-cta";
 
 interface PageProps {
   params: { trim: string };
@@ -105,7 +106,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
         </Suspense>
         {/* <OptionForm defaultOption={option} trim={trimDetail} /> */}
       </div>
-      {/* <OrderCTA code={trimDetail.models?.code} /> */}
+      <OrderCTA code={trimSlug.split("-")[0]} />
     </>
   );
 }
