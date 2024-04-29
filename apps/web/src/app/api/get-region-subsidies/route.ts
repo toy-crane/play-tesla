@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { getRegionCode } from "@/constants/regions";
 import { createClient } from "@/utils/supabase/server";
+import { alertDiscord } from "@/lib/discord";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
   if (
     request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
   ) {
-    return new Response("Hello, Next.js!", {
+    return new Response("Unauthorized", {
       status: 401,
     });
   }
@@ -93,6 +94,11 @@ export async function GET(request: Request) {
   if (error) {
     throw new Error(error.message);
   }
+
+  await alertDiscord(
+    "https://discord.com/api/webhooks/1234413370711736340/YMCJNwpQFSFfL5zFh5E3yrA31iR53dVsqZjtM24YrGRMBHfJZ9ThecuVlbLnV33XGEXS",
+    "Region subsidies updated! 🚀"
+  );
 
   return Response.json({ result: "success", subsidies });
 }
