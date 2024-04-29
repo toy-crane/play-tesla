@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
@@ -94,15 +95,25 @@ async function Page({
     <>
       <div className="pb-40">
         <section className="flex gap-2 mb-2 sticky top-0 z-10 bg-white">
-          <CarSelection trim={trimSlug} />
-          <SelectRegion code={regionCode} />
+          <Suspense
+            fallback={
+              <>
+                <Skeleton className="h-[44px] w-full" />
+                <Skeleton className="h-[44px] w-full" />
+              </>
+            }
+          >
+            <CarSelection trim={trimSlug} />
+            <SelectRegion code={regionCode} />
+          </Suspense>
         </section>
+
         <div className="flex justify-end">
           <ShareButton />
         </div>
         <Suspense
           fallback={
-            <div className="h-[192px] w-full flex items-center justify-center">
+            <div className="h-[192.94px] w-full flex items-center justify-center">
               <Loader2
                 className="h-5 w-5 animate-spin"
                 color="#71717A"
