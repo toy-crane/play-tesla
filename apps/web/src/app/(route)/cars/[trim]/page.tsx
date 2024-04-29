@@ -64,7 +64,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
         </div>
         <Suspense
           fallback={
-            <div className="h-[192.94px] w-full flex items-center justify-center">
+            <div className="h-[192.94px] w-full flex items-center justify-center py-2">
               <Loader2
                 className="h-5 w-5 animate-spin"
                 color="#71717A"
@@ -75,7 +75,24 @@ function Page({ params, searchParams: { region } }: PageProps) {
         >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
-        <Suspense>
+        <Suspense
+          fallback={
+            <div className="flex flex-col gap-3">
+              <div className="flex justify-between">
+                <Skeleton className="w-1/4 h-6" />
+                <Skeleton className="w-2/4 h-6" />
+              </div>
+              <div className="flex justify-between">
+                <Skeleton className="w-1/4 h-6" />
+                <Skeleton className="w-2/4 h-6" />
+              </div>
+              <div className="flex justify-between">
+                <Skeleton className="w-1/4 h-6" />
+                <Skeleton className="w-2/4 h-6" />
+              </div>
+            </div>
+          }
+        >
           <PriceDetail className="mb-8" trimSlug={trimSlug} />
         </Suspense>
         {/* <OptionForm defaultOption={option} trim={trimDetail} /> */}
