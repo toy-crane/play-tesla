@@ -6,6 +6,7 @@ import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
 import ShareButton from "./_components/share-button";
 import OrderCTA from "./_components/order-cta";
+import CarCarousel from "./_components/car-carousel";
 
 interface PageProps {
   params: { trim: string };
@@ -41,7 +42,7 @@ async function Page({
   params,
   searchParams: { seat, interior, wheel, color, steering, region },
 }: PageProps) {
-  const trim = decodeURIComponent(params.trim);
+  const trimSlug = decodeURIComponent(params.trim);
   const regionCode = region ?? "1100";
 
   const supabase = createClient();
@@ -51,7 +52,7 @@ async function Page({
       .select(
         "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
       )
-      .eq("slug", trim)
+      .eq("slug", trimSlug)
       .order("slug")
       .order("price_set_at", {
         referencedTable: "trim_prices",
@@ -62,7 +63,7 @@ async function Page({
     supabase
       .from("subsidies")
       .select("*,trims!inner(slug)")
-      .eq("trims.slug", trim)
+      .eq("trims.slug", trimSlug)
       .eq("region_code", regionCode)
       .eq("year", new Date().getFullYear())
       .maybeSingle(),
@@ -91,39 +92,13 @@ async function Page({
     <>
       <div className="pb-40">
         <section className="flex gap-2 mb-2 sticky top-0 z-10 bg-white">
-          <CarSelection trim={trim} />
+          <CarSelection trim={trimSlug} />
           <SelectRegion code={regionCode} />
         </section>
         <div className="flex justify-end">
           <ShareButton />
         </div>
-        {/* <Carousel
-          className="py-2"
-          opts={{
-            loop: true,
-          }}
-        >
-          <CarouselContent>
-            {Object.values(CarView).map((view) => (
-              <CarouselItem key={view}>
-                <div className="flex items-center justify-center">
-                  <div className="relative aspect-video w-[512px]">
-                    <Image
-                      alt={`${trimDetail.slug} ${view}`}
-                      className="object-contain"
-                      fill
-                      priority
-                      src={getCarImageUrl(trimDetail, option, view)}
-                      title={`${trimDetail.slug} ${view}`}
-                    />
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-1" />
-          <CarouselNext className="right-1" />
-        </Carousel> */}
+        <CarCarousel trimSlug={trimSlug} />
         <PriceDetail
           className="mb-8"
           selectedOption={option}
