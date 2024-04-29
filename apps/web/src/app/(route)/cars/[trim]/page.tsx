@@ -49,47 +49,26 @@ async function Page({
   const regionCode = region ?? "1100";
 
   const supabase = createClient();
-  const [trimDetailResponse, subsidyResponse] = await Promise.all([
-    supabase
-      .from("trims")
-      .select(
-        "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
-      )
-      .eq("slug", trimSlug)
-      .order("slug")
-      .order("price_set_at", {
-        referencedTable: "trim_prices",
-        ascending: false,
-      })
-      .limit(1, { referencedTable: "trim_prices" })
-      .single(),
-    supabase
-      .from("subsidies")
-      .select("*,trims!inner(slug)")
-      .eq("trims.slug", trimSlug)
-      .eq("region_code", regionCode)
-      .eq("year", new Date().getFullYear())
-      .maybeSingle(),
-  ]);
+  const trimDetailResponse = await supabase
+    .from("trims")
+    .select(
+      "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
+    )
+    .eq("slug", trimSlug)
+    .order("slug")
+    .order("price_set_at", {
+      referencedTable: "trim_prices",
+      ascending: false,
+    })
+    .limit(1, { referencedTable: "trim_prices" })
+    .single();
 
   if (trimDetailResponse.error) {
     throw new Error(trimDetailResponse.error.message);
   }
 
-  if (subsidyResponse.error) {
-    throw new Error(subsidyResponse.error.message);
-  }
-
   const trimDetail = trimDetailResponse.data;
-  const subsidy = subsidyResponse.data;
 
-  const option = {
-    seat: seat || String(trimDetail.seatings[0]?.seat_count),
-    wheel: wheel || String(trimDetail.wheels[0]?.code),
-    color: color || String(trimDetail.models?.colors[0]?.code),
-    interior: interior || String(trimDetail.interiors[0]?.code),
-    steering: steering || String(trimDetail.models?.steerings[0]?.code),
-  };
 
   return (
     <>
@@ -107,7 +86,6 @@ async function Page({
             <SelectRegion code={regionCode} />
           </Suspense>
         </section>
-
         <div className="flex justify-end">
           <ShareButton />
         </div>
@@ -124,13 +102,10 @@ async function Page({
         >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
-        <PriceDetail
-          className="mb-8"
-          selectedOption={option}
-          subsidy={subsidy}
-          trim={trimDetail}
-        />
-        <OptionForm defaultOption={option} trim={trimDetail} />
+        <Suspense>
+          <PriceDetail className="mb-8" trimSlug={trimSlug} />
+        </Suspense>
+        {/* <OptionForm defaultOption={option} trim={trimDetail} /> */}
       </div>
       <OrderCTA code={trimDetail.models?.code} />
     </>

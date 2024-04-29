@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import type { Trim, Option, Subsidy } from "@/types/data";
+import type { Trim, Option } from "@/types/data";
 import { createClient } from "@/utils/supabase/server";
 import { DEFAULT_REGION_CODE } from "@/constants/regions";
 
@@ -32,14 +32,10 @@ const getOption = (trim: Trim, selectedOption: Option) => {
 
 async function PriceDetail({
   className,
-  trim,
-  selectedOption,
-  subsidy,
+  trimSlug,
 }: {
   className: string;
-  trim: Trim;
-  subsidy: Subsidy | null;
-  selectedOption: Option;
+  trimSlug: string;
 }) {
   const headersList = headers();
   const supabase = createClient();
@@ -53,13 +49,45 @@ async function PriceDetail({
     .order("snapshot_date", { ascending: false })
     .limit(1)
     .single();
+  const { data: subsidy, error: subsidyError } = await supabase
+    .from("subsidies")
+    .select("*,trims!inner(slug)")
+    .eq("trims.slug", trimSlug)
+    .eq("region_code", regionCode)
+    .eq("year", new Date().getFullYear())
+    .maybeSingle();
 
-  if (error) {
-    throw new Error(error.message);
+  const { data: trimDetail, error: trimDetailError } = await supabase
+    .from("trims")
+    .select(
+      "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
+    )
+    .eq("slug", trimSlug)
+    .order("slug")
+    .order("price_set_at", {
+      referencedTable: "trim_prices",
+      ascending: false,
+    })
+    .limit(1, { referencedTable: "trim_prices" })
+    .single();
+
+  if (error || subsidyError || trimDetailError) {
+    throw new Error(
+      error?.message || subsidyError?.message || trimDetailError?.message
+    );
   }
 
-  const releasePrice = trim.trim_prices?.[0]?.price;
-  const { optionNames, totalOptionPrice } = getOption(trim, selectedOption);
+  const option = {
+    seat: params.get("seat") || String(trimDetail.seatings[0]?.seat_count),
+    wheel: params.get("wheel") || String(trimDetail.wheels[0]?.code),
+    color: params.get("color") || String(trimDetail.models?.colors[0]?.code),
+    interior: params.get("interior") || String(trimDetail.interiors[0]?.code),
+    steering:
+      params.get("steering") || String(trimDetail.models?.steerings[0]?.code),
+  };
+
+  const releasePrice = trimDetail.trim_prices[0]?.price;
+  const { optionNames, totalOptionPrice } = getOption(trimDetail, option);
 
   const subsidyAvailble = releasePrice && releasePrice < 85000000;
   const subsidyConfirmed = Boolean(subsidy);
