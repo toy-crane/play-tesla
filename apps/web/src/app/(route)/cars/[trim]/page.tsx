@@ -107,7 +107,7 @@ async function Page({
         <div className="flex justify-end">
           <ShareButton />
         </div>
-        <Carousel
+        {/* <Carousel
           className="py-2"
           opts={{
             loop: true,
@@ -133,7 +133,7 @@ async function Page({
           </CarouselContent>
           <CarouselPrevious className="left-1" />
           <CarouselNext className="right-1" />
-        </Carousel>
+        </Carousel> */}
         <PriceDetail
           className="mb-8"
           selectedOption={option}
