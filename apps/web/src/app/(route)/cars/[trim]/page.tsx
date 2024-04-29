@@ -1,15 +1,5 @@
-import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
-import { getCarImageUrl } from "@/lib/image";
-import { CarView } from "@/constants/image";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { SelectCar } from "./_components/select-car";
 import OptionForm from "./_components/options";
 import PriceDetail from "./_components/price-detail";
