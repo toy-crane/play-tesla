@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import { SelectCar } from "./_components/select-car";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
@@ -86,8 +87,13 @@ function Page({ params, searchParams: { region } }: PageProps) {
                 <Skeleton className="w-1/4 h-6" />
                 <Skeleton className="w-2/4 h-6" />
               </div>
+              <Separator className="my-2" />
               <div className="flex justify-between">
                 <Skeleton className="w-1/4 h-6" />
+                <Skeleton className="w-2/4 h-6" />
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between">
                 <Skeleton className="w-2/4 h-6" />
               </div>
             </div>

@@ -42,40 +42,52 @@ async function PriceDetail({
   const queryParams = headersList.get("x-query-params") || "";
   const params = new URLSearchParams(queryParams);
   const regionCode = params.get("region") || DEFAULT_REGION_CODE;
-  const { data: regionSubsidy, error } = await supabase
-    .from("region_subsidies")
-    .select("*")
-    .eq("region_code", regionCode)
-    .order("snapshot_date", { ascending: false })
-    .limit(1)
-    .single();
-  const { data: subsidy, error: subsidyError } = await supabase
-    .from("subsidies")
-    .select("*,trims!inner(slug)")
-    .eq("trims.slug", trimSlug)
-    .eq("region_code", regionCode)
-    .eq("year", new Date().getFullYear())
-    .maybeSingle();
+  const [regionSubsidyResponse, subsidyResponse, trimDetailResponse] =
+    await Promise.all([
+      supabase
+        .from("region_subsidies")
+        .select("*")
+        .eq("region_code", regionCode)
+        .order("snapshot_date", { ascending: false })
+        .limit(1)
+        .single(),
+      supabase
+        .from("subsidies")
+        .select("*,trims!inner(slug)")
+        .eq("trims.slug", trimSlug)
+        .eq("region_code", regionCode)
+        .eq("year", new Date().getFullYear())
+        .maybeSingle(),
+      supabase
+        .from("trims")
+        .select(
+          "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
+        )
+        .eq("slug", trimSlug)
+        .order("slug")
+        .order("price_set_at", {
+          referencedTable: "trim_prices",
+          ascending: false,
+        })
+        .limit(1, { referencedTable: "trim_prices" })
+        .single(),
+    ]);
 
-  const { data: trimDetail, error: trimDetailError } = await supabase
-    .from("trims")
-    .select(
-      "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
-    )
-    .eq("slug", trimSlug)
-    .order("slug")
-    .order("price_set_at", {
-      referencedTable: "trim_prices",
-      ascending: false,
-    })
-    .limit(1, { referencedTable: "trim_prices" })
-    .single();
-
-  if (error || subsidyError || trimDetailError) {
+  if (
+    regionSubsidyResponse.error ||
+    subsidyResponse.error ||
+    trimDetailResponse.error
+  ) {
     throw new Error(
-      error?.message || subsidyError?.message || trimDetailError?.message
+      regionSubsidyResponse.error?.message ||
+        subsidyResponse.error?.message ||
+        trimDetailResponse.error?.message
     );
   }
+
+  const trimDetail = trimDetailResponse.data;
+  const subsidy = subsidyResponse.data;
+  const regionSubsidy = regionSubsidyResponse.data;
 
   const option = {
     seat: params.get("seat") || String(trimDetail.seatings[0]?.seat_count),
