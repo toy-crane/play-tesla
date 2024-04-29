@@ -9,9 +9,9 @@ const defaultInterior = {
   $MTY25: "$INPB0",
   $MTY24: "$INPB0",
   $MTY23: "$INPB0",
-  $MTY351: "$IPB3",
-  $MTY352: "$IPB3",
-  $MTY353: "$IPB4",
+  $MT351: "$IPB3",
+  $MT352: "$IPB3",
+  $MT353: "$IPB4",
 } as const;
 
 const getDefaultInteriorCode = (trimCode: string) => {

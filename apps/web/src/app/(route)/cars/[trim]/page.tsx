@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { SelectCar } from "./_components/select-car";
@@ -98,7 +99,9 @@ async function Page({
         <div className="flex justify-end">
           <ShareButton />
         </div>
-        <CarCarousel trimSlug={trimSlug} />
+        <Suspense fallback={<div>Hello</div>}>
+          <CarCarousel trimSlug={trimSlug} />
+        </Suspense>
         <PriceDetail
           className="mb-8"
           selectedOption={option}
