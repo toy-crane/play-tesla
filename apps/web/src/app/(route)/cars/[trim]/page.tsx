@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { SelectCar } from "./_components/select-car";
@@ -99,7 +100,17 @@ async function Page({
         <div className="flex justify-end">
           <ShareButton />
         </div>
-        <Suspense fallback={<div>Hello</div>}>
+        <Suspense
+          fallback={
+            <div className="h-[192px] w-full flex items-center justify-center">
+              <Loader2
+                className="h-5 w-5 animate-spin"
+                color="#71717A"
+                size={24}
+              />
+            </div>
+          }
+        >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
         <PriceDetail
