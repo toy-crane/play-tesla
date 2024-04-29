@@ -132,7 +132,7 @@ async function PriceDetail({
               <div className="flex flex-col">
                 <span>{releasePrice.toLocaleString()}원</span>
                 <span className="text-xs text-muted-foreground">
-                  지난 가격 대비
+                  지난 출고 가격 대비
                 </span>
                 <span className="text-xs text-muted-foreground flex items-center justify-end">
                   {Math.abs(difference).toLocaleString()}원{" "}
