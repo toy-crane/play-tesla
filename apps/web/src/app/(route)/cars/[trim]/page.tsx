@@ -1,9 +1,11 @@
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import type { Metadata, ResolvingMetadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import regions from "@/constants/regions";
 import { SelectCar } from "./_components/select-car";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
@@ -20,6 +22,50 @@ interface PageProps {
     interior?: string;
     steering?: string;
     region?: string;
+  };
+}
+
+export async function generateMetadata(
+  { params, searchParams }: PageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const supabase = createClient();
+  const { data: trimDetail, error } = await supabase
+    .from("trims")
+    .select("*, models(*)")
+    .eq("slug", params.trim)
+    .single();
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  const modelName = trimDetail.models?.name;
+  const trimName = trimDetail.name;
+  const regionCode = searchParams.region ?? "1100";
+  const regionName = regions.find((region) => region.code === regionCode)?.name;
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+  const title = `${regionName} 테슬라 ${modelName} ${trimName} 전기차 보조금 확인하기`;
+  const description = `${regionName}의 ${modelName} ${trimName} 전기차 보조금에 관한 모든 정보를 확인하세요. 잔여 보조금 수량, 옵션 가격, 최종 구매 가격을 한 눈에 확인하실 수 있습니다.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+    twitter: {
+      title,
+      description,
+      images: [...previousImages],
+    },
+    alternates: {
+      canonical: `/cars/${params.trim}`,
+    },
   };
 }
 
