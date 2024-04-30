@@ -4,7 +4,7 @@ export type Subsidy = Tables<"subsidies">;
 
 export interface Trim extends Omit<Tables<"trims">, "created_at" | "id"> {
   models:
-    | (Omit<Tables<"models">, "created_at" | "id"> & {
+    | (Omit<Tables<"models">, "created_at" | "id" | "slug"> & {
         colors: Tables<"colors">[];
         steerings: Tables<"steerings">[];
       })

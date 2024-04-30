@@ -149,6 +149,7 @@ async function PriceDetail({
                   asChild
                   className="justify-self-end h-6 mt-1 text-xs"
                   size="sm"
+                  variant="outline"
                 >
                   <Link href={`/prices/${trimDetail.slug.split("-")[0]}`}>
                     가격 변동 확인하기
