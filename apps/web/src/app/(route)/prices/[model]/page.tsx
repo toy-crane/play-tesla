@@ -53,7 +53,7 @@ async function Page({
   const { data, error } = await supabase
     .from("trim_prices")
     .select("*, trims!inner(slug)")
-    .like("trims.slug", `${model}-%`)
+    .like("trims.slug", `${model}%`)
     .order("price_set_at", {
       ascending: true,
     });
@@ -65,13 +65,18 @@ async function Page({
     notFound();
   }
 
+  const trimModels = [
+    ...new Set(data.map((car) => car.trims.slug.replace("-", " "))),
+  ];
+  const chartData = transformCarData(data);
+
   return (
     <div>
       <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.1] hidden md:block mt-4">
         테슬라 가격 변화 추이
       </h1>
       <SelectModel className="my-4" modelSlug={model} />
-      <PriceChart data={transformCarData(data)} />
+      <PriceChart categories={trimModels} data={chartData} />
     </div>
   );
 }
