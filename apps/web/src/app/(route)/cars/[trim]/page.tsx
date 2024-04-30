@@ -43,7 +43,10 @@ export async function generateMetadata(
   const modelName = trimDetail.models?.name;
   const trimName = trimDetail.name;
   const regionCode = searchParams.region ?? "1100";
-  const regionName = regions.find((region) => region.code === regionCode)?.name;
+  const region = regions.find((r) => r.code === regionCode);
+  const regionName = region?.province
+    ? `${region.province} ${region.name}`
+    : region?.name;
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
@@ -64,7 +67,7 @@ export async function generateMetadata(
       images: [...previousImages],
     },
     alternates: {
-      canonical: `/cars/${params.trim}`,
+      canonical: `/cars/${params.trim}?region=${regionCode}`,
     },
   };
 }
