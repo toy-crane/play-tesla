@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import type { Tables } from "@/types/generated";
+import { Button } from "@/components/ui/button";
 import { PriceChart } from "./_components/price-chart";
 import SelectModel from "./_components/select-model";
 import NoticeCTA from "./_components/notice-cta";
@@ -93,7 +95,7 @@ async function Page({
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trim_prices")
-    .select("*, trims!inner(slug)")
+    .select("*, trims!inner(slug, models(name))")
     .like("trims.slug", `${model}%`)
     .order("price_set_at", {
       ascending: true,
@@ -110,6 +112,8 @@ async function Page({
     ...new Set(data.map((car) => car.trims.slug.replace("-", " "))),
   ];
   const chartData = transformCarData(data);
+  const trimName = data[0]?.trims?.slug;
+  const modelName = data[0]?.trims?.models?.name;
 
   return (
     <>
@@ -118,9 +122,13 @@ async function Page({
           테슬라 가격 변화 추이
         </h1>
       </div>
-
       <SelectModel className="my-4" modelSlug={model} />
       <PriceChart categories={trimModels} data={chartData} />
+      <div className="flex justify-end mt-4">
+        <Button variant="outline">
+          <Link href={`/cars/${trimName}`}>{modelName} 보조금 조회하기</Link>
+        </Button>
+      </div>
       <NoticeCTA />
     </>
   );
