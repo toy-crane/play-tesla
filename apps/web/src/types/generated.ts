@@ -57,9 +57,9 @@ export type Database = {
           created_at: string
           id: string
           korean_name: string
-          model_id: string
           name: string
           price: number
+          trim_id: string | null
         }
         Insert: {
           code: string
@@ -67,9 +67,9 @@ export type Database = {
           created_at?: string
           id?: string
           korean_name: string
-          model_id?: string
           name: string
           price: number
+          trim_id?: string | null
         }
         Update: {
           code?: string
@@ -77,16 +77,16 @@ export type Database = {
           created_at?: string
           id?: string
           korean_name?: string
-          model_id?: string
           name?: string
           price?: number
+          trim_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_interiors_model_id_fkey"
-            columns: ["model_id"]
+            foreignKeyName: "interiors_trim_id_fkey"
+            columns: ["trim_id"]
             isOneToOne: false
-            referencedRelation: "models"
+            referencedRelation: "trims"
             referencedColumns: ["id"]
           },
         ]
@@ -97,18 +97,21 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          slug: string
         }
         Insert: {
           code: string
           created_at?: string
           id?: string
           name: string
+          slug: string
         }
         Update: {
           code?: string
           created_at?: string
           id?: string
           name?: string
+          slug?: string
         }
         Relationships: []
       }

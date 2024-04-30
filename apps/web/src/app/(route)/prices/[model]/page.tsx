@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata, ResolvingMetadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import type { Tables } from "@/types/generated";
 import { PriceChart } from "./_components/price-chart";
@@ -13,6 +14,31 @@ type CarPrice = Tables<"trim_prices"> & {
 export interface PriceChartData {
   priceSetAt: string;
   [modelSlug: string]: number | string; // priceSetAt은 string이므로 number 또는 string 타입을 받을 수 있도록 설정
+}
+
+export async function generateMetadata(
+  { params }: { params: { model: string } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("models")
+    .select("*")
+    .eq("slug", params.model);
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: "hello",
+    openGraph: {
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+  };
 }
 
 const transformCarData = (inputData: CarPrice[]): PriceChartData[] => {
