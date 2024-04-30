@@ -49,20 +49,25 @@ export function PriceChart({
   };
 
   return (
-    <LineChart
-      autoMinValue
-      categories={categories}
-      className="h-80"
-      colors={["blue-700", "fuchsia-700", "cyan-700"]}
-      connectNulls
-      customTooltip={customTooltip}
-      data={data}
-      index="priceSetAt"
-      onValueChange={(value) => {
-        // eslint-disable-next-line no-console -- for debugging
-        console.log(value);
-      }}
-      valueFormatter={dataFormatter}
-    />
+    <div className="relative">
+      <LineChart
+        autoMinValue
+        categories={categories}
+        className="h-80"
+        colors={["blue-700", "fuchsia-700", "cyan-700"]}
+        connectNulls
+        customTooltip={customTooltip}
+        data={data}
+        index="priceSetAt"
+        onValueChange={(value) => {
+          // eslint-disable-next-line no-console -- for debugging
+          console.log(value);
+        }}
+        valueFormatter={dataFormatter}
+      />
+      <span className="absolute bottom-9 right-6 z-[-10] font-semibold text-primary">
+        playtesla.xyz
+      </span>
+    </div>
   );
 }
