@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import type { Tables } from "@/types/generated";
 import { PriceChart } from "./_components/price-chart";
 import SelectModel from "./_components/select-model";
+import NoticeCTA from "./_components/notice-cta";
 
 type CarPrice = Tables<"trim_prices"> & {
   trims: {
@@ -111,13 +112,17 @@ async function Page({
   const chartData = transformCarData(data);
 
   return (
-    <div>
-      <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:leading-[1.1] hidden md:block mt-4">
-        테슬라 가격 변화 추이
-      </h1>
+    <>
+      <div className="flex justify-between">
+        <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] mt-4">
+          테슬라 가격 변화 추이
+        </h1>
+      </div>
+
       <SelectModel className="my-4" modelSlug={model} />
       <PriceChart categories={trimModels} data={chartData} />
-    </div>
+      <NoticeCTA />
+    </>
   );
 }
 
