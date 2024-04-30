@@ -65,7 +65,7 @@ export function PriceChart({
         }}
         valueFormatter={dataFormatter}
       />
-      <span className="absolute bottom-9 right-6 z-[-10] font-semibold text-muted-foreground">
+      <span className="absolute bottom-10 right-6 z-[-10] font-semibold text-sm">
         playtesla.xyz
       </span>
     </div>
