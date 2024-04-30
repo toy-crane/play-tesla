@@ -15,6 +15,10 @@ export function PriceChart({ data }: { data: PriceChartData[] }) {
       data={data}
       index="priceSetAt"
       minValue={50000000}
+      onValueChange={(value) => {
+        // eslint-disable-next-line no-console -- for debugging
+        console.log(value);
+      }}
       valueFormatter={dataFormatter}
       yAxisWidth={96}
     />
