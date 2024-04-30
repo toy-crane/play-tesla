@@ -39,7 +39,7 @@ function SelectModel({
   return (
     <div className={cn("space-y-2 flex", className)}>
       <RadioGroup
-        className="flex gap-x-4 flex-wrap gap-y-2"
+        className="flex gap-x-2 flex-wrap gap-y-2"
         value={currentModel.value}
       >
         {MODELS.map((model) => (
@@ -53,7 +53,7 @@ function SelectModel({
               value={model.value}
             />
             <Label
-              className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
+              className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
               htmlFor={model.value}
             >
               <div className="flex flex-col">{model.label}</div>
