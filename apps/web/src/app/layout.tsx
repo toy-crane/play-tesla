@@ -29,6 +29,9 @@ export const metadata: Metadata = {
     "테슬라 보조금",
     "테슬라 할인",
     "테슬라 가격",
+    "전기차",
+    "전기차 가격",
+    "전기차 보조금",
   ],
   authors: [
     {
