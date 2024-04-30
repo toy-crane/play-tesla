@@ -145,7 +145,11 @@ async function PriceDetail({
                     color="#D91400"
                   />
                 </span>
-                <Button asChild className="justify-self-end h-6 mt-1" size="sm">
+                <Button
+                  asChild
+                  className="justify-self-end h-6 mt-1 text-xs"
+                  size="sm"
+                >
                   <Link href={`/prices/${trimDetail.slug.split("-")[0]}`}>
                     가격 변동 확인하기
                   </Link>
