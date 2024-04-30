@@ -21,10 +21,11 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { data: modelDetail, error } = await supabase
     .from("models")
     .select("*")
-    .eq("slug", params.model);
+    .eq("slug", params.model)
+    .single();
 
   if (error) {
     throw Error(error.message);
@@ -32,11 +33,24 @@ export async function generateMetadata(
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
+  const title = `테슬라 ${modelDetail.name} 가격 변화 추이`;
+  const description = `테슬라 ${modelDetail.name} 출시부터 현재까지의 가격 변화 추이를 확인하세요.`;
 
   return {
-    title: "hello",
+    title,
+    description,
     openGraph: {
+      title,
+      description,
       images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+    twitter: {
+      title,
+      description,
+      images: [...previousImages],
+    },
+    alternates: {
+      canonical: `/prices/${params.model}`,
     },
   };
 }

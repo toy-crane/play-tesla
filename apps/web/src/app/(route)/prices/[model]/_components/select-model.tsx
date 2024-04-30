@@ -56,7 +56,7 @@ function SelectModel({
               className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
               htmlFor={model.value}
             >
-              <div className="flex flex-col">{model.label}</div>
+              <h2 className="flex flex-col">{model.label}</h2>
             </Label>
           </div>
         ))}

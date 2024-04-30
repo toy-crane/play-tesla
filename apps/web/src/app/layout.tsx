@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     },
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-  metadataBase: new URL("https://goparkgolf.app"),
+  metadataBase: new URL("https://www.playtesla.xyz"),
   alternates: {
     canonical: "/",
   },
