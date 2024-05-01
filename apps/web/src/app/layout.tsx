@@ -2,6 +2,7 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 import type { Metadata } from "next/types";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
 
@@ -94,6 +95,7 @@ export default function RootLayout({
       <body className={pretendard.className}>
         {children}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
