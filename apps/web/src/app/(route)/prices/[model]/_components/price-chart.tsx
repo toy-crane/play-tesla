@@ -59,7 +59,7 @@ export function PriceChart({
         index="priceSetAt"
         valueFormatter={dataFormatter}
       />
-      <span className="absolute bottom-10 right-6 z-[-10] font-semibold text-sm">
+      <span className="absolute bottom-10 right-6 z-[-10] text-sm text-muted-foreground font-medium">
         playtesla.xyz
       </span>
     </div>
