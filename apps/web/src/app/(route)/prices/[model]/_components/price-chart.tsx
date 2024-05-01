@@ -59,10 +59,6 @@ export function PriceChart({
         customTooltip={customTooltip}
         data={data}
         index="priceSetAt"
-        onValueChange={(value) => {
-          // eslint-disable-next-line no-console -- for debugging
-          console.log(value);
-        }}
         valueFormatter={dataFormatter}
       />
       <span className="absolute bottom-10 right-6 z-[-10] font-semibold text-sm">
