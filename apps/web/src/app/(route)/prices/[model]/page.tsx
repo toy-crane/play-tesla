@@ -126,8 +126,8 @@ async function Page({
   return (
     <>
       <div className="flex justify-between">
-        <h1 className="text-left text-3xl font-bold leading-tight tracking-tighter lg:leading-[1.1] mt-4">
-          테슬라 가격 변화 추이
+        <h1 className="text-left text-3xl md:text-4xl font-bold leading-tight tracking-tighter lg:leading-[1.1] mt-4">
+          테슬라 차량가격 변화 추이
         </h1>
       </div>
       <SelectModel className="my-4" modelSlug={model} />
