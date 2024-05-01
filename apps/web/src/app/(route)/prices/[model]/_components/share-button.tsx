@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -15,6 +16,7 @@ function ShareButton() {
           description: "원하는 곳에 붙여넣기(Ctrl+V)해주세요.",
           duration: 1000,
         });
+        track("price-share-button-clicked");
       }}
       size="sm"
     >
