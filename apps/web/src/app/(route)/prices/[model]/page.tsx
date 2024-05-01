@@ -11,6 +11,10 @@ import NoticeCTA from "./_components/notice-cta";
 type CarPrice = Tables<"trim_prices"> & {
   trims: {
     slug: string;
+    name: string | null;
+    models: {
+      name: string | null;
+    } | null;
   } | null;
 };
 
@@ -64,7 +68,7 @@ const transformCarData = (inputData: CarPrice[]): PriceChartData[] => {
 
   inputData.forEach((car) => {
     const priceSetAt = car.price_set_at;
-    const modelSlug = car.trims?.slug.replace("-", " ");
+    const modelSlug = `${car.trims?.models?.name} ${car.trims?.name}`;
     if (!modelSlug) return;
     modelPrices[modelSlug] = car.price; // 항상 최신 가격을 업데이트
 
@@ -95,7 +99,7 @@ async function Page({
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trim_prices")
-    .select("*, trims!inner(slug, models(name))")
+    .select("*, trims!inner(slug,name, models(name))")
     .like("trims.slug", `${model}%`)
     .order("price_set_at", {
       ascending: true,
@@ -109,7 +113,9 @@ async function Page({
   }
 
   const trimModels = [
-    ...new Set(data.map((car) => car.trims.slug.replace("-", " "))),
+    ...new Set(
+      data.map((car) => `${car.trims.models?.name} ${car.trims.name}`)
+    ),
   ];
   const chartData = transformCarData(data);
   const trimName = data[0]?.trims?.slug;
