@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
 import type { Tables } from "@/types/generated";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PriceChart } from "./_components/price-chart";
 import SelectModel from "./_components/select-model";
 import NoticeCTA from "./_components/notice-cta";
@@ -129,7 +131,9 @@ async function Page({
         </h1>
       </div>
       <SelectModel className="my-4" modelSlug={model} />
-      <PriceChart categories={trimModels} data={chartData} />
+      <Suspense fallback={<Skeleton className="h-80 w-full" />}>
+        <PriceChart categories={trimModels} data={chartData} />
+      </Suspense>
       <div className="flex justify-end mt-4">
         <Button variant="outline">
           <Link href={`/cars/${trimName}`} prefetch>

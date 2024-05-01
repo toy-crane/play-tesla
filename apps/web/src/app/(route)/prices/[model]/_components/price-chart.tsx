@@ -26,7 +26,10 @@ export function PriceChart({
           {payload
             .filter((p) => p.type !== "none")
             .map((category, idx) => (
-              <div className="flex flex-1 space-x-2.5 items-center" key={idx}>
+              <div
+                className="flex flex-1 space-x-2.5 items-center"
+                key={category.dataKey}
+              >
                 <span
                   className={cn(
                     "shrink-0 rounded-full border-2 h-3 w-3 border-muted",
