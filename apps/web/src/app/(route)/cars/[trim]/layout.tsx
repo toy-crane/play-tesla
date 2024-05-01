@@ -7,7 +7,7 @@ function Layout(props: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <header className="content-grid bg-white sticky">
         <nav className="pt-4 pb-2 flex items-center justify-between">
-          <Link href="/cars/model3-longrange">
+          <Link href="/">
             <Image
               alt="logo"
               height="36"
