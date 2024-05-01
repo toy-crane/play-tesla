@@ -24,7 +24,7 @@ async function Options({ trimSlug }: { trimSlug: string }) {
   const { data: trim, error } = await supabase
     .from("trims")
     .select(
-      "*, models(code, id, name, colors(*),steerings(*)),seatings(*),wheels(*),interiors(*)"
+      "*, models(code, id, name, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),interiors(*)"
     )
     .eq("slug", trimSlug)
     .order("slug")
@@ -39,6 +39,7 @@ async function Options({ trimSlug }: { trimSlug: string }) {
     color: params.get("color") || String(trim.models?.colors[0]?.code),
     interior: params.get("interior") || String(trim.interiors[0]?.code),
     steering: params.get("steering") || String(trim.models?.steerings[0]?.code),
+    drivingAssist: params.get("drivingAssist") || "ap",
   };
 
   return <OptionForm currentOption={currentOption} trim={trim} />;

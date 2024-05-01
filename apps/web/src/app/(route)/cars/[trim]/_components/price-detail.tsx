@@ -23,13 +23,18 @@ const getOption = (trim: Trim, selectedOption: Option) => {
     (s) => s.seat_count === Number(selectedOption.seat)
   );
 
+  const drivingAssist = trim.models?.driving_assist_options.find(
+    (d) => d.code === selectedOption.drivingAssist
+  );
+
   const optionNames = `${color?.korean_name}, ${wheel?.name}, ${interior?.korean_name}, ${seat?.seat_count}인승, ${steering?.name}`;
   const totalOptionPrice =
     (steering?.price || 0) +
     (wheel?.price || 0) +
     (interior?.price || 0) +
     (color?.price || 0) +
-    (seat?.price || 0);
+    (seat?.price || 0) +
+    (drivingAssist?.price || 0);
   return { optionNames, totalOptionPrice };
 };
 
@@ -64,7 +69,7 @@ async function PriceDetail({
       supabase
         .from("trims")
         .select(
-          "*, models(name, code, colors(*),steerings(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
+          "*, models(name, code, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
         )
         .eq("slug", trimSlug)
         .order("slug")

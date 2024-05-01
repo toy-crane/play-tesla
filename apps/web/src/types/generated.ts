@@ -50,6 +50,44 @@ export type Database = {
           },
         ]
       }
+      driving_assist_options: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          korean_name: string
+          model_id: string
+          name: string
+          price: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          korean_name: string
+          model_id?: string
+          name: string
+          price: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          korean_name?: string
+          model_id?: string
+          name?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driving_assist_options_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "models"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interiors: {
         Row: {
           code: string

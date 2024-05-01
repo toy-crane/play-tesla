@@ -6,6 +6,13 @@ import type { Option, Trim } from "@/types/data";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
+type DrivingOptionKeys = "ap" | "eap" | "fsd";
+const DrivingOptionOrder: { [key in DrivingOptionKeys]: number } = {
+  ap: 1,
+  eap: 2,
+  fsd: 3,
+};
+
 function OptionForm({
   trim,
   currentOption,
@@ -25,6 +32,15 @@ function OptionForm({
   const orderedColors = trim.models?.colors.sort((a, b) => {
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
+
+  const orderedDrivingAssist = trim.models?.driving_assist_options.sort(
+    (a, b) => {
+      return (
+        DrivingOptionOrder[a.code as DrivingOptionKeys] -
+        DrivingOptionOrder[b.code as DrivingOptionKeys]
+      );
+    }
+  );
 
   return (
     <div className="space-y-6">
@@ -204,6 +220,39 @@ function OptionForm({
                     </span>
                   </div>
                 )}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold tracking-tight">주행 보조</h2>
+        <RadioGroup
+          className="flex gap-x-4 flex-wrap gap-y-2"
+          value={currentOption.drivingAssist}
+        >
+          {orderedDrivingAssist?.map((option) => (
+            <div key={option.code}>
+              <RadioGroupItem
+                className="peer sr-only"
+                id={`st${option.code}`}
+                onClick={() => {
+                  handleParamsChange(`drivingAssist`, option.code);
+                }}
+                value={option.code}
+              />
+              <Label
+                className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
+                htmlFor={`st${option.code}`}
+              >
+                <div className="flex flex-col gap-1">
+                  <span>{option.korean_name} </span>
+                  <span className="text-muted-foreground text-xs font-light">
+                    {option.price > 0
+                      ? `+${option.price.toLocaleString()}원`
+                      : `추가 금액 없음`}
+                  </span>
+                </div>
               </Label>
             </div>
           ))}

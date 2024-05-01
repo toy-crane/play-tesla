@@ -7,6 +7,7 @@ export interface Trim extends Omit<Tables<"trims">, "created_at" | "id"> {
     | (Omit<Tables<"models">, "created_at" | "id" | "slug"> & {
         colors: Tables<"colors">[];
         steerings: Tables<"steerings">[];
+        driving_assist_options: Tables<"driving_assist_options">[];
       })
     | null;
   seatings: Tables<"seatings">[];
@@ -21,4 +22,5 @@ export interface Option {
   color: string;
   interior: string;
   steering: string;
+  drivingAssist?: string;
 }
