@@ -51,12 +51,18 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      images: ["/og-images/model3-price-og.png", ...previousImages],
+      images: [
+        `/og-images/${modelDetail.slug}-price-og.png`,
+        ...previousImages,
+      ],
     },
     twitter: {
       title,
       description,
-      images: [...previousImages],
+      images: [
+        `/og-images/${modelDetail.slug}-price-og.png`,
+        ...previousImages,
+      ],
     },
     alternates: {
       canonical: `/prices/${params.model}`,
