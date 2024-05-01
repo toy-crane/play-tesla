@@ -27,7 +27,7 @@ const getOption = (trim: Trim, selectedOption: Option) => {
     (d) => d.code === selectedOption.drivingAssist
   );
 
-  const optionNames = `${color?.korean_name}, ${wheel?.name}, ${interior?.korean_name}, ${seat?.seat_count}인승, ${steering?.name}`;
+  const optionNames = `${color?.korean_name}, ${wheel?.name}, ${interior?.korean_name}, ${seat?.seat_count}인승, ${steering?.name}, ${drivingAssist?.korean_name}`;
   const totalOptionPrice =
     (steering?.price || 0) +
     (wheel?.price || 0) +
@@ -104,6 +104,7 @@ async function PriceDetail({
     interior: params.get("interior") || String(trimDetail.interiors[0]?.code),
     steering:
       params.get("steering") || String(trimDetail.models?.steerings[0]?.code),
+    drivingAssist: params.get("drivingAssist") || "ap",
   };
 
   const releasePrice = trimDetail.trim_prices[0]?.price;
