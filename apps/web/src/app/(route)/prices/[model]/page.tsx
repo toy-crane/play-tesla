@@ -137,7 +137,7 @@ async function Page({
       <div className="flex justify-end mt-4">
         <Button variant="outline">
           <Link href={`/cars/${trimName}`} prefetch>
-            {modelName} 보조금 조회하기
+            {modelName} 지역별 보조금 조회하기
           </Link>
         </Button>
       </div>
