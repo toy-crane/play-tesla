@@ -18,7 +18,7 @@ export function PriceChart({
     const { payload, active, label } = props;
     if (!active || !payload) return null;
     return (
-      <div className="w-64 border p-2 space-y-1 rounded-md bg-card">
+      <div className="w-72 border p-2 space-y-1 rounded-md bg-card">
         <div className="border-b py-1">
           <span className="text-sm font-semibold">{label}</span>
         </div>
