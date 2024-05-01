@@ -25,6 +25,7 @@
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.5",
     "@tremor/react": "^3.16.2",
+    "@vercel/analytics": "^1.2.2",
     "cheerio": "1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
