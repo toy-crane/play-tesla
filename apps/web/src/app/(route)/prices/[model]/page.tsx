@@ -1,24 +1,12 @@
-import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import type { Tables } from "@/types/generated";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { PriceChart } from "./_components/price-chart";
 import SelectModel from "./_components/select-model";
 import NoticeCTA from "./_components/notice-cta";
-
-type CarPrice = Tables<"trim_prices"> & {
-  trims: {
-    slug: string;
-    name: string | null;
-    models: {
-      name: string | null;
-    } | null;
-  } | null;
-};
+import PriceCharts from "./_components/price-charts";
 
 export interface PriceChartData {
   priceSetAt: string;
@@ -70,33 +58,6 @@ export async function generateMetadata(
   };
 }
 
-const transformCarData = (inputData: CarPrice[]): PriceChartData[] => {
-  const chartData: PriceChartData[] = [];
-  const modelPrices: Record<string, number> = {}; // 모델별 최신 가격을 저장하는 객체
-
-  inputData.forEach((car) => {
-    const priceSetAt = car.price_set_at;
-    const modelSlug = `${car.trims?.models?.name} ${car.trims?.name}`;
-    if (!modelSlug) return;
-    modelPrices[modelSlug] = car.price; // 항상 최신 가격을 업데이트
-
-    const entry = chartData.find((d) => d.priceSetAt === priceSetAt);
-    if (entry) {
-      entry[modelSlug] = car.price;
-    } else {
-      // 새로운 entry 생성 시 모든 모델의 최신 가격으로 초기화
-      const newEntry: PriceChartData = { priceSetAt };
-      for (const [model, price] of Object.entries(modelPrices)) {
-        newEntry[model] = price;
-      }
-      newEntry[modelSlug] = car.price; // 현재 차량 모델 가격 업데이트
-      chartData.push(newEntry);
-    }
-  });
-
-  return chartData;
-};
-
 async function Page({
   params: { model },
 }: {
@@ -106,28 +67,15 @@ async function Page({
 }) {
   const supabase = createClient();
   const { data, error } = await supabase
-    .from("trim_prices")
-    .select("*, trims!inner(slug,name, models(name))")
-    .like("trims.slug", `${model}%`)
-    .order("price_set_at", {
-      ascending: true,
-    });
+    .from("models")
+    .select("*,trims(*)")
+    .eq("slug", model)
+    .single();
   if (error) {
     throw Error(error.message);
   }
-
-  if (data.length === 0) {
-    notFound();
-  }
-
-  const trimModels = [
-    ...new Set(
-      data.map((car) => `${car.trims.models?.name} ${car.trims.name}`)
-    ),
-  ];
-  const chartData = transformCarData(data);
-  const trimName = data[0]?.trims?.slug;
-  const modelName = data[0]?.trims?.models?.name;
+  const trimName = data.trims[0]?.slug;
+  const modelName = data.name;
 
   return (
     <>
@@ -137,8 +85,18 @@ async function Page({
         </h1>
       </div>
       <SelectModel className="my-4" modelSlug={model} />
-      <Suspense fallback={<Skeleton className="h-80 w-full" />}>
-        <PriceChart categories={trimModels} data={chartData} />
+      <Suspense
+        fallback={
+          <div className="h-80 w-full flex items-center justify-center">
+            <Loader2
+              className="h-5 w-5 animate-spin"
+              color="#71717A"
+              size={24}
+            />
+          </div>
+        }
+      >
+        <PriceCharts modelSlug={model} />
       </Suspense>
       <div className="flex items-end mt-4 flex-col gap-2">
         <Button size="sm" variant="outline">
