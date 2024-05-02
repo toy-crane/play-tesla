@@ -159,9 +159,9 @@ function Page({ params, searchParams: { region } }: PageProps) {
         >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
-        <div className="flex justify-end mb-2">
+        <div className="flex justify-end">
           <Button
-            className="underline underline-offset-4 px-0 hover:bg-white"
+            className="underline underline-offset-4 px-0 hover:bg-white text-blue-500/90 hover:text-blue-500"
             size="sm"
             variant="ghost"
           >
