@@ -100,7 +100,12 @@ async function Page({
         <PriceCharts modelSlug={model} />
       </Suspense>
       <div className="flex items-end flex-col gap-2 mt-2">
-        <Button className="w-full md:max-w-[256px]" size="lg" variant="outline">
+        <Button
+          asChild
+          className="w-full md:max-w-[256px]"
+          size="lg"
+          variant="outline"
+        >
           <Link href={`/cars/${trimName}`} prefetch>
             {modelName} 지역별 보조금 조회하기
           </Link>
