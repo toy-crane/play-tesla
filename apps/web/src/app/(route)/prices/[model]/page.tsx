@@ -140,10 +140,15 @@ async function Page({
       <Suspense fallback={<Skeleton className="h-80 w-full" />}>
         <PriceChart categories={trimModels} data={chartData} />
       </Suspense>
-      <div className="flex justify-end mt-4">
-        <Button variant="outline">
+      <div className="flex items-end mt-4 flex-col gap-2">
+        <Button size="sm" variant="outline">
           <Link href={`/cars/${trimName}`} prefetch>
             {modelName} 지역별 보조금 조회하기
+          </Link>
+        </Button>
+        <Button size="sm" variant="secondary">
+          <Link href="https://slashpage.com/play-tesla/new-feature">
+            제작자에게 피드백 보내기
           </Link>
         </Button>
       </div>
