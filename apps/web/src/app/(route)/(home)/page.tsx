@@ -25,14 +25,22 @@ export default function Page() {
         </Button>
         <div className="flex gap-2 mt-8">
           <Button asChild className="flex-1" size="lg" variant="secondary">
-            <Link href="https://slashpage.com/play-tesla/roadmap">
+            <a
+              href="https://slashpage.com/play-tesla/roadmap"
+              rel="noreferrer"
+              target="_blank"
+            >
               업데이트 계획 보기
-            </Link>
+            </a>
           </Button>
           <Button asChild className="flex-1" size="lg" variant="secondary">
-            <Link href="https://slashpage.com/play-tesla/new-feature">
+            <a
+              href="https://slashpage.com/play-tesla/new-feature"
+              rel="noreferrer"
+              target="_blank"
+            >
               신규 기능 요청하기
-            </Link>
+            </a>
           </Button>
         </div>
       </div>

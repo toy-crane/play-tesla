@@ -118,12 +118,15 @@ async function Page({
           size="sm"
           variant="ghost"
         >
-          <Link href="https://slashpage.com/play-tesla/new-feature">
+          <a
+            href="https://slashpage.com/play-tesla/new-feature"
+            rel="noreferrer"
+            target="_blank"
+          >
             제작자에게 피드백 보내기
-          </Link>
+          </a>
         </Button>
       </div>
-
       <NoticeCTA />
     </>
   );
