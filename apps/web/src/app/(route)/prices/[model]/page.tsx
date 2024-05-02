@@ -84,6 +84,7 @@ async function Page({
           테슬라 차량가격 변화 추이
         </h1>
       </div>
+
       <SelectModel className="my-4" modelSlug={model} />
       <Suspense
         fallback={
@@ -98,18 +99,26 @@ async function Page({
       >
         <PriceCharts modelSlug={model} />
       </Suspense>
-      <div className="flex items-end mt-4 flex-col gap-2">
-        <Button size="sm" variant="outline">
+      <div className="flex items-end flex-col gap-2 mt-2">
+        <Button className="w-full md:max-w-[256px]" size="lg" variant="outline">
           <Link href={`/cars/${trimName}`} prefetch>
             {modelName} 지역별 보조금 조회하기
           </Link>
         </Button>
-        <Button size="sm" variant="secondary">
+      </div>
+      <div className="flex justify-end">
+        <Button
+          asChild
+          className="underline underline-offset-4 px-0 hover:bg-white text-blue-500/90 hover:text-blue-500"
+          size="sm"
+          variant="ghost"
+        >
           <Link href="https://slashpage.com/play-tesla/new-feature">
             제작자에게 피드백 보내기
           </Link>
         </Button>
       </div>
+
       <NoticeCTA />
     </>
   );

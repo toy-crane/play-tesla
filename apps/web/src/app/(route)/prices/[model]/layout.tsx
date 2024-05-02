@@ -20,7 +20,7 @@ function Layout(props: { children: React.ReactNode }) {
           </div>
         </nav>
       </header>
-      <div className="content-grid">{props.children}</div>
+      <div className="content-grid pb-36">{props.children}</div>
     </div>
   );
 }
