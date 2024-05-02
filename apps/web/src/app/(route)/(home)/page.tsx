@@ -14,10 +14,14 @@ export default function Page() {
       </div>
       <div className="flex flex-col gap-2 w-full max-w-[480px]">
         <Button asChild size="lg" variant="outline">
-          <Link href="/cars/model3-longrange">지역별 테슬라 보조금 조회</Link>
+          <Link href="/cars/model3-longrange" prefetch>
+            지역별 테슬라 보조금 조회
+          </Link>
         </Button>
         <Button size="lg">
-          <Link href="/prices/model3">테슬라 모델별 가격 변경 추이</Link>
+          <Link href="/prices/model3" prefetch>
+            테슬라 모델별 가격 변경 추이
+          </Link>
         </Button>
         <div className="flex gap-2 mt-8">
           <Button className="flex-1" size="lg" variant="secondary">
