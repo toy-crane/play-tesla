@@ -136,7 +136,9 @@ async function PriceDetail({
           <span className="text-end">
             {releasePrice ? (
               <div className="flex flex-col">
-                <span>{releasePrice.toLocaleString()}원</span>
+                <span className="text-lg mb-1">
+                  {releasePrice.toLocaleString()}원
+                </span>
                 <span className="text-xs text-muted-foreground">
                   지난 출고 가격 대비
                 </span>
@@ -153,7 +155,7 @@ async function PriceDetail({
                 </span>
                 <Button
                   asChild
-                  className="justify-self-end h-6 mt-1 text-xs"
+                  className="justify-self-end h-6 text-xs"
                   size="sm"
                   variant="outline"
                 >
@@ -172,7 +174,7 @@ async function PriceDetail({
             <span className="text-muted-foreground">차량 옵션 가격</span>
             <span className="text-muted-foreground text-xs">{optionNames}</span>
           </div>
-          <span className="text-end">
+          <span className="text-end text-lg">
             {totalOptionPrice.toLocaleString()}원
           </span>
         </li>
@@ -181,7 +183,7 @@ async function PriceDetail({
       <ul className="grid gap-3">
         <li className="grid items-center grid-cols-price-detail">
           <span className="text-muted-foreground">국고 보조금</span>
-          <span className="text-end">
+          <span className="text-end text-lg">
             {!subsidyAvailble && "보조금 없음"}
             {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
             {applicableSubsidy
@@ -191,7 +193,7 @@ async function PriceDetail({
         </li>
         <li className="grid grid-cols-price-detail">
           <span className="text-muted-foreground">지자체 보조금</span>
-          <span className="text-end">
+          <span className="text-end text-lg">
             {!subsidyAvailble && "보조금 없음"}
             {subsidyAvailble && !subsidyConfirmed ? "보조금 미확정" : null}
             {applicableSubsidy ? (
@@ -215,7 +217,9 @@ async function PriceDetail({
         <Separator className="my-2" />
         <li className="grid grid-cols-price-detail font-semibold">
           <span className="text-muted-foreground">최종 구매 가격</span>
-          <span className="text-end">{purchasePrice.toLocaleString()}원</span>
+          <span className="text-end text-xl">
+            {purchasePrice.toLocaleString()}원
+          </span>
         </li>
       </ul>
     </div>
