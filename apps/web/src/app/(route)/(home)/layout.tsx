@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 function Layout(props: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="content-grid bg-white sticky">
+      <header className="content-grid bg-white sticky top-0">
         <nav className="pt-4 pb-2 flex items-center justify-between">
           <Link href="/cars/model3-longrange">
             <Image
