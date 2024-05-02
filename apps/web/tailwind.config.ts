@@ -15,7 +15,7 @@ const config: Config = {
     },
     extend: {
       gridTemplateColumns: {
-        "price-detail": "1fr 128px",
+        "price-detail": "1fr 156px",
       },
       colors: {
         transparent: "transparent",
