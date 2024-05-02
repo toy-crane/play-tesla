@@ -1,11 +1,13 @@
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import regions from "@/constants/regions";
+import { Button } from "@/components/ui/button";
 import { SelectCar } from "./_components/select-car";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
@@ -110,7 +112,6 @@ function Page({ params, searchParams: { region } }: PageProps) {
             <SelectRegion code={regionCode} />
           </Suspense>
         </section>
-
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-2">
@@ -126,6 +127,17 @@ function Page({ params, searchParams: { region } }: PageProps) {
         >
           <CarCarousel trimSlug={trimSlug} />
         </Suspense>
+        <div className="flex justify-end mb-2">
+          <Button
+            className="underline underline-offset-4 px-0 hover:bg-white"
+            size="sm"
+            variant="ghost"
+          >
+            <Link href="https://slashpage.com/play-tesla/new-feature">
+              제작자에게 피드백 보내기
+            </Link>
+          </Button>
+        </div>
         <section className="mb-8">
           <Suspense
             fallback={
