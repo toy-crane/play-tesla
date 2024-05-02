@@ -209,6 +209,9 @@ async function PriceDetail({
                     잔여 수량: {regionSubsidy.remaining_quota.toLocaleString()}
                     대
                   </span>
+                  <span className="text-xs text-muted-foreground">
+                    출처: 무공해차 통합누리집
+                  </span>
                 </div>
               </div>
             ) : null}
