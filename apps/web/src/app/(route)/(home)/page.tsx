@@ -26,7 +26,7 @@ export default function Page() {
         <div className="flex gap-2 mt-8">
           <Button className="flex-1" size="lg" variant="secondary">
             <Link href="https://slashpage.com/play-tesla/roadmap">
-              다음에 만들어질 기능 미리보기
+              업데이트 계획 보기
             </Link>
           </Button>
           <Button className="flex-1" size="lg" variant="secondary">
