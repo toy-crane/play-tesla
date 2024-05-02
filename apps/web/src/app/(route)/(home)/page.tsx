@@ -19,6 +19,18 @@ export default function Page() {
         <Button size="lg">
           <Link href="/prices/model3">테슬라 모델별 가격 변경 추이</Link>
         </Button>
+        <div className="flex gap-2 mt-8">
+          <Button className="flex-1" size="lg" variant="secondary">
+            <Link href="https://slashpage.com/play-tesla/roadmap">
+              다음에 만들어질 기능 미리보기
+            </Link>
+          </Button>
+          <Button className="flex-1" size="lg" variant="secondary">
+            <Link href="https://slashpage.com/play-tesla/new-feature">
+              신규 기능 요청하기
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
