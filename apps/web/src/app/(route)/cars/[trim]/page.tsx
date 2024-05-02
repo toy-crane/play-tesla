@@ -2,18 +2,21 @@ import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import regions from "@/constants/regions";
 import { Button } from "@/components/ui/button";
-import { SelectCar } from "./_components/select-car";
+import { getCarImageUrl } from "@/lib/image";
+import { CarView } from "@/constants/image";
 import PriceDetail from "./_components/price-detail";
 import { SelectRegion } from "./_components/select-region";
 import CarCarousel from "./_components/car-carousel";
 import OrderCTA from "./_components/order-cta";
 import Options, { OptionSkeleton } from "./_components/options";
+import { SelectCar } from "./_components/select-car";
 
 interface PageProps {
   params: { trim: string };
@@ -32,15 +35,28 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const supabase = createClient();
+  const headersList = headers();
+  const xQueryParams = headersList.get("x-query-params") || "";
+  const queryParams = new URLSearchParams(xQueryParams);
+
   const { data: trimDetail, error } = await supabase
     .from("trims")
-    .select("*, models(*)")
+    .select(
+      "code,name, models(code, name, colors(code),steerings(code)),wheels(code)"
+    )
     .eq("slug", params.trim)
+    .order("slug")
     .single();
 
   if (error) {
     throw Error(error.message);
   }
+
+  const modelCode = trimDetail.models?.code;
+  const trimCode = trimDetail.code;
+  const colorCode =
+    queryParams.get("color") || trimDetail.models?.colors[0]?.code;
+  const wheelCode = queryParams.get("wheel") || trimDetail.wheels[0]?.code;
 
   const modelName = trimDetail.models?.name;
   const trimName = trimDetail.name;
@@ -49,6 +65,22 @@ export async function generateMetadata(
   const regionName = region?.province
     ? `${region.province} ${region.name}`
     : region?.name;
+
+  if (
+    modelCode === undefined ||
+    colorCode === undefined ||
+    wheelCode === undefined
+  ) {
+    throw new Error("Model code, color code, or wheel code is undefined");
+  }
+
+  const imageUrl = getCarImageUrl(
+    modelCode,
+    trimCode,
+    colorCode,
+    wheelCode,
+    CarView.FRONT
+  );
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
@@ -61,12 +93,12 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      images: [...previousImages],
+      images: [imageUrl, ...previousImages],
     },
     twitter: {
       title,
       description,
-      images: [...previousImages],
+      images: [imageUrl, ...previousImages],
     },
     alternates: {
       canonical: `/cars/${params.trim}?region=${regionCode}`,
