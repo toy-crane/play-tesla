@@ -2,7 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
@@ -20,13 +22,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-
-const FormSchema = z.object({
-  isAgree: z.boolean().default(false).optional(),
-  email: z.string().email("이메일 형식이 아닙니다."),
-});
+import { FormSchema } from "./schema";
+import createSubscriber from "./actions";
 
 function Page() {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,13 +36,15 @@ function Page() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    startTransition(async () => {
+      const { success } = await createSubscriber(data);
+      if (!success) {
+        toast({
+          title: "이메일 등록에 실패하였습니다.",
+        });
+        return;
+      }
+      router.push("/prices/subscribe/success");
     });
   }
 
@@ -76,7 +79,9 @@ function Page() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">알림 받기</Button>
+              <Button disabled={isPending} type="submit">
+                알림 받기
+              </Button>
             </div>
             <FormField
               control={form.control}
