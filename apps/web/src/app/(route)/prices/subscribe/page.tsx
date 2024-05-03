@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
@@ -28,7 +27,6 @@ const FormSchema = z.object({
 });
 
 function Page() {
-  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -100,9 +98,6 @@ function Page() {
                         >
                           <Button
                             className="underline px-0 py-0 h-fit hover:bg-white"
-                            onClick={() => {
-                              setOpen(true);
-                            }}
                             type="button"
                             variant="ghost"
                           >
