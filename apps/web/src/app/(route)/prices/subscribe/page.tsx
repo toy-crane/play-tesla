@@ -56,7 +56,8 @@ function Page() {
             테슬라 가격 변동 알림 받기
           </h2>
           <p className="text-gray-500 dark:text-gray-400">
-            테슬라 차량의 가격 변동을 이메일 알림으로 가장 빠르게 받아보세요.
+            테슬라 차량의 가격 변동을 <br />
+            이메일 알림으로 가장 빠르게 받아보세요.
           </p>
         </div>
         <Form {...form}>

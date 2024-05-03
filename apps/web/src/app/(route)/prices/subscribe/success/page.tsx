@@ -8,7 +8,7 @@ function Page() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 md:px-6">
-        <div className="space-y-4 text-center mb-8">
+        <div className="space-y-4 text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
             알림받기 등록 완료{"  "} 🎉
           </h2>
