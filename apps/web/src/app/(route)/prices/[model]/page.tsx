@@ -13,10 +13,11 @@ export interface PriceChartData {
   [modelSlug: string]: number | string; // priceSetAt은 string이므로 number 또는 string 타입을 받을 수 있도록 설정
 }
 
-export async function generateMetadata(
-  { params }: { params: { model: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { model: string };
+}): Promise<Metadata> {
   const supabase = createClient();
   const { data: modelDetail, error } = await supabase
     .from("models")
@@ -29,7 +30,6 @@ export async function generateMetadata(
   }
 
   // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
   const title = `테슬라 ${modelDetail.name} 가격 변화 추이`;
   const description = `테슬라 ${modelDetail.name} 출시부터 현재까지의 가격 변화 추이를 확인하세요.`;
 
@@ -39,18 +39,12 @@ export async function generateMetadata(
     openGraph: {
       title,
       description,
-      images: [
-        `/og-images/${modelDetail.slug}-price-og.png`,
-        ...previousImages,
-      ],
+      images: [`/og-images/${modelDetail.slug}-price-og.png`],
     },
     twitter: {
       title,
       description,
-      images: [
-        `/og-images/${modelDetail.slug}-price-og.png`,
-        ...previousImages,
-      ],
+      images: [`/og-images/${modelDetail.slug}-price-og.png`],
     },
     alternates: {
       canonical: `/prices/${params.model}`,
