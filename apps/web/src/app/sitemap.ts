@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { createClient } from "@/utils/supabase/server";
-import regions from "@/constants/regions";
 
 const addPathToBaseURL = (path: string) => `${siteConfig.url}/${path}`;
 
@@ -35,12 +34,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           priority: 0.8,
           changeFrequency: "monthly" as const,
         },
-        ...regions.map((region) => ({
-          url: addPathToBaseURL(`cars/${trim.slug}?region=${region.code}`),
-          lastModified: new Date(),
-          priority: 0.8,
-          changeFrequency: "monthly" as const,
-        })),
       ];
     })
     .flat();
