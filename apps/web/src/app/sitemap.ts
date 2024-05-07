@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: addPathToBaseURL("/"),
+      url: siteConfig.url,
       lastModified: new Date(),
       priority: 1,
       changeFrequency: "daily",
