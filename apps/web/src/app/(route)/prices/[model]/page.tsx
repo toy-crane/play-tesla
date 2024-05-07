@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
