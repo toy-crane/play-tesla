@@ -8,6 +8,8 @@ const modelNames = {
   "Model Y RWD": "modely-rwd",
   "Model 3 RWD": "model3-rwd",
   "Model 3 Long Range": "model3-longrange",
+  "Model Y Long Range": "modely-longrange",
+  "Model Y Performance": "modely-performance",
 };
 
 interface TeslaSubsidy {
@@ -47,6 +49,8 @@ async function fetchTeslaSubsidies(regionCode: string) {
     const manufacturer = $(element).find("td").eq(1).text().trim(); // 제조사 칼럼
     if (manufacturer === "테슬라코리아") {
       const model = $(element).find("td").eq(2).text().trim(); // 모델명
+      // 사용하지 않는 모델 예외처리
+      if (model === "Model Y RWD(2023)") return true;
       const trim = getTrim(model);
       const nationalSubsidyString = $(element).find("td").eq(3).text().trim(); // 국비 (만원)
       const localSubsidyString = $(element).find("td").eq(4).text().trim(); // 지방비 (만원)
@@ -67,6 +71,8 @@ async function fetchTeslaSubsidies(regionCode: string) {
   return teslaSubsidies;
 }
 
+// 지자체 보조금 정보를 가져와서 DB에 저장
+// 위치 -> 구매 및 지원 -> 구매 보조금 지급 현황 -> 지차제별 차종별 보조금 -> 지역 조회 -> 테슬라 코리아 찾기
 export async function POST() {
   const supabase = createClient({ type: "admin" });
   const { data: trims, error } = await supabase
