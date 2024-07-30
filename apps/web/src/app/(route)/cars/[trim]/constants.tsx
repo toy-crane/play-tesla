@@ -1,0 +1,3 @@
+const DEFAULT_CAR_COLOR = "$PPSW";
+
+export { DEFAULT_CAR_COLOR };

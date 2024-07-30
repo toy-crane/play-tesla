@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DEFAULT_CAR_COLOR } from "../constants";
 import OptionForm from "./option-form";
 
 function OptionSkeleton() {
@@ -36,7 +37,7 @@ async function Options({ trimSlug }: { trimSlug: string }) {
   const currentOption = {
     seat: params.get("seat") || String(trim.seatings[0]?.seat_count),
     wheel: params.get("wheel") || String(trim.wheels[0]?.code),
-    color: params.get("color") || String(trim.models?.colors[0]?.code),
+    color: params.get("color") || DEFAULT_CAR_COLOR,
     interior: params.get("interior") || String(trim.interiors[0]?.code),
     steering: params.get("steering") || String(trim.models?.steerings[0]?.code),
     drivingAssist: params.get("drivingAssist") || "ap",

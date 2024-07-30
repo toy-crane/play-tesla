@@ -9,6 +9,7 @@ import {
 import { CarView } from "@/constants/image";
 import { createClient } from "@/utils/supabase/server";
 import { getCarImageUrl } from "@/lib/image";
+import { DEFAULT_CAR_COLOR } from "../constants";
 import CarImage from "./car-image";
 
 async function CarCarousel({ trimSlug }: { trimSlug: string }) {
@@ -30,14 +31,10 @@ async function CarCarousel({ trimSlug }: { trimSlug: string }) {
 
   const modelCode = trim.models?.code;
   const trimCode = trim.code;
-  const colorCode = queryParams.get("color") || trim.models?.colors[0]?.code;
+  const colorCode = queryParams.get("color") || DEFAULT_CAR_COLOR;
   const wheelCode = queryParams.get("wheel") || trim.wheels[0]?.code;
 
-  if (
-    modelCode === undefined ||
-    colorCode === undefined ||
-    wheelCode === undefined
-  ) {
+  if (modelCode === undefined || wheelCode === undefined) {
     throw new Error("Model code, color code, or wheel code is undefined");
   }
 
