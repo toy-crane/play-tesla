@@ -57,24 +57,29 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
 
 interface Request {
   trim: string;
+  color?: string;
 }
 
 export async function POST(request: NextRequest) {
   const supabase = createClient();
-  const { trim } = (await request.json()) as Request;
+  const { trim, color } = (await request.json()) as Request;
 
   const { data, error } = await supabase
     .from("trims")
     .select(
       "*, models(name, code, colors(*), steerings(*)),seatings(*),wheels(*),interiors(*)"
     )
-    .eq("code", trim);
+    .eq("code", trim)
+    .single();
   if (error) {
     throw new Error(error.message);
   }
 
-  const imageUrls = generateImageURLs(data[0] as Trim);
-  await fetchWithDelay(imageUrls);
+  const imageUrls = generateImageURLs(data as Trim);
+  const filtedImageUrls = imageUrls.filter(
+    ({ url }) => color === undefined || url.includes(color)
+  );
+  await fetchWithDelay(filtedImageUrls);
 
   return Response.json({ result: "success", imageUrls });
 }
