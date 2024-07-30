@@ -1,8 +1,7 @@
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { alertDiscord } from "@/lib/discord";
-
-const TESLA_URL = "https://www.tesla.com/ko_kr/model3/design#overview";
 
 interface TeslaResponse {
   DSServices: {
@@ -20,12 +19,23 @@ interface TeslaResponse {
   };
 }
 
-export async function POST() {
+interface Request {
+  model: string;
+}
+
+export async function POST(request: NextRequest) {
+  const { model } = (await request.json()) as Request;
+
+  if (!["model3", "modely", "modelx", "models"].includes(model)) {
+    return new Response("Invalid model", { status: 400 });
+  }
+
+  const TESLA_URL = `https://www.tesla.com/ko_kr/${model}/design#overview`;
   const supabase = createClient({ type: "admin" });
   const { data, error } = await supabase
     .from("models")
     .select("trims(code, id, slug, trim_prices(price_set_at, price))")
-    .eq("slug", "model3");
+    .eq("slug", model);
 
   if (error) {
     throw new Error(error.message);
