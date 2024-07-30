@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { createClient } from "@/utils/supabase/server";
 import regions from "@/constants/regions";
+import { alertDiscord } from "@/lib/discord";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,7 @@ const modelNames = {
   "Model Y RWD": "modely-rwd",
   "Model 3 RWD": "model3-rwd",
   "Model 3 Long Range": "model3-longrange",
+  "Model 3 Performance(2024)": "model3-performance",
   "Model Y Long Range": "modely-longrange",
   "Model Y Performance": "modely-performance",
 };
@@ -45,28 +47,39 @@ async function fetchTeslaSubsidies(regionCode: string) {
   const teslaSubsidies: TeslaSubsidy[] = [];
 
   // 테슬라 차종의 보조금 데이터를 추출
-  $(".table01 tbody tr").each((index, element) => {
-    const manufacturer = $(element).find("td").eq(1).text().trim(); // 제조사 칼럼
-    if (manufacturer === "테슬라코리아") {
-      const model = $(element).find("td").eq(2).text().trim(); // 모델명
-      // 사용하지 않는 모델 예외처리
-      if (model === "Model Y RWD(2023)") return true;
-      const trim = getTrim(model);
-      const nationalSubsidyString = $(element).find("td").eq(3).text().trim(); // 국비 (만원)
-      const localSubsidyString = $(element).find("td").eq(4).text().trim(); // 지방비 (만원)
-      const totalSubsidyString = $(element).find("td").eq(5).text().trim(); // 보조금 (만원)
-      teslaSubsidies.push({
-        trim,
-        nationalSubsidy:
-          parseInt(nationalSubsidyString.replace(/,/g, ""), 10) * 10000,
-        localSubsidy:
-          parseInt(localSubsidyString.replace(/,/g, ""), 10) * 10000,
-        totalSubsidy:
-          parseInt(totalSubsidyString.replace(/,/g, ""), 10) * 10000,
-        regionCode,
-      });
-    }
-  });
+  try {
+    $(".table01 tbody tr").each((index, element) => {
+      const manufacturer = $(element).find("td").eq(1).text().trim(); // 제조사 칼럼
+      if (manufacturer === "테슬라코리아") {
+        const model = $(element).find("td").eq(2).text().trim(); // 모델명
+        // 사용하지 않는 모델 예외처리
+        if (
+          model === "Model Y RWD(2023)" ||
+          model === "Model Y Long Range 19인치"
+        )
+          return true;
+        const trim = getTrim(model);
+        const nationalSubsidyString = $(element).find("td").eq(3).text().trim(); // 국비 (만원)
+        const localSubsidyString = $(element).find("td").eq(4).text().trim(); // 지방비 (만원)
+        const totalSubsidyString = $(element).find("td").eq(5).text().trim(); // 보조금 (만원)
+        teslaSubsidies.push({
+          trim,
+          nationalSubsidy:
+            parseInt(nationalSubsidyString.replace(/,/g, ""), 10) * 10000,
+          localSubsidy:
+            parseInt(localSubsidyString.replace(/,/g, ""), 10) * 10000,
+          totalSubsidy:
+            parseInt(totalSubsidyString.replace(/,/g, ""), 10) * 10000,
+          regionCode,
+        });
+      }
+    });
+  } catch (e) {
+    await alertDiscord(
+      "https://discord.com/api/webhooks/1234413370711736340/YMCJNwpQFSFfL5zFh5E3yrA31iR53dVsqZjtM24YrGRMBHfJZ9ThecuVlbLnV33XGEXS",
+      `차종 보조금 조회 실패`
+    );
+  }
 
   return teslaSubsidies;
 }
