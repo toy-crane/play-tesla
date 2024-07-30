@@ -26,7 +26,7 @@ const getCarImageUrl = (
   view: CarView
 ) => {
   const interiorCode = getDefaultInteriorCode(trimCode);
-  return `https://dgfgljvxbegytbhujxbk.supabase.co/storage/v1/object/public/cars/${modelCode}/${trimCode}/${colorCode}-${wheelCode}-${interiorCode}-${view}`;
+  return `/cars/${modelCode}/${trimCode}/${colorCode}-${wheelCode}-${interiorCode}-${view}`;
 };
 
 export { getCarImageUrl };

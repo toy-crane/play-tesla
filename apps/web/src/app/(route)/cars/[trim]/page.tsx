@@ -146,7 +146,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-2">
-              <div className="aspect-video w-[512px] flex items-center justify-center">
+              <div className="aspect-video w-full flex items-center justify-center">
                 <Loader2
                   className="h-5 w-5 animate-spin"
                   color="#71717A"

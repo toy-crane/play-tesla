@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { headers } from "next/headers";
 import {
   Carousel,
@@ -10,6 +9,7 @@ import {
 import { CarView } from "@/constants/image";
 import { createClient } from "@/utils/supabase/server";
 import { getCarImageUrl } from "@/lib/image";
+import CarImage from "./car-image";
 
 async function CarCarousel({ trimSlug }: { trimSlug: string }) {
   const supabase = createClient();
@@ -52,12 +52,13 @@ async function CarCarousel({ trimSlug }: { trimSlug: string }) {
         {Object.values(CarView).map((view) => (
           <CarouselItem key={view}>
             <div className="flex items-center justify-center">
-              <div className="relative aspect-video w-[512px]">
-                <Image
+              <div className="relative aspect-video w-full">
+                <CarImage
                   alt={`${trimSlug} ${view}`}
                   className="object-contain"
                   fill
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
                   src={getCarImageUrl(
                     modelCode,
                     trimCode,
@@ -65,7 +66,6 @@ async function CarCarousel({ trimSlug }: { trimSlug: string }) {
                     wheelCode,
                     view
                   )}
-                  title={`${trimSlug} ${view}`}
                 />
               </div>
             </div>
