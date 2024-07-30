@@ -49,7 +49,7 @@ async function CarCarousel({ trimSlug }: { trimSlug: string }) {
       }}
     >
       <CarouselContent>
-        {Object.values(CarView).map((view, index) => (
+        {Object.values(CarView).map((view) => (
           <CarouselItem key={view}>
             <div className="flex items-center justify-center">
               <div className="relative aspect-video w-full">
@@ -57,7 +57,6 @@ async function CarCarousel({ trimSlug }: { trimSlug: string }) {
                   alt={`${trimSlug} ${view}`}
                   className="object-contain"
                   fill
-                  priority={index === 0}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
                   src={getCarImageUrl(
                     modelCode,
