@@ -6,19 +6,19 @@
     },
     {
       "path": "/api/get-car-price/m3",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/get-car-price/my",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/get-car-price/ms",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/get-car-price/mx",
-      "schedule": "0 9 * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
