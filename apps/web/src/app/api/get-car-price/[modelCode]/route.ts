@@ -20,10 +20,6 @@ interface TeslaResponse {
   >;
 }
 
-interface Request {
-  modelCode: keyof typeof modelSlug;
-}
-
 const modelSlug = {
   m3: "model3",
   my: "modely",
@@ -31,8 +27,17 @@ const modelSlug = {
   ms: "models",
 };
 
-export async function POST(request: NextRequest) {
-  const { modelCode } = (await request.json()) as Request;
+export async function POST(
+  request: NextRequest,
+  { params: { modelCode } }: { params: { modelCode: keyof typeof modelSlug } }
+) {
+  if (
+    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
 
   if (!["m3", "my", "mx", "ms"].includes(modelCode)) {
     throw new Error("Invalid model");
@@ -105,6 +110,11 @@ export async function POST(request: NextRequest) {
       );
     }
   }
+
+  await alertDiscord(
+    "https://discord.com/api/webhooks/1267804345362026537/YZBA5v6d5qen82sfFjEA6a3QbMGtF_Px9yIdzGFl3ehN1Z0H3Lemm0uvxY4aiPo4q1eC",
+    `가격 비교가 완료되었습니다. 차량 코드: ${modelCode}, 차량 이름: ${modelSlug[modelCode]}`
+  );
 
   return NextResponse.json({
     result: "success",
