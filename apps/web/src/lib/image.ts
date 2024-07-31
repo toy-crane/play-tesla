@@ -7,7 +7,7 @@ const defaultInterior = {
   $MTS18: "$IBE00",
   $MTS19: "$IBE00",
   $MTY31: "$INPB0",
-  $MTY24: "$INPB0",
+  $MTY30: "$INPB0",
   $MTY17: "$INPB0",
   $MT351: "$IPB3",
   $MT352: "$IPB3",
