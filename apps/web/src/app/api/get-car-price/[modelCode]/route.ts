@@ -1,4 +1,4 @@
-/* eslint-disable no-console * -- ignore this rule */
+// eslint-disable no-console -- This is logging for debugging
 
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
