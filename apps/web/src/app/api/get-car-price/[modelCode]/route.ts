@@ -42,6 +42,7 @@ export async function GET(
   if (!["m3", "my", "mx", "ms"].includes(modelCode)) {
     throw new Error("Invalid model");
   }
+  console.log(`get-car-price ${modelCode} cron job start`);
 
   const TESLA_URL = `https://www.tesla.com/ko_kr/${modelCode}/design#overview`;
   const supabase = createClient({ type: "admin" });
@@ -53,6 +54,7 @@ export async function GET(
   if (error) {
     throw new Error(error.message);
   }
+  console.log("supabase fetch done");
 
   const trims = data.flatMap((model) =>
     model.trims.map((trim) => {
