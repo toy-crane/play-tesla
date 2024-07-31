@@ -44,5 +44,6 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/no-misused-promises": "off",
+    "no-console": "warn",
   },
 };
