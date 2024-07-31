@@ -76,6 +76,7 @@ export async function GET(
     })
   );
 
+  // add browser like headers for crawling
   const response = await fetch(TESLA_URL, {
     headers: {
       "User-Agent":
