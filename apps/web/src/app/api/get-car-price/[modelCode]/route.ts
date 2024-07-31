@@ -75,6 +75,7 @@ export async function GET(
   );
 
   const response = await fetch(TESLA_URL);
+  console.log("tesla html fetch success");
   const html = await response.text();
   // eslint-disable-next-line prefer-named-capture-group -- ignore
   const pattern = /const dataJson = ({[\s\S]*?});/;
