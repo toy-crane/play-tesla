@@ -19,6 +19,22 @@
     {
       "path": "/api/get-car-price/mx",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/get-delivery-estimates/m3",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/get-delivery-estimates/my",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/get-delivery-estimates/ms",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/get-delivery-estimates/mx",
+      "schedule": "0 0 * * *"
     }
   ]
 }
