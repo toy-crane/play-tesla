@@ -309,6 +309,41 @@ export type Database = {
           },
         ]
       }
+      trim_delivery_estimates: {
+        Row: {
+          created_at: string
+          id: number
+          max_week: number
+          min_week: number
+          set_at: string
+          trim_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          max_week: number
+          min_week: number
+          set_at: string
+          trim_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          max_week?: number
+          min_week?: number
+          set_at?: string
+          trim_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trim_delivery_estimates_trim_id_fkey"
+            columns: ["trim_id"]
+            isOneToOne: false
+            referencedRelation: "trims"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trim_prices: {
         Row: {
           created_at: string
