@@ -69,7 +69,7 @@ async function PriceDetail({
       supabase
         .from("trims")
         .select(
-          "*, models(name, code, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),trim_prices(*), interiors(*)"
+          "*, models(name, code, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),trim_prices(*), interiors(*), trim_delivery_estimates(*)"
         )
         .eq("slug", trimSlug)
         .order("slug")
@@ -77,7 +77,12 @@ async function PriceDetail({
           referencedTable: "trim_prices",
           ascending: false,
         })
+        .order("set_at", {
+          referencedTable: "trim_delivery_estimates",
+          ascending: false,
+        })
         .limit(2, { referencedTable: "trim_prices" })
+        .limit(1, { referencedTable: "trim_delivery_estimates" })
         .single(),
     ]);
 
@@ -96,6 +101,7 @@ async function PriceDetail({
   const trimDetail = trimDetailResponse.data;
   const subsidy = subsidyResponse.data;
   const regionSubsidy = regionSubsidyResponse.data;
+  const trimDeliveryEstimate = trimDetail.trim_delivery_estimates[0];
 
   const option = {
     seat: params.get("seat") || String(trimDetail.seatings[0]?.seat_count),
@@ -131,6 +137,15 @@ async function PriceDetail({
   return (
     <div className={cn("grid gap-3", className)}>
       <ul className="grid gap-3">
+        {trimDeliveryEstimate ? (
+          <li className="grid grid-cols-price-detail">
+            <span className="text-muted-foreground">예상 인도시기</span>
+            <span className="text-end">
+              {trimDeliveryEstimate.min_week} ~ {trimDeliveryEstimate.max_week}
+              주
+            </span>
+          </li>
+        ) : null}
         <li className="grid grid-cols-price-detail">
           <span className="text-muted-foreground">차량 출고가</span>
           <span className="text-end">
