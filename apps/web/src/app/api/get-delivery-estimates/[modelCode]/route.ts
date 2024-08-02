@@ -119,14 +119,23 @@ export async function GET(
       console.error(`Delivery not found for trim ${code}`);
       return acc;
     }
+    const inStart =
+      delivery.inType === "month"
+        ? Number(delivery.inStart) * 4
+        : Number(delivery.inStart);
+    const inEnd =
+      delivery.inType === "month"
+        ? Number(delivery.inEnd) * 4
+        : Number(delivery.inEnd);
+
     if (
-      LatestDeliveryEstimate?.min_week !== Number(delivery.inStart) &&
-      LatestDeliveryEstimate?.max_week !== Number(delivery.inEnd)
+      LatestDeliveryEstimate?.min_week !== inStart &&
+      LatestDeliveryEstimate?.max_week !== inEnd
     ) {
       acc.push({
         trim_id: id,
-        max_week: Number(delivery.inEnd),
-        min_week: Number(delivery.inStart),
+        min_week: inStart,
+        max_week: inEnd,
         set_at: new Date().toISOString(),
       });
     } else {
