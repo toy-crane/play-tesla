@@ -1,6 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
@@ -31,8 +29,6 @@ function SelectModel({
   modelSlug: string;
   className?: string;
 }) {
-  const router = useRouter();
-
   const currentModel = MODELS.find((m) => m.value === modelSlug);
   if (currentModel === undefined) return;
 
@@ -47,16 +43,15 @@ function SelectModel({
             <RadioGroupItem
               className="peer sr-only"
               id={model.value}
-              onClick={() => {
-                router.replace(`/prices/${model.value}`);
-              }}
               value={model.value}
             />
             <Label
               className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
               htmlFor={model.value}
             >
-              <h2 className="flex flex-col">{model.label}</h2>
+              <Link href={`/prices/${model.value}`} prefetch>
+                <h2 className="flex flex-col">{model.label}</h2>
+              </Link>
             </Label>
           </div>
         ))}
