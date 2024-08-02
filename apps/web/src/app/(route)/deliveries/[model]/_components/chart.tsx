@@ -8,23 +8,44 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+export interface PriceChartData {
+  setAt: string;
+  [trimId: string]: number | string; // priceSetAt은 string이므로 number 또는 string 타입을 받을 수 있도록 설정
+}
+
+const chartData: PriceChartData[] = [
+  {
+    setAt: "2023-01-01",
+    modelx: 186,
+    models: 80,
+    modely: 80,
+    model3: 80,
+  },
+  {
+    setAt: "2024-08-02",
+    modelx: 25,
+    models: 25,
+    modely: 25,
+    model3: 25,
+  },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  modelx: {
+    label: "modelx",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  models: {
+    label: "models",
     color: "hsl(var(--chart-2))",
+  },
+  modely: {
+    label: "modely",
+    color: "hsl(var(--chart-3))",
+  },
+  model3: {
+    label: "model3",
+    color: "hsl(var(--chart-4))",
   },
 } satisfies ChartConfig;
 
@@ -42,23 +63,22 @@ export default function Chart() {
         <CartesianGrid vertical={false} />
         <XAxis
           axisLine={false}
-          dataKey="month"
-          tickFormatter={(value: string) => value.slice(0, 3)}
+          dataKey="setAt"
           tickLine={false}
           tickMargin={8}
         />
         <ChartTooltip content={<ChartTooltipContent />} cursor={false} />
         <Line
-          dataKey="desktop"
+          dataKey="modelx"
           dot={false}
-          stroke="var(--color-desktop)"
+          stroke="var(--color-modelx)"
           strokeWidth={2}
           type="monotone"
         />
         <Line
-          dataKey="mobile"
+          dataKey="modely"
           dot={false}
-          stroke="var(--color-mobile)"
+          stroke="var(--color-modely)"
           strokeWidth={2}
           type="monotone"
         />
