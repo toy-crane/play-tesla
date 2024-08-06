@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import type { Tables } from "@/types/generated";
+import { createClient } from "@/utils/supabase/server";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 
@@ -21,6 +22,25 @@ export async function POST(request: NextRequest) {
   }
 
   const { record } = (await request.json()) as Request;
+
+  const supabase = createClient();
+  const { data: trim, error } = await supabase
+    .from("trims")
+    .select("*, models(name)")
+    .eq("id", record.trim_id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  const trimName = `${trim.models?.name} ${trim.name}`;
+  const subject = `${trimName} 차량 가격이 변동 되었습니다`;
+  const html = `
+    <strong>${trimName} 차량 가격이 ${record.price}로 변동 되었습니다.</strong>
+    자세한 내용은 아래 링크를 통해 확인 하세요.
+    <a href="https://www.playtesla.xyz/prices/${trim.slug}">테슬라 차량 가격 변동 추이</a>
+  `;
+
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -30,8 +50,8 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify({
       from: "Play Tesla <notifications@playtesla.xyz>",
       to: ["alwaysfun2183@gmail.com"],
-      subject: "차량 가격이 변동 되었습니다",
-      html: `<strong>${record.trim_id} 차량 가격이 변동 되었습니다.</strong>`,
+      subject,
+      html,
     }),
   });
 
