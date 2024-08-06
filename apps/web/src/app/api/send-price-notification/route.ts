@@ -12,6 +12,14 @@ interface Request {
 }
 
 export async function POST(request: NextRequest) {
+  if (
+    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
   const { record } = (await request.json()) as Request;
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
