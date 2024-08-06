@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import supabaseLoader from "@/utils/supabase/loader";
 
 function CarImage({
   className,
@@ -22,6 +23,7 @@ function CarImage({
       alt={alt}
       className={className}
       fill={fill}
+      loader={supabaseLoader}
       priority={priority}
       sizes={sizes}
       src={src}
