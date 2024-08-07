@@ -108,9 +108,15 @@ importers:
       '@radix-ui/react-toast':
         specifier: ^1.1.5
         version: 1.1.5(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
+      '@react-email/components':
+        specifier: 0.0.22
+        version: 0.0.22(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
       '@remixicon/react':
         specifier: ^4.2.0
         version: 4.2.0(react@18.2.0)
+      '@repo/transactional':
+        specifier: workspace:*
+        version: link:../../packages/transactional
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -159,6 +165,9 @@ importers:
       recharts:
         specifier: ^2.12.7
         version: 2.12.7(react-dom@18.2.0)(react@18.2.0)
+      resend:
+        specifier: ^3.5.0
+        version: 3.5.0(react-dom@18.2.0)(react@18.2.0)
       tailwind-merge:
         specifier: ^2.2.2
         version: 2.2.2
@@ -1505,6 +1514,19 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@radix-ui/react-compose-refs@1.1.0(@types/react@18.2.61)(react@18.2.0):
+    resolution: {integrity: sha512-b4inOtiaOnYf9KWyO3jAeeCG6FeyfY6ldiEPanbUjWd+xIk5wZeHa8yVwmrJ2vderhu/BQvzCrJI0lHd+wIiqw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@types/react': 18.2.61
+      react: 18.2.0
+    dev: false
+
   /@radix-ui/react-context@1.0.1(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-ebbrdFoYTcuZ0v4wG5tedGnp9tzcV8awzsxYph7gXUyvnNLuTIcCk1q17JEbnVhXAKG9oX3KtchwiMIAYp9NLg==}
     peerDependencies:
@@ -2155,6 +2177,33 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@radix-ui/react-slot@1.1.0(@types/react@18.2.61)(react@18.2.0):
+    resolution: {integrity: sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.2.61)(react@18.2.0)
+      '@types/react': 18.2.61
+      react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-slot@1.1.0(react@18.2.0):
+    resolution: {integrity: sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.2.47)(react@18.2.0)
+      react: 18.2.0
+    dev: false
+
   /@radix-ui/react-toast@1.1.5(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-fRLn227WHIBRSzuRzGJ8W+5YALxofH23y0MlPLddaIpLpCDqdE0NZlS2NRQDRiptfxDeeCjgFIpexB1/zkxDlw==}
     peerDependencies:
@@ -2546,6 +2595,38 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-email/components@0.0.22(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-GO6F+fS3c3aQ6OnqL8esQ/KqtrPGwz80U6uQ8Nd/ETpgFt7y1PXvSGfr8v12wyLffAagdowc/JjoThfIr0L6aA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      '@react-email/body': 0.0.9(react@18.2.0)
+      '@react-email/button': 0.0.16(react@18.2.0)
+      '@react-email/code-block': 0.0.6(react@18.2.0)
+      '@react-email/code-inline': 0.0.3(react@18.2.0)
+      '@react-email/column': 0.0.11(react@18.2.0)
+      '@react-email/container': 0.0.13(react@18.2.0)
+      '@react-email/font': 0.0.7(react@18.2.0)
+      '@react-email/head': 0.0.10(react@18.2.0)
+      '@react-email/heading': 0.0.13(@types/react@18.2.61)(react@18.2.0)
+      '@react-email/hr': 0.0.9(react@18.2.0)
+      '@react-email/html': 0.0.9(react@18.2.0)
+      '@react-email/img': 0.0.9(react@18.2.0)
+      '@react-email/link': 0.0.9(react@18.2.0)
+      '@react-email/markdown': 0.0.11(react@18.2.0)
+      '@react-email/preview': 0.0.10(react@18.2.0)
+      '@react-email/render': 0.0.17(react-dom@18.2.0)(react@18.2.0)
+      '@react-email/row': 0.0.9(react@18.2.0)
+      '@react-email/section': 0.0.13(react@18.2.0)
+      '@react-email/tailwind': 0.0.19(react@18.2.0)
+      '@react-email/text': 0.0.9(react@18.2.0)
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+    dev: false
+
   /@react-email/components@0.0.22(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-GO6F+fS3c3aQ6OnqL8esQ/KqtrPGwz80U6uQ8Nd/ETpgFt7y1PXvSGfr8v12wyLffAagdowc/JjoThfIr0L6aA==}
     engines: {node: '>=18.0.0'}
@@ -2604,13 +2685,25 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@react-email/heading@0.0.13(@types/react@18.2.61)(react@18.2.0):
+    resolution: {integrity: sha512-MYDzjJwljKHBLueLuyqkaHxu6N4aGOL1ms2NNyJ9WXC9mmBnLs4Y/QEf9SjE4Df3AW4iT9uyfVHuaNUb7uq5QA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.2.61)(react@18.2.0)
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@react-email/heading@0.0.13(react@18.2.0):
     resolution: {integrity: sha512-MYDzjJwljKHBLueLuyqkaHxu6N4aGOL1ms2NNyJ9WXC9mmBnLs4Y/QEf9SjE4Df3AW4iT9uyfVHuaNUb7uq5QA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
     dependencies:
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.2.47)(react@18.2.0)
+      '@radix-ui/react-slot': 1.1.0(react@18.2.0)
       react: 18.2.0
     transitivePeerDependencies:
       - '@types/react'
@@ -2669,6 +2762,20 @@ packages:
       react: ^18.2.0
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /@react-email/render@0.0.16(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-wDaMy27xAq1cJHtSFptp0DTKPuV2GYhloqia95ub/DH9Dea1aWYsbdM918MOc/b/HvVS3w1z8DWzfAk13bGStQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      html-to-text: 9.0.5
+      js-beautify: 1.15.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-promise-suspense: 0.3.4
     dev: false
 
   /@react-email/render@0.0.17(react-dom@18.2.0)(react@18.2.0):
@@ -6969,6 +7076,16 @@ packages:
     dependencies:
       jsesc: 0.5.0
     dev: true
+
+  /resend@3.5.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-bKu4LhXSecP6krvhfDzyDESApYdNfjirD5kykkT1xO0Cj9TKSiGh5Void4pGTs3Am+inSnp4dg0B5XzdwHBJOQ==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@react-email/render': 0.0.16(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+    dev: false
 
   /resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
