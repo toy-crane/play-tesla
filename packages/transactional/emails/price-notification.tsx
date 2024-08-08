@@ -36,7 +36,7 @@ export const PriceNotificationEmail = ({
           src={`${baseUrl}/logo/horizontal_logo.svg`}
           width="170"
           height="50"
-          alt="Koala"
+          alt="Play Tesla Logo"
           style={logo}
         />
         <Text style={paragraph}>
