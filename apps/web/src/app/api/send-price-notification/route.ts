@@ -40,7 +40,6 @@ export async function POST(request: NextRequest) {
   }
 
   const trimName = `${trim.models.name} ${trim.name}`;
-  const modelName = trim.models.name;
   const newPrice = record.price;
   const modelSlug = trim.models.slug;
 
@@ -50,7 +49,6 @@ export async function POST(request: NextRequest) {
     subject: `${trimName} 차량 가격이 변동 되었습니다`,
     react: PriceNotificationEmail({
       trimName,
-      modelName,
       newPrice,
       modelSlug,
     }),

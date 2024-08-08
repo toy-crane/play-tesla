@@ -13,7 +13,6 @@ import {
 import * as React from "react";
 
 interface Props {
-  modelName: string;
   trimName: string;
   newPrice: number;
   modelSlug: string;
@@ -23,7 +22,6 @@ const baseUrl = "https://www.playtesla.xyz";
 
 export const PriceNotificationEmail = ({
   trimName,
-  modelName,
   newPrice,
   modelSlug,
 }: Props) => (
@@ -42,8 +40,8 @@ export const PriceNotificationEmail = ({
           style={logo}
         />
         <Text style={paragraph}>
-          {modelName} {trimName} 차량 가격이 {newPrice.toLocaleString()}원으로
-          변동 되었습니다.
+          {trimName} 차량 가격이 {newPrice.toLocaleString()}원으로 변동
+          되었습니다.
         </Text>
         <Section style={btnContainer}>
           <Button
