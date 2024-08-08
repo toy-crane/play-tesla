@@ -39,20 +39,32 @@ export async function POST(request: NextRequest) {
     throw new Error("Model not found");
   }
 
+  const { data: subscribers, error: getSubscribersError } = await supabase
+    .from("newsletter_subscribers")
+    .select("*");
+
+  if (getSubscribersError) {
+    throw new Error(getSubscribersError.message);
+  }
+
+  if (subscribers.length === 0) throw new Error("No subscribers found");
+
   const trimName = `${trim.models.name} ${trim.name}`;
   const newPrice = record.price;
   const modelSlug = trim.models.slug;
 
-  const { data, error } = await resend.emails.send({
+  const emails = subscribers.map((subscriber) => ({
     from: "Play Tesla <notifications@playtesla.xyz>",
-    to: ["alwaysfun2183@gmail.com"],
+    to: subscriber.email,
     subject: `${trimName} 차량 가격이 변동 되었습니다`,
     react: PriceNotificationEmail({
       trimName,
       newPrice,
       modelSlug,
     }),
-  });
+  }));
+
+  const { data, error } = await resend.batch.send(emails);
 
   if (error) {
     throw new Error(error.message);
