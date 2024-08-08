@@ -33,7 +33,7 @@ export const PriceNotificationEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={`${baseUrl}/logo/horizontal_logo.svg`}
+          src={`${baseUrl}/logo/horizontal_logo.png`}
           width="170"
           height="50"
           alt="Play Tesla Logo"
