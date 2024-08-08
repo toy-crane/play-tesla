@@ -24,55 +24,6 @@ importers:
         specifier: latest
         version: 1.13.2
 
-  apps/docs:
-    dependencies:
-      '@repo/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      next:
-        specifier: ^14.1.1
-        version: 14.1.1(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-    devDependencies:
-      '@next/eslint-plugin-next':
-        specifier: ^14.1.1
-        version: 14.1.1
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/config-eslint
-      '@repo/tailwind-config':
-        specifier: workspace:*
-        version: link:../../packages/config-tailwind
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/config-typescript
-      '@types/node':
-        specifier: ^20.11.24
-        version: 20.11.24
-      '@types/react':
-        specifier: ^18.2.61
-        version: 18.2.61
-      '@types/react-dom':
-        specifier: ^18.2.19
-        version: 18.2.19
-      autoprefixer:
-        specifier: ^10.4.18
-        version: 10.4.18(postcss@8.4.35)
-      postcss:
-        specifier: ^8.4.35
-        version: 8.4.35
-      tailwindcss:
-        specifier: ^3.4.1
-        version: 3.4.1
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-
   apps/web:
     dependencies:
       '@headlessui/react':
@@ -242,13 +193,20 @@ importers:
     dependencies:
       '@react-email/components':
         specifier: 0.0.22
-        version: 0.0.22(react-dom@18.2.0)(react@18.2.0)
+        version: 0.0.22(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-email:
         specifier: 2.1.6
         version: 2.1.6(eslint@8.57.0)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.11.24
+      '@types/react':
+        specifier: ^18.0.22
+        version: 18.2.61
 
   packages/ui:
     devDependencies:
@@ -2191,19 +2149,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@radix-ui/react-slot@1.1.0(react@18.2.0):
-    resolution: {integrity: sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.2.47)(react@18.2.0)
-      react: 18.2.0
-    dev: false
-
   /@radix-ui/react-toast@1.1.5(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-fRLn227WHIBRSzuRzGJ8W+5YALxofH23y0MlPLddaIpLpCDqdE0NZlS2NRQDRiptfxDeeCjgFIpexB1/zkxDlw==}
     peerDependencies:
@@ -2627,38 +2572,6 @@ packages:
       - react-dom
     dev: false
 
-  /@react-email/components@0.0.22(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-GO6F+fS3c3aQ6OnqL8esQ/KqtrPGwz80U6uQ8Nd/ETpgFt7y1PXvSGfr8v12wyLffAagdowc/JjoThfIr0L6aA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.2.0
-    dependencies:
-      '@react-email/body': 0.0.9(react@18.2.0)
-      '@react-email/button': 0.0.16(react@18.2.0)
-      '@react-email/code-block': 0.0.6(react@18.2.0)
-      '@react-email/code-inline': 0.0.3(react@18.2.0)
-      '@react-email/column': 0.0.11(react@18.2.0)
-      '@react-email/container': 0.0.13(react@18.2.0)
-      '@react-email/font': 0.0.7(react@18.2.0)
-      '@react-email/head': 0.0.10(react@18.2.0)
-      '@react-email/heading': 0.0.13(react@18.2.0)
-      '@react-email/hr': 0.0.9(react@18.2.0)
-      '@react-email/html': 0.0.9(react@18.2.0)
-      '@react-email/img': 0.0.9(react@18.2.0)
-      '@react-email/link': 0.0.9(react@18.2.0)
-      '@react-email/markdown': 0.0.11(react@18.2.0)
-      '@react-email/preview': 0.0.10(react@18.2.0)
-      '@react-email/render': 0.0.17(react-dom@18.2.0)(react@18.2.0)
-      '@react-email/row': 0.0.9(react@18.2.0)
-      '@react-email/section': 0.0.13(react@18.2.0)
-      '@react-email/tailwind': 0.0.19(react@18.2.0)
-      '@react-email/text': 0.0.9(react@18.2.0)
-      react: 18.2.0
-    transitivePeerDependencies:
-      - '@types/react'
-      - react-dom
-    dev: false
-
   /@react-email/container@0.0.13(react@18.2.0):
     resolution: {integrity: sha512-ftke0N1FZl8MX3XXxXiiOaiJOnrQz7ZXUyqNj81K+BK+DePWIVaSmgK6Bu8fFnsgwdKuBdqjZTEtF4sIkU3FuQ==}
     engines: {node: '>=18.0.0'}
@@ -2692,18 +2605,6 @@ packages:
       react: ^18.2.0
     dependencies:
       '@radix-ui/react-slot': 1.1.0(@types/react@18.2.61)(react@18.2.0)
-      react: 18.2.0
-    transitivePeerDependencies:
-      - '@types/react'
-    dev: false
-
-  /@react-email/heading@0.0.13(react@18.2.0):
-    resolution: {integrity: sha512-MYDzjJwljKHBLueLuyqkaHxu6N4aGOL1ms2NNyJ9WXC9mmBnLs4Y/QEf9SjE4Df3AW4iT9uyfVHuaNUb7uq5QA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.2.0
-    dependencies:
-      '@radix-ui/react-slot': 1.1.0(react@18.2.0)
       react: 18.2.0
     transitivePeerDependencies:
       - '@types/react'
