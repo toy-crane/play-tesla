@@ -21,7 +21,7 @@ export async function generateMetadata({
   const supabase = createClient();
   const { data: modelDetail, error } = await supabase
     .from("models")
-    .select("*")
+    .select("*, trims(*)")
     .eq("slug", params.model)
     .single();
 
@@ -29,9 +29,14 @@ export async function generateMetadata({
     throw Error(error.message);
   }
 
+  // create a list of all trim names like "Performance", "Long Range"
+  const trimNames = modelDetail.trims
+    .map((trim) => `${modelDetail.name} ${trim.name}`)
+    .join(", ");
+
   // optionally access and extend (rather than replace) parent metadata
-  const title = `테슬라 ${modelDetail.name} 가격 변화 추이`;
-  const description = `테슬라 ${modelDetail.name} 출시부터 현재까지의 가격 변화 추이를 확인하세요.`;
+  const title = `${new Date().getFullYear()}년 테슬라 ${modelDetail.name} 가격 변화 추이`;
+  const description = `테슬라 ${modelDetail.name} 출시부터 현재까지의 모든 트림(${trimNames})의 가격 변화 추이를 확인하세요. 가격 변경 시, 이메일을 통해 알림 받으실 수 있습니다.`;
 
   return {
     title,
