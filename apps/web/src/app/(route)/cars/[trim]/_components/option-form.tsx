@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useOptimistic, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Option, Trim } from "@/types/data";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,11 @@ function OptionForm({
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const [selectedColorCode, setSelectedColorCode] = useOptimistic(
+    currentOption.color
+  );
+  const [isPending, startTransition] = useTransition();
+
   const handleParamsChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
     params.set(key, value);
@@ -42,13 +48,28 @@ function OptionForm({
     }
   );
 
+  const handleColorToggle = useCallback(
+    (colorCode: string) => {
+      startTransition(() => {
+        setSelectedColorCode(colorCode);
+        handleParamsChange(`color`, colorCode);
+      });
+    },
+    [handleParamsChange, setSelectedColorCode]
+  );
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-2xl font-semibold tracking-tight">색상</h2>
+        <h2
+          className="text-2xl font-semibold tracking-tight"
+          data-pending={isPending ? "" : undefined}
+        >
+          색상
+        </h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.color}
+          value={selectedColorCode}
         >
           {orderedColors?.map((color) => (
             <div key={color.code}>
@@ -56,7 +77,7 @@ function OptionForm({
                 className="peer sr-only"
                 id={`c${color.code}`}
                 onClick={() => {
-                  handleParamsChange(`color`, color.code);
+                  handleColorToggle(color.code);
                 }}
                 value={color.code}
               />
