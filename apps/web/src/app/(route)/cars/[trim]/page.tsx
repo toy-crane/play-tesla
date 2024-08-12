@@ -37,19 +37,63 @@ export async function generateMetadata(
   const headersList = headers();
   const xQueryParams = headersList.get("x-query-params") || "";
   const queryParams = new URLSearchParams(xQueryParams);
+  const regionCode = searchParams.region ?? "1100";
 
-  const { data: trimDetail, error } = await supabase
-    .from("trims")
-    .select(
-      "code,name, models(code, name, colors(code),steerings(code)),wheels(code)"
-    )
-    .eq("slug", params.trim)
-    .order("slug")
-    .single();
+  const [regionSubsidyResponse, subsidyResponse, trimDetailResponse] =
+    await Promise.all([
+      supabase
+        .from("region_subsidies")
+        .select("*")
+        .eq("region_code", regionCode)
+        .order("snapshot_date", { ascending: false })
+        .limit(1)
+        .single(),
+      supabase
+        .from("subsidies")
+        .select("*,trims!inner(slug)")
+        .eq("trims.slug", params.trim)
+        .eq("region_code", regionCode)
+        .eq("year", new Date().getFullYear())
+        .maybeSingle(),
+      supabase
+        .from("trims")
+        .select(
+          "code,name,slug,models(code, name, slug, colors(code),steerings(code)),wheels(code), trim_prices(*)"
+        )
+        .eq("slug", params.trim)
+        .order("price_set_at", {
+          referencedTable: "trim_prices",
+          ascending: false,
+        })
+        .limit(1, { referencedTable: "trim_prices" })
+        .order("slug")
+        .single(),
+    ]);
 
-  if (error) {
-    throw Error(error.message);
+  if (
+    regionSubsidyResponse.error ||
+    subsidyResponse.error ||
+    trimDetailResponse.error
+  ) {
+    throw new Error(
+      regionSubsidyResponse.error?.message ||
+        subsidyResponse.error?.message ||
+        trimDetailResponse.error?.message
+    );
   }
+
+  const trimDetail = trimDetailResponse.data;
+  const subsidy = subsidyResponse.data;
+  const regionSubsidy = regionSubsidyResponse.data;
+  const releasePrice = trimDetail.trim_prices[0]?.price;
+
+  const subsidyAvailble = releasePrice && releasePrice < 85000000;
+  const subsidyConfirmed = Boolean(subsidy);
+  // 보조금이 확정되지 않았을 수도 있으므로, 분리
+  const applicableSubsidy =
+    subsidyAvailble && subsidyConfirmed ? subsidy : null;
+  const localSubsidy = applicableSubsidy?.local_subsidy;
+  const nationalSubsidy = applicableSubsidy?.national_subsidy;
 
   const modelCode = trimDetail.models?.code;
   const trimCode = trimDetail.code;
@@ -59,7 +103,6 @@ export async function generateMetadata(
 
   const modelName = trimDetail.models?.name;
   const trimName = trimDetail.name;
-  const regionCode = searchParams.region ?? "1100";
   const region = regions.find((r) => r.code === regionCode);
   const regionName = region?.province
     ? `${region.province} ${region.name}`
@@ -83,12 +126,26 @@ export async function generateMetadata(
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
-  const title = `${regionName} 테슬라 ${modelName} ${trimName} 전기차 보조금 확인하기`;
-  const description = `${regionName}의 ${modelName} ${trimName} 전기차 보조금에 관한 모든 정보를 확인하세요. 잔여 보조금 수량, 옵션 가격, 최종 구매 가격을 한 눈에 확인하실 수 있습니다.`;
+  const title = `${regionName} 테슬라 ${modelName} ${trimName} 전기차 보조금`;
+  const description = `
+   현재 ${regionName}의 ${modelName} ${trimName} 전기차 보조금이 국고 보조금 ${localSubsidy ? localSubsidy.toLocaleString() : 0}원, 지자체 보조금 ${nationalSubsidy ? nationalSubsidy.toLocaleString() : 0}원 지원됩니다.
+   ${regionSubsidy.remaining_quota.toLocaleString()}대의 물량이 남아 있습니다. 
+   ${regionName}의 ${modelName} ${trimName}에 대한 자세한 정보를 play-tesla에서 확인하세요. 
+  `;
 
   return {
     title,
     description,
+    keywords: [
+      "테슬라보조금",
+      "전기차보조금",
+      "테슬라 지원금액",
+      "전기차 지원금액",
+      "전기차 잔여보조금",
+      "전기차 보조금정보",
+      "테슬라 보조금",
+      "전기자동차 보조금",
+    ],
     openGraph: {
       title,
       description,
