@@ -27,14 +27,18 @@ const getOption = (trim: Trim, selectedOption: Option) => {
     (d) => d.code === selectedOption.drivingAssist
   );
 
-  const optionNames = `${color?.korean_name}, ${wheel?.name}, ${interior?.korean_name}, ${seat?.seat_count}인승, ${steering?.name}, ${drivingAssist?.korean_name}`;
+  if (!color || !wheel || !interior || !seat || !drivingAssist || !steering) {
+    throw new Error("Option not found");
+  }
+
+  const optionNames = `${color.korean_name}, ${wheel.name}, ${interior.korean_name}, ${seat.seat_count.toString()}인승, ${steering.name}, ${drivingAssist.korean_name}`;
   const totalOptionPrice =
-    (steering?.price || 0) +
-    (wheel?.price || 0) +
-    (interior?.price || 0) +
-    (color?.price || 0) +
-    (seat?.price || 0) +
-    (drivingAssist?.price || 0);
+    (steering.price || 0) +
+    (wheel.price || 0) +
+    (interior.price || 0) +
+    (color.price || 0) +
+    (seat.price || 0) +
+    (drivingAssist.price || 0);
   return { optionNames, totalOptionPrice };
 };
 
