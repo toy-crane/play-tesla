@@ -34,8 +34,8 @@ export function SelectCar({ trims, slug }: { trims: Trim[]; slug: string }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const carLabels = trims.map((trim) => ({
-    value: `${trim.models?.name} ${trim.name}`,
-    label: `${trim.models?.name} ${trim.name}`,
+    value: `${trim.models?.name || ""} ${trim.name || ""}`,
+    label: `${trim.models?.name || ""} ${trim.name || ""}`,
     trim: trim.slug,
   }));
 

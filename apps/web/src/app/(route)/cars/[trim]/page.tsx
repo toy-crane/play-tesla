@@ -111,7 +111,8 @@ export async function generateMetadata(
   if (
     modelCode === undefined ||
     colorCode === undefined ||
-    wheelCode === undefined
+    wheelCode === undefined ||
+    regionName === undefined
   ) {
     throw new Error("Model code, color code, or wheel code is undefined");
   }
@@ -126,11 +127,11 @@ export async function generateMetadata(
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
-  const title = `${regionName} 테슬라 ${modelName} ${trimName} 전기차 보조금`;
+  const title = `${regionName} 테슬라 ${modelName || ""} ${trimName || ""} 전기차 보조금`;
   const description = `
-   현재 ${regionName}의 ${modelName} ${trimName} 전기차 보조금이 국고 보조금 ${localSubsidy ? localSubsidy.toLocaleString() : 0}원, 지자체 보조금 ${nationalSubsidy ? nationalSubsidy.toLocaleString() : 0}원 지원됩니다.
+   현재 ${regionName}의 ${modelName || ""} ${trimName || ""} 전기차 보조금이 국고 보조금 ${localSubsidy ? localSubsidy.toLocaleString() : "0"}원, 지자체 보조금 ${nationalSubsidy ? nationalSubsidy.toLocaleString() : "0"}원 지원됩니다.
    ${regionSubsidy.remaining_quota.toLocaleString()}대의 물량이 남아 있습니다. 
-   ${regionName}의 ${modelName} ${trimName}에 대한 자세한 정보를 play-tesla에서 확인하세요. 
+   ${regionName}의 ${modelName || ""} ${trimName || ""}에 대한 자세한 정보를 play-tesla에서 확인하세요.
   `;
 
   return {
@@ -162,7 +163,7 @@ export async function generateMetadata(
   };
 }
 
-const CarSelection = async ({ trim }: { trim: string }) => {
+async function CarSelection({ trim }: { trim: string }) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("trims")
@@ -171,7 +172,7 @@ const CarSelection = async ({ trim }: { trim: string }) => {
     throw new Error(error.message);
   }
   return <SelectCar slug={trim} trims={data} />;
-};
+}
 
 export async function generateStaticParams() {
   const supabase = createBrowserClient();

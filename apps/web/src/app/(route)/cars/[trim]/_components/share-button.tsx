@@ -10,7 +10,9 @@ function ShareButton() {
   return (
     <Button
       onClick={async () => {
-        await navigator.clipboard.writeText(`${window.location.href}`);
+        if (window.location.href) {
+          await navigator.clipboard.writeText(window.location.href);
+        }
         toast({
           title: "주소가 복사되었습니다",
           description: "원하는 곳에 붙여넣기(Ctrl+V)해주세요.",
