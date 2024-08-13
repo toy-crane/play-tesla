@@ -80,6 +80,11 @@ export const metadata: Metadata = {
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
   metadataBase: new URL("https://www.playtesla.xyz"),
+  robots: {
+    index: true,
+    follow: true,
+  },
+  publisher: "https://www.playtesla.xyz",
   alternates: {
     canonical: "/",
   },
