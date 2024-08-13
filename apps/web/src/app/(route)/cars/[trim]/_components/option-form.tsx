@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useOptimistic, useTransition } from "react";
+import { useCallback } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Option, Trim } from "@/types/data";
 import { Label } from "@/components/ui/label";
@@ -24,16 +24,11 @@ function OptionForm({
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [selectedColorCode, setSelectedColorCode] = useOptimistic(
-    currentOption.color
-  );
-  const [isPending, startTransition] = useTransition();
-
-  const handleParamsChange = (key: string, value: string) => {
+  const handleParamsChange = useCallback((key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
     params.set(key, value);
     router.replace(`?${params.toString()}`, { scroll: false });
-  };
+  }, []);
 
   const orderedColors = trim.models?.colors.sort((a, b) => {
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
@@ -50,26 +45,18 @@ function OptionForm({
 
   const handleColorToggle = useCallback(
     (colorCode: string) => {
-      startTransition(() => {
-        setSelectedColorCode(colorCode);
-        handleParamsChange(`color`, colorCode);
-      });
+      handleParamsChange(`color`, colorCode);
     },
-    [handleParamsChange, setSelectedColorCode]
+    [handleParamsChange]
   );
 
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h2
-          className="text-2xl font-semibold tracking-tight"
-          data-pending={isPending ? "" : undefined}
-        >
-          색상
-        </h2>
+        <h2 className="text-2xl font-semibold tracking-tight">색상</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={selectedColorCode}
+          value={currentOption.color}
         >
           {orderedColors?.map((color) => (
             <div key={color.code}>
