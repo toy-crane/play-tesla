@@ -13,12 +13,10 @@ interface ImageConfig {
 async function fetchWithDelay(imageUrls: ImageConfig[]) {
   const supabase = createClient();
   for (const config of imageUrls) {
-    // eslint-disable-next-line no-await-in-loop -- This is a server-side script
     const response = await fetch(config.url);
     if (response.ok) {
-      // eslint-disable-next-line no-await-in-loop -- This is a server-side script
       const blob = await response.arrayBuffer();
-      // eslint-disable-next-line no-await-in-loop -- This is a server-side script
+
       await supabase.storage.from("cars").upload(config.fileName, blob, {
         contentType: "image/jpeg",
       });
@@ -42,6 +40,7 @@ function generateImageURLs(trim: Trim): ImageConfig[] {
     trim.wheels.forEach((wheel) => {
       Object.values(CarView).forEach((viewType) => {
         const interiorCode = trim.interiors[0]?.code; // Assuming using the first interior for simplicity
+        if (!interiorCode) throw new Error("Interior code not found");
         const url = `${baseUrl}?options=${trim.code},${color.code},${wheel.code},${interiorCode}&view=${viewType}&model=${modelCode}`;
         const fileName = `${modelCode}/${trim.code}/${color.code}-${wheel.code}-${interiorCode}-${viewType}`;
         configs.push({
