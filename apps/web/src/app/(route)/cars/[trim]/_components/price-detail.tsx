@@ -178,7 +178,7 @@ async function PriceDetail({
                   size="sm"
                   variant="outline"
                 >
-                  <Link href={`/prices/${trimDetail.slug.split("-")[0]}`}>
+                  <Link href={`/prices/${trimDetail.slug.split("-")[0]!}`}>
                     가격 변동 확인하기
                   </Link>
                 </Button>

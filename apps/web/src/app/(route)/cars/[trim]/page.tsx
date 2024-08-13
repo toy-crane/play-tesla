@@ -263,7 +263,7 @@ function Page({ params, searchParams: { region } }: PageProps) {
           <Options trimSlug={trimSlug} />
         </Suspense>
       </div>
-      <OrderCTA code={trimSlug.split("-")[0]} />
+      <OrderCTA code={trimSlug.split("-")[0]!} />
     </>
   );
 }

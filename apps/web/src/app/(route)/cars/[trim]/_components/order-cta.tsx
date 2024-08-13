@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-function OrderCTA({ code }: { code?: string }) {
+function OrderCTA({ code }: { code: string }) {
   return (
     <div className="z-bottom-nav content-grid fixed bottom-4 w-full justify-center bg-gradient-to-t from-white from-80% to-transparent">
       <div className="md:content full flex justify-center pt-5">
