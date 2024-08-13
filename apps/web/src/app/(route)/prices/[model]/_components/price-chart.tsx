@@ -4,8 +4,7 @@ import { LineChart } from "@tremor/react";
 import { cn } from "@/lib/utils";
 import type { PriceChartData } from "../page";
 
-const dataFormatter = (number: number) =>
-  `${(number / 10000).toLocaleString()}`;
+const dataFormatter = (number: number) => (number / 10000).toLocaleString();
 
 export function PriceChart({
   data,
@@ -33,7 +32,7 @@ export function PriceChart({
                 <span
                   className={cn(
                     "shrink-0 rounded-full border-2 h-3 w-3 border-muted",
-                    `bg-${category.color}`
+                    `bg-${category.color!}`
                   )}
                 />
                 <div className="flex gap-2 flex-1 justify-between">

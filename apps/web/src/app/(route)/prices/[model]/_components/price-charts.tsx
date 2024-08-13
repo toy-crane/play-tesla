@@ -24,7 +24,7 @@ const transformCarData = (inputData: CarPrice[]): PriceChartData[] => {
 
   inputData.forEach((car) => {
     const priceSetAt = car.price_set_at;
-    const modelSlug = `${car.trims?.models?.name} ${car.trims?.name}`;
+    const modelSlug = `${car.trims?.models?.name || ""} ${car.trims?.name || ""}`;
     if (!modelSlug) return;
     modelPrices[modelSlug] = car.price; // 항상 최신 가격을 업데이트
 
@@ -64,7 +64,9 @@ async function PriceCharts({ modelSlug }: { modelSlug: string }) {
 
   const trimModels = [
     ...new Set(
-      data.map((car) => `${car.trims.models?.name} ${car.trims.name}`)
+      data.map(
+        (car) => `${car.trims.models?.name || ""} ${car.trims.name || ""}`
+      )
     ),
   ];
   const chartData = transformCarData(data);
