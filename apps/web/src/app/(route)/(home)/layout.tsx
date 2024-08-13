@@ -10,6 +10,7 @@ function Layout(props: { children: React.ReactNode }) {
           <Link href="/cars/model3-longrange">
             <Image
               alt="play-tesla-logo"
+              title="테슬라 정보를 한 곳에서"
               height="36"
               src="/logo/horizontal_logo.svg"
               width="144"
@@ -18,6 +19,7 @@ function Layout(props: { children: React.ReactNode }) {
           <Link href="https://toss.me/toycrane">
             <Button variant="outline">
               <Image
+                title="제작자 후원하기"
                 alt="toss-logo"
                 className="mr-1"
                 height="16"

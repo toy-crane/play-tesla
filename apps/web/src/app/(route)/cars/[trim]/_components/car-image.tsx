@@ -19,6 +19,7 @@ function CarImage({
 }) {
   return (
     <Image
+      title={alt}
       alt={alt}
       className={className}
       fill={fill}

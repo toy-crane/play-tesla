@@ -8,6 +8,7 @@ function Layout(props: { children: React.ReactNode }) {
         <nav className="pt-4 pb-2 flex items-center justify-between">
           <Link href="/">
             <Image
+              title="테슬라 정보를 한 곳에서"
               alt="logo"
               height="36"
               src="/logo/horizontal_logo.svg"
