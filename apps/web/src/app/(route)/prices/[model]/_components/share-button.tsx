@@ -1,6 +1,5 @@
 "use client";
 
-import { track } from "@vercel/analytics";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
