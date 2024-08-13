@@ -32,7 +32,8 @@ export async function GET(
   { params: { modelCode } }: { params: { modelCode: keyof typeof modelSlug } }
 ) {
   if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.CRON_SECRET!}`
   ) {
     return new Response("Unauthorized", {
       status: 401,
@@ -113,16 +114,15 @@ export async function GET(
     );
     const latestPrice = trim.latest_price;
     if (priceOption && latestPrice.price !== priceOption.value) {
-      // eslint-disable-next-line no-await-in-loop -- ignore
       await supabase.from("trim_prices").insert({
         price: priceOption.value,
         price_set_at: new Date().toISOString(),
         trim_id: trim.trim_id,
       });
-      // eslint-disable-next-line no-await-in-loop -- ignore
+
       await alertDiscord(
         "https://discord.com/api/webhooks/1267804345362026537/YZBA5v6d5qen82sfFjEA6a3QbMGtF_Px9yIdzGFl3ehN1Z0H3Lemm0uvxY4aiPo4q1eC",
-        `차량 가격이 ${new Date().toLocaleDateString()}에 변경되었습니다. 차량 코드: ${trim.code}, 차량 이름: ${trim.slug} 기존 가격: ${latestPrice.price}, 새로운 가격: ${priceOption.value}`
+        `차량 가격이 ${new Date().toLocaleDateString()}에 변경되었습니다. 차량 코드: ${trim.code}, 차량 이름: ${trim.slug} 기존 가격: ${latestPrice.price?.toString() || "없음"}, 새로운 가격: ${priceOption.value.toString()}`
       );
     }
   }

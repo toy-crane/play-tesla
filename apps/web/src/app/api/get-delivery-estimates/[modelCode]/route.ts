@@ -45,7 +45,8 @@ export async function GET(
   { params: { modelCode } }: { params: { modelCode: keyof typeof modelSlug } }
 ) {
   if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.CRON_SECRET!}`
   ) {
     return new Response("Unauthorized", {
       status: 401,

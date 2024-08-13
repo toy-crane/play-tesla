@@ -10,7 +10,8 @@ const SUBSIDY_API_URL =
 
 export async function GET(request: Request) {
   if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.CRON_SECRET!}`
   ) {
     return new Response("Unauthorized", {
       status: 401,

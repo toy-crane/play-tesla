@@ -182,7 +182,7 @@ function OptionForm({
             <div key={seating.seat_count}>
               <RadioGroupItem
                 className="peer sr-only"
-                id={`s${seating.seat_count}`}
+                id={`s${seating.seat_count.toString()}`}
                 onClick={() => {
                   handleParamsChange(`seat`, String(seating.seat_count));
                 }}
@@ -190,10 +190,10 @@ function OptionForm({
               />
               <Label
                 className="flex items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary gap-2"
-                htmlFor={`s${seating.seat_count}`}
+                htmlFor={`s${seating.seat_count.toString()}`}
               >
                 {trim.seatings.length === 1 ? (
-                  `${seating.seat_count} 인승`
+                  `${seating.seat_count.toString()} 인승`
                 ) : (
                   <div className="flex flex-col gap-1">
                     <span>{seating.seat_count} 인승 </span>

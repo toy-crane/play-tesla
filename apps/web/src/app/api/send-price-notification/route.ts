@@ -16,7 +16,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.CRON_SECRET}`
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.CRON_SECRET!}`
   ) {
     return new Response("Unauthorized", {
       status: 401,
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
 
   if (subscribers.length === 0) throw new Error("No subscribers found");
 
-  const trimName = `${trim.models.name} ${trim.name}`;
+  const trimName = `${trim.models.name} ${trim.name || ""}`;
   const newPrice = record.price;
   const modelSlug = trim.models.slug;
 
