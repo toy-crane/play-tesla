@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useQueryState } from "nuqs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Option, Trim } from "@/types/data";
 import { Label } from "@/components/ui/label";
@@ -21,16 +20,35 @@ function OptionForm({
   currentOption: Option;
   trim: Trim;
 }) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [currentInterior, setCurrentInterior] = useQueryState("interior", {
+    defaultValue: currentOption.interior,
+    shallow: false,
+  });
+  const [currentColor, setCurrentColor] = useQueryState("color", {
+    defaultValue: currentOption.color,
+    shallow: false,
+  });
+  const [currentWheel, setCurrentWheel] = useQueryState("wheel", {
+    defaultValue: currentOption.wheel,
+    shallow: false,
+  });
 
-  const handleParamsChange = useCallback(
-    (key: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(key, value);
-      router.replace(`?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams]
+  const [currentSeat, setCurrentSeat] = useQueryState("seat", {
+    defaultValue: currentOption.seat,
+    shallow: false,
+  });
+
+  const [currentSteering, setCurrentSteering] = useQueryState("steering", {
+    defaultValue: currentOption.steering,
+    shallow: false,
+  });
+
+  const [currentDrivingAssist, setCurrentDrivingAssist] = useQueryState(
+    "drivingAssist",
+    {
+      defaultValue: currentOption.drivingAssist,
+      shallow: false,
+    }
   );
 
   const orderedColors = trim.models?.colors.sort((a, b) => {
@@ -46,29 +64,20 @@ function OptionForm({
     }
   );
 
-  const handleColorToggle = useCallback(
-    (colorCode: string) => {
-      handleParamsChange(`color`, colorCode);
-    },
-    [handleParamsChange]
-  );
-
   return (
     <div className="space-y-6">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">색상</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.color}
+          value={currentColor}
         >
           {orderedColors?.map((color) => (
             <div key={color.code}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`c${color.code}`}
-                onClick={() => {
-                  handleColorToggle(color.code);
-                }}
+                onClick={() => setCurrentColor(color.code)}
                 value={color.code}
               />
               <Label
@@ -96,16 +105,14 @@ function OptionForm({
         <h2 className="text-2xl font-semibold tracking-tight">휠</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.wheel}
+          value={currentWheel}
         >
           {trim.wheels.map((wheel) => (
             <div key={wheel.code}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`w${wheel.code}`}
-                onClick={() => {
-                  handleParamsChange(`wheel`, wheel.code);
-                }}
+                onClick={() => setCurrentWheel(wheel.code)}
                 value={wheel.code}
               />
               <Label
@@ -129,16 +136,14 @@ function OptionForm({
         <h2 className="text-2xl font-semibold tracking-tight">인테리어</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.interior}
+          value={currentInterior}
         >
           {trim.interiors.map((interior) => (
             <div key={interior.code}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`i${interior.code}`}
-                onClick={() => {
-                  handleParamsChange(`interior`, interior.code);
-                }}
+                onClick={() => setCurrentInterior(interior.code)}
                 value={interior.code}
               />
               <Label
@@ -166,16 +171,14 @@ function OptionForm({
         <h2 className="text-2xl font-semibold tracking-tight">좌석</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.seat}
+          value={currentSeat}
         >
           {trim.seatings.map((seating) => (
             <div key={seating.seat_count}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`s${seating.seat_count.toString()}`}
-                onClick={() => {
-                  handleParamsChange(`seat`, String(seating.seat_count));
-                }}
+                onClick={() => setCurrentSeat(String(seating.seat_count))}
                 value={seating.seat_count.toString()}
               />
               <Label
@@ -203,16 +206,14 @@ function OptionForm({
         <h2 className="text-2xl font-semibold tracking-tight">스티어링</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.steering}
+          value={currentSteering}
         >
           {trim.models?.steerings.map((steering) => (
             <div key={steering.code}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`st${steering.code}`}
-                onClick={() => {
-                  handleParamsChange(`steering`, steering.code);
-                }}
+                onClick={() => setCurrentSteering(steering.code)}
                 value={steering.code}
               />
               <Label
@@ -240,16 +241,14 @@ function OptionForm({
         <h2 className="text-2xl font-semibold tracking-tight">주행 보조</h2>
         <RadioGroup
           className="flex gap-x-4 flex-wrap gap-y-2"
-          value={currentOption.drivingAssist}
+          value={currentDrivingAssist}
         >
           {orderedDrivingAssist?.map((option) => (
             <div key={option.code}>
               <RadioGroupItem
                 className="peer sr-only"
                 id={`st${option.code}`}
-                onClick={() => {
-                  handleParamsChange(`drivingAssist`, option.code);
-                }}
+                onClick={() => setCurrentDrivingAssist(option.code)}
                 value={option.code}
               />
               <Label
