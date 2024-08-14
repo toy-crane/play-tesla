@@ -129,9 +129,9 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
   const title = `${regionName} 테슬라 ${modelName || ""} ${trimName || ""} 전기차 보조금`;
   const description = `
-   현재 ${regionName}의 ${modelName || ""} ${trimName || ""} 전기차 보조금이 국고 보조금 ${localSubsidy ? localSubsidy.toLocaleString() : "0"}원, 지자체 보조금 ${nationalSubsidy ? nationalSubsidy.toLocaleString() : "0"}원 지원됩니다.
+   ${new Date().getFullYear().toString()}년 ${regionName}의 ${modelName || ""} ${trimName || ""} 전기차 보조금이 국고 보조금 ${localSubsidy ? localSubsidy.toLocaleString() : "0"}원, 지자체 보조금 ${nationalSubsidy ? nationalSubsidy.toLocaleString() : "0"}원 지원됩니다.
    ${regionSubsidy.remaining_quota.toLocaleString()}대의 물량이 남아 있습니다. 
-   ${regionName}의 ${modelName || ""} ${trimName || ""}에 대한 자세한 정보를 play-tesla에서 확인하세요.
+   ${regionName}의 ${modelName || ""} ${trimName || ""}에 대한 실구매가, 견적이 궁금하다면, play-tesla에서 확인하세요.
   `;
 
   return {
@@ -146,6 +146,8 @@ export async function generateMetadata(
       "전기차 보조금정보",
       "테슬라 보조금",
       "전기자동차 보조금",
+      "전기차 보조금 실구매가",
+      "전기차 보조금 계산기",
     ],
     openGraph: {
       title,
