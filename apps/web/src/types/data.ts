@@ -22,5 +22,5 @@ export interface Option {
   color: string;
   interior: string;
   steering: string;
-  drivingAssist?: string;
+  drivingAssist: string;
 }
