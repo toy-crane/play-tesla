@@ -24,11 +24,14 @@ function OptionForm({
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleParamsChange = useCallback((key: string, value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set(key, value);
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, []);
+  const handleParamsChange = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(key, value);
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
 
   const orderedColors = trim.models?.colors.sort((a, b) => {
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
