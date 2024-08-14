@@ -7,7 +7,7 @@
     "CRON_SECRET",
     "RESEND_API_KEY"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
