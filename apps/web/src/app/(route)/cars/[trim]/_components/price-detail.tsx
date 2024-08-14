@@ -224,7 +224,7 @@ async function PriceDetail({
                   <span className="text-xs text-muted-foreground">
                     기준일자: {regionSubsidy.snapshot_date}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="font-semibold text-sm">
                     잔여 수량: {regionSubsidy.remaining_quota.toLocaleString()}
                     대
                   </span>
