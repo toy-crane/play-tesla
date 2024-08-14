@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronsUpDownIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { useMediaQuery } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,8 +23,10 @@ import regions from "@/constants/regions";
 
 export function SelectRegion({ code }: { code: string }) {
   const [open, setOpen] = React.useState(false);
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [currentRegion, setCurrentRegion] = useQueryState("region", {
+    defaultValue: code,
+    shallow: false,
+  });
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -35,13 +37,11 @@ export function SelectRegion({ code }: { code: string }) {
   }));
 
   const handleSelectedRegion = (regionCode: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("region", regionCode);
-    router.replace(`?${params.toString()}`);
+    void setCurrentRegion(regionCode);
   };
 
   const selectedRegionLabel = regionLabels.find(
-    (car) => car.regionCode === code
+    (car) => car.regionCode === currentRegion
   );
 
   if (isDesktop) {
