@@ -20,6 +20,8 @@ function OptionForm({
   currentOption: Option;
   trim: Trim;
 }) {
+  const trimSlug = trim.slug;
+
   const [currentInterior, setCurrentInterior] = useQueryState("interior", {
     defaultValue: currentOption.interior,
     shallow: false,
@@ -131,6 +133,11 @@ function OptionForm({
             </div>
           ))}
         </RadioGroup>
+        {trimSlug === "modely-longrange" && (
+          <h4 className="text-xs text-muted-foreground">
+            모델 Y 롱레인지의 경우, 휠 사이즈에 따라 보조금의 차이가 있습니다.
+          </h4>
+        )}
       </div>
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">인테리어</h2>
