@@ -121,11 +121,11 @@ export async function GET(
       return acc;
     }
     const inStart =
-      delivery.inType === "month"
+      delivery.inType === "months"
         ? Number(delivery.inStart) * 4
         : Number(delivery.inStart);
     const inEnd =
-      delivery.inType === "month"
+      delivery.inType === "months"
         ? Number(delivery.inEnd) * 4
         : Number(delivery.inEnd);
 
