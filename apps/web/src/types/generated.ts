@@ -453,7 +453,7 @@ export type Database = {
           {
             foreignKeyName: "wheel_specific_subsides_wheel_id_fkey"
             columns: ["wheel_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "wheels"
             referencedColumns: ["id"]
           },
@@ -499,7 +499,28 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      integrated_subsidies_view: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          local_subsidy: number | null
+          national_subsidy: number | null
+          region_code: string | null
+          subsidy_type: string | null
+          trim_id: string | null
+          wheel_id: string | null
+          year: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wheel_specific_subsides_wheel_id_fkey"
+            columns: ["wheel_id"]
+            isOneToOne: false
+            referencedRelation: "wheels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never

@@ -7,6 +7,7 @@ import type { Trim, Option } from "@/types/data";
 import { createClient } from "@/utils/supabase/server";
 import { DEFAULT_REGION_CODE } from "@/constants/regions";
 import { Button } from "@/components/ui/button";
+import { type Views } from "@/types/helper";
 
 const getOption = (trim: Trim, selectedOption: Option) => {
   const steering = trim.models?.steerings.find(
@@ -87,12 +88,13 @@ async function PriceDetail({
       .limit(1)
       .single(),
     supabase
-      .from("subsidies")
+      .from("integrated_subsidies_view")
       .select("*")
       .eq("trim_id", trimDetail.id)
       .eq("region_code", regionCode)
       .eq("year", new Date().getFullYear())
-      .maybeSingle(),
+      .limit(1)
+      .maybeSingle<Views<"integrated_subsidies_view">>(),
   ]);
   if (regionSubsidyResponse.error || subsidyResponse.error) {
     throw new Error(
@@ -123,6 +125,7 @@ async function PriceDetail({
   // 보조금이 확정되지 않았을 수도 있으므로, 분리
   const applicableSubsidy =
     subsidyAvailble && subsidyConfirmed ? subsidy : null;
+
   const totalSubsidy =
     subsidyAvailble && applicableSubsidy
       ? applicableSubsidy.local_subsidy + applicableSubsidy.national_subsidy
