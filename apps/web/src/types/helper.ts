@@ -16,6 +16,7 @@ export type Database = MergeDeep<
             year: number;
             region_code: string;
             wheel_id: string | null; // UUID, can be null for general subsidies
+            wheel_code: string | null;
             subsidy_type: "wheel_specific" | "general";
           };
         };

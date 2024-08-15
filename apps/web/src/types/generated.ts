@@ -508,6 +508,7 @@ export type Database = {
           region_code: string | null
           subsidy_type: string | null
           trim_id: string | null
+          wheel_code: string | null
           wheel_id: string | null
           year: number | null
         }
