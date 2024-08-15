@@ -54,55 +54,52 @@ async function PriceDetail({
   const queryParams = headersList.get("x-query-params") || "";
   const params = new URLSearchParams(queryParams);
   const regionCode = params.get("region") || DEFAULT_REGION_CODE;
-  const [regionSubsidyResponse, subsidyResponse, trimDetailResponse] =
-    await Promise.all([
-      supabase
-        .from("region_subsidies")
-        .select("*")
-        .eq("region_code", regionCode)
-        .order("snapshot_date", { ascending: false })
-        .limit(1)
-        .single(),
-      supabase
-        .from("subsidies")
-        .select("*,trims!inner(slug)")
-        .eq("trims.slug", trimSlug)
-        .eq("region_code", regionCode)
-        .eq("year", new Date().getFullYear())
-        .maybeSingle(),
-      supabase
-        .from("trims")
-        .select(
-          "*, models(name, code, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),trim_prices(*), interiors(*), trim_delivery_estimates(*)"
-        )
-        .eq("slug", trimSlug)
-        .order("slug")
-        .order("price_set_at", {
-          referencedTable: "trim_prices",
-          ascending: false,
-        })
-        .order("set_at", {
-          referencedTable: "trim_delivery_estimates",
-          ascending: false,
-        })
-        .limit(2, { referencedTable: "trim_prices" })
-        .limit(1, { referencedTable: "trim_delivery_estimates" })
-        .single(),
-    ]);
 
-  if (
-    regionSubsidyResponse.error ||
-    subsidyResponse.error ||
-    trimDetailResponse.error
-  ) {
+  const { data: trimDetail, error } = await supabase
+    .from("trims")
+    .select(
+      "*, models(name, code, colors(*),steerings(*),driving_assist_options(*)),seatings(*),wheels(*),trim_prices(*), interiors(*), trim_delivery_estimates(*)"
+    )
+    .eq("slug", trimSlug)
+    .order("slug")
+    .order("price_set_at", {
+      referencedTable: "trim_prices",
+      ascending: false,
+    })
+    .order("set_at", {
+      referencedTable: "trim_delivery_estimates",
+      ascending: false,
+    })
+    .limit(2, { referencedTable: "trim_prices" })
+    .limit(1, { referencedTable: "trim_delivery_estimates" })
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const [regionSubsidyResponse, subsidyResponse] = await Promise.all([
+    supabase
+      .from("region_subsidies")
+      .select("*")
+      .eq("region_code", regionCode)
+      .order("snapshot_date", { ascending: false })
+      .limit(1)
+      .single(),
+    supabase
+      .from("subsidies")
+      .select("*")
+      .eq("trim_id", trimDetail.id)
+      .eq("region_code", regionCode)
+      .eq("year", new Date().getFullYear())
+      .maybeSingle(),
+  ]);
+  if (regionSubsidyResponse.error || subsidyResponse.error) {
     throw new Error(
-      regionSubsidyResponse.error?.message ||
-        subsidyResponse.error?.message ||
-        trimDetailResponse.error?.message
+      regionSubsidyResponse.error?.message || subsidyResponse.error?.message
     );
   }
 
-  const trimDetail = trimDetailResponse.data;
   const subsidy = subsidyResponse.data;
   const regionSubsidy = regionSubsidyResponse.data;
   const trimDeliveryEstimate = trimDetail.trim_delivery_estimates[0];
