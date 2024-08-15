@@ -411,6 +411,54 @@ export type Database = {
           },
         ]
       }
+      wheel_specific_subsidies: {
+        Row: {
+          created_at: string
+          id: string
+          local_subsidy: number
+          national_subsidy: number
+          region_code: string
+          trim_id: string
+          wheel_id: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          local_subsidy: number
+          national_subsidy: number
+          region_code: string
+          trim_id?: string
+          wheel_id: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          local_subsidy?: number
+          national_subsidy?: number
+          region_code?: string
+          trim_id?: string
+          wheel_id?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subsidies_duplicate_trim_id_fkey"
+            columns: ["trim_id"]
+            isOneToOne: false
+            referencedRelation: "trims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wheel_specific_subsides_wheel_id_fkey"
+            columns: ["wheel_id"]
+            isOneToOne: true
+            referencedRelation: "wheels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wheels: {
         Row: {
           code: string

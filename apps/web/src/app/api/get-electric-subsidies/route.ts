@@ -6,20 +6,31 @@ import { alertDiscord } from "@/lib/discord";
 export const dynamic = "force-dynamic";
 
 const modelNames = {
-  "Model Y RWD": "modely-rwd",
-  "Model 3 RWD": "model3-rwd",
-  "Model 3 Long Range": "model3-longrange",
-  "Model 3 Performance(2024)": "model3-performance",
-  "Model Y Long Range": "modely-longrange",
-  "Model Y Performance": "modely-performance",
+  "Model Y RWD": { trimSlug: "modely-rwd", wheelCode: undefined },
+  "Model 3 RWD": { trimSlug: "model3-rwd", wheelCode: undefined },
+  "Model 3 Long Range": { trimSlug: "model3-longrange", wheelCode: undefined },
+  "Model 3 Performance(2024)": {
+    trimSlug: "model3-performance",
+    wheelCode: undefined,
+  },
+  "Model Y Long Range": { trimSlug: "modely-longrange", wheelCode: undefined },
+  "Model Y Performance": {
+    trimSlug: "modely-performance",
+    wheelCode: undefined,
+  },
+  "Model Y Long Range 19인치": {
+    trimSlug: "modely-longrange",
+    wheelCode: "$WY19B",
+  },
 };
 
 interface TeslaSubsidy {
-  trim: string;
+  trimSlug: string;
   nationalSubsidy: number;
   localSubsidy: number;
   totalSubsidy: number;
   regionCode: string;
+  wheelCode?: string;
 }
 
 function getTrim(model: string) {
@@ -53,17 +64,14 @@ async function fetchTeslaSubsidies(regionCode: string) {
       if (manufacturer === "테슬라코리아") {
         const model = $(element).find("td").eq(2).text().trim(); // 모델명
         // 사용하지 않는 모델 예외처리
-        if (
-          model === "Model Y RWD(2023)" ||
-          model === "Model Y Long Range 19인치"
-        )
-          return true;
-        const trim = getTrim(model);
+        if (model === "Model Y RWD(2023)") return true;
+        const { trimSlug, wheelCode } = getTrim(model);
         const nationalSubsidyString = $(element).find("td").eq(3).text().trim(); // 국비 (만원)
         const localSubsidyString = $(element).find("td").eq(4).text().trim(); // 지방비 (만원)
         const totalSubsidyString = $(element).find("td").eq(5).text().trim(); // 보조금 (만원)
         teslaSubsidies.push({
-          trim,
+          trimSlug,
+          wheelCode,
           nationalSubsidy:
             parseInt(nationalSubsidyString.replace(/,/g, ""), 10) * 10000,
           localSubsidy:
@@ -90,11 +98,19 @@ export async function POST() {
   const supabase = createClient({ type: "admin" });
   const { data: trims, error } = await supabase
     .from("trims")
-    .select("id, slug")
-    .in("slug", Object.values(modelNames));
+    .select("id, slug");
   if (error) {
     throw new Error(error.message);
   }
+
+  const { data: wheels, error: wheelError } = await supabase
+    .from("wheels")
+    .select("id, code");
+
+  if (wheelError) {
+    throw new Error(wheelError.message);
+  }
+
   const regionCodes = regions.map((r) => r.code);
 
   const teslaSubsidiesPromises = regionCodes.map((code) =>
@@ -103,13 +119,31 @@ export async function POST() {
   const allResponses = await Promise.all(teslaSubsidiesPromises);
   const teslaSubsidies = allResponses.flat();
 
-  const subsidies = teslaSubsidies.map((subsidy) => ({
-    trim_id: trims.find((trim) => trim.slug === subsidy.trim)?.id,
-    local_subsidy: subsidy.localSubsidy,
-    national_subsidy: subsidy.nationalSubsidy,
-    region_code: subsidy.regionCode,
-    year: new Date().getFullYear(),
-  }));
+  const wheelSpecificSubsidies = teslaSubsidies
+    .filter((subsidy) => subsidy.wheelCode)
+    .map((subsidy) => {
+      const wheelId = wheels.find((wheel) => wheel.code === subsidy.wheelCode);
+      if (!wheelId) throw new Error(`Wheel not found: ${subsidy.wheelCode!}`);
+      return {
+        trim_id: trims.find((trim) => trim.slug === subsidy.trimSlug)?.id,
+        wheel_id: wheelId.id,
+        local_subsidy: subsidy.localSubsidy,
+        national_subsidy: subsidy.nationalSubsidy,
+        region_code: subsidy.regionCode,
+        year: new Date().getFullYear(),
+      };
+    });
+
+  const subsidies = teslaSubsidies
+    .filter((subsidy) => !subsidy.wheelCode)
+    .map((subsidy) => ({
+      trim_id: trims.find((trim) => trim.slug === subsidy.trimSlug)?.id,
+      local_subsidy: subsidy.localSubsidy,
+      national_subsidy: subsidy.nationalSubsidy,
+      region_code: subsidy.regionCode,
+      year: new Date().getFullYear(),
+    }));
+
   const { error: insertError } = await supabase
     .from("subsidies")
     .upsert(subsidies, { onConflict: "year,trim_id,region_code" });
@@ -117,5 +151,16 @@ export async function POST() {
   if (insertError) {
     throw new Error(insertError.message);
   }
+
+  const { error: insertWheelError } = await supabase
+    .from("wheel_specific_subsidies")
+    .upsert(wheelSpecificSubsidies, {
+      onConflict: "year,trim_id,wheel_id,region_code",
+    });
+
+  if (insertWheelError) {
+    throw new Error(insertWheelError.message);
+  }
+
   return Response.json({ result: "success", subsidies });
 }
