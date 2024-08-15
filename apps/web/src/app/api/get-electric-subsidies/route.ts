@@ -105,7 +105,7 @@ export async function POST() {
 
   const { data: wheels, error: wheelError } = await supabase
     .from("wheels")
-    .select("id, code");
+    .select("id, code, trim_id");
 
   if (wheelError) {
     throw new Error(wheelError.message);
@@ -122,11 +122,15 @@ export async function POST() {
   const wheelSpecificSubsidies = teslaSubsidies
     .filter((subsidy) => subsidy.wheelCode)
     .map((subsidy) => {
-      const wheelId = wheels.find((wheel) => wheel.code === subsidy.wheelCode);
+      const trimId = trims.find((trim) => trim.slug === subsidy.trimSlug)?.id;
+      if (!trimId) throw new Error(`Trim not found: ${subsidy.trimSlug}`);
+      const wheelId = wheels.find(
+        (wheel) => wheel.code === subsidy.wheelCode && wheel.trim_id === trimId
+      )?.id;
       if (!wheelId) throw new Error(`Wheel not found: ${subsidy.wheelCode!}`);
       return {
-        trim_id: trims.find((trim) => trim.slug === subsidy.trimSlug)?.id,
-        wheel_id: wheelId.id,
+        trim_id: trimId,
+        wheel_id: wheelId,
         local_subsidy: subsidy.localSubsidy,
         national_subsidy: subsidy.nationalSubsidy,
         region_code: subsidy.regionCode,
