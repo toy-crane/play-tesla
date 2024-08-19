@@ -1,0 +1,18 @@
+{
+  "name": "@repo/google-indexer",
+  "version": "1.0.0",
+  "description": "make index for google",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "google-indexing-script": "^0.4.0",
+    "ts-node": "^10.9.2"
+  }
+}

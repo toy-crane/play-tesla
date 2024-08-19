@@ -34,3 +34,6 @@ yarn-error.log*
 
 # ui
 dist/
+
+# service account
+packages/google-indexer/service_account.json
