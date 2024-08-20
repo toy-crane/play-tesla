@@ -58,13 +58,13 @@ export function SelectCar({ trims, slug }: { trims: Trim[]; slug: string }) {
             size="lg"
             variant="ghost"
           >
-            <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
+            <h1 className="text-ellipsis whitespace-nowrap overflow-hidden">
               {selectedCarLabel ? (
                 <>{selectedCarLabel.label}</>
               ) : (
                 <>차종을 선택해 주세요.</>
               )}
-            </h2>
+            </h1>
             <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
           </Button>
         </PopoverTrigger>
