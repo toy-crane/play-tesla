@@ -16,19 +16,6 @@ function Layout(props: { children: React.ReactNode }) {
               width="144"
             />
           </Link>
-          <Link href="https://toss.me/toycrane">
-            <Button variant="outline">
-              <Image
-                title="제작자 후원하기"
-                alt="toss-logo"
-                className="mr-1"
-                height="16"
-                src="/logo/toss.png"
-                width="16"
-              />
-              제작자 후원하기
-            </Button>
-          </Link>
         </nav>
       </header>
       <main className="content-grid flex-1">{props.children}</main>
