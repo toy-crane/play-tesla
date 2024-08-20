@@ -3,47 +3,6 @@ import { siteConfig } from "@/config/site";
 import { createClient } from "@/utils/supabase/server";
 import regions from "@/constants/regions";
 
-const accessableRegions = regions.filter((region) =>
-  [
-    "1100",
-    "2600",
-    "2700",
-    "2800",
-    "2900",
-    "3000",
-    "3100",
-    "3611",
-    "4111",
-    "4113",
-    "4115",
-    "4117",
-    "4119",
-    "4121",
-    "4122",
-    "4125",
-    "4127",
-    "4128",
-    "4129",
-    "4131",
-    "4136",
-    "4137",
-    "4139",
-    "4141",
-    "4143",
-    "4145",
-    "4146",
-    "4148",
-    "4150",
-    "4155",
-    "4157",
-    "4159",
-    "4161",
-    "4163",
-    "4165",
-    "4167",
-  ].includes(region.code)
-);
-
 const addPathToBaseURL = (path: string) => `${siteConfig.url}/${path}`;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -80,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .flat();
 
-  const trimWithRegionUrls = accessableRegions
+  const trimWithRegionUrls = regions
     .map((region) => {
       return trimUrls.map((trimUrl) => ({
         url: `${trimUrl.url}?region=${region.code}`,
