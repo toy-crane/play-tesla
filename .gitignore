@@ -37,3 +37,7 @@ dist/
 
 # service account
 packages/google-indexer/service_account.json
+
+
+# cache
+.cache/
