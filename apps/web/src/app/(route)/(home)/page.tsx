@@ -4,8 +4,8 @@ import GradualSpacing from "@/components/magicui/gradual-spacing";
 
 export default function Page() {
   return (
-    <div className="flex w-full flex-col items-center gap-28 py-[26vh] pt-[18vh]">
-      <div className="flex flex-col items-center space-y-3">
+    <div className="flex w-full flex-col items-center gap-28 py-[26vh] pt-[18vh] relative">
+      <div className="flex flex-col items-center space-y-3 z-20">
         <GradualSpacing
           text="테슬라 가격에 관한 모든 것"
           className="text-3xl font-semibold tracking-tighter md:text-6xl"
