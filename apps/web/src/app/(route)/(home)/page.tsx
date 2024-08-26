@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import GradualSpacing from "@/components/magicui/gradual-spacing";
 
 export default function Page() {
   return (
     <div className="flex w-full flex-col items-center gap-28 py-[26vh] pt-[18vh]">
       <div className="flex flex-col items-center space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tighter md:text-6xl">
-          테슬라 가격에 관한 모든 것
-        </h1>
+        <GradualSpacing
+          text="테슬라 가격에 관한 모든 것"
+          className="text-3xl font-semibold tracking-tighter md:text-6xl"
+        />
         <p className="text-foreground md:text-2xl">
           가장 빠르고, 쉽게 알아 보세요
         </p>
