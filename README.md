@@ -1,58 +1,70 @@
-# Turborepo Tailwind CSS starter
+# Play Tesla - 테슬라 정보 모음 플랫폼
 
-This is an official starter Turborepo.
+이 프로젝트는 Turborepo를 기반으로 한 모노레포 구조의 테슬라 정보 제공 플랫폼입니다.
 
-## Using this example
+## 프로젝트 구조
 
-Run the following command:
+이 Turborepo는 다음과 같은 앱과 패키지를 포함하고 있습니다:
 
-```sh
-npx create-turbo@latest -e with-tailwind
-```
+### 앱
 
-## What's inside?
+- `web`: [Next.js](https://nextjs.org/)와 [Tailwind CSS](https://tailwindcss.com/)를 사용한 메인 웹 애플리케이션
 
-This Turborepo includes the following packages/apps:
+### 패키지
 
-### Apps and Packages
+- `ui`: `web` 애플리케이션에서 공유되는 React 컴포넌트 라이브러리
+- `@repo/eslint-config`: 프로젝트 전체에서 사용되는 ESLint 설정
+- `@repo/typescript-config`: 프로젝트 전체에서 사용되는 TypeScript 설정
+- `@repo/transactional`: 이메일 템플릿 관리를 위한 패키지
+- `@repo/google-indexer`: Google 검색 인덱싱을 위한 패키지
 
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+모든 패키지와 앱은 100% [TypeScript](https://www.typescriptlang.org/)로 작성되었습니다.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## 주요 기능
 
-### Building packages/ui
+- 테슬라 차량 모델별 가격 정보 제공
+- 테슬라 차량 가격 변동 추이 차트
+- 지역별 전기차 보조금 정보 제공
+- 차량 가격 변동 알림 서비스
 
-This example is set up to produce compiled styles for `ui` components into the `dist` directory. The component `.tsx` files are consumed by the Next.js apps directly using `transpilePackages` in `next.config.js`. This was chosen for several reasons:
+## 기술 스택
 
-- Make sharing one `tailwind.config.js` to apps and packages as easy as possible.
-- Make package compilation simple by only depending on the Next.js Compiler and `tailwindcss`.
-- Ensure Tailwind classes do not overwrite each other. The `ui` package uses a `ui-` prefix for it's classes.
-- Maintain clear package export boundaries.
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Shadcn UI
+- Supabase
 
-Another option is to consume `packages/ui` directly from source without building. If using this option, you will need to update the `tailwind.config.js` in your apps to be aware of your package locations, so it can find all usages of the `tailwindcss` class names for CSS compilation.
+## 개발 시작하기
 
-For example, in [tailwind.config.js](packages/tailwind-config/tailwind.config.js):
+1. 저장소를 클론합니다.
+2. 의존성을 설치합니다:
+   ```
+   pnpm install
+   ```
+3. 개발 서버를 실행합니다:
+   ```
+   pnpm dev
+   ```
 
-```js
-  content: [
-    // app content
-    `src/**/*.{js,ts,jsx,tsx}`,
-    // include packages if not transpiling
-    "../../packages/ui/*.{js,ts,jsx,tsx}",
-  ],
-```
+## 유틸리티
 
-If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
+이 프로젝트는 다음과 같은 도구들이 설정되어 있습니다:
 
-### Utilities
+- [Tailwind CSS](https://tailwindcss.com/): 스타일링
+- [TypeScript](https://www.typescriptlang.org/): 정적 타입 체크
+- [ESLint](https://eslint.org/): 코드 린팅
+- [Prettier](https://prettier.io): 코드 포맷팅
 
-This Turborepo has some additional tools already setup for you:
+## 배포
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+이 프로젝트는 Vercel을 통해 배포됩니다. `main` 브랜치에 변경사항이 푸시되면 자동으로 배포가 진행됩니다.
+
+## 기여하기
+
+버그 리포트, 기능 제안, 풀 리퀘스트 등 모든 형태의 기여를 환영합니다. 기여하기 전에 프로젝트 관리자와 논의해 주세요.
+
+## 라이선스
+
+이 프로젝트는 [MIT 라이선스](LICENSE)하에 제공됩니다.
